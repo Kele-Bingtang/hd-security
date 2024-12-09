@@ -8,4 +8,6 @@ package cn.youngkbt.hdsecurity.constants;
 public interface DefaultConstant {
     String DEFAULT_LOGIN_DEVICE = "default-device";
     String DEFAULT_ACCOUNT_TYPE = "default-account";
+    String CREATED_TOKEN = "CREATED_TOKEN";
+    String CREATED_TOKEN_PREFIX = "CREATED_TOKEN_PREFIX";
 }

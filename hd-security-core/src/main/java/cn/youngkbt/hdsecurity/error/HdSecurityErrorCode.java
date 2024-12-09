@@ -41,6 +41,10 @@ public interface HdSecurityErrorCode {
      */
     int TOKEN_NO_MATCH_PREFIX = 10103;
     /**
+     * Token 已被冻结
+     */
+    int TOKEN_FREEZE = 10104;
+    /**
      * 获取 Session 时提供的 SessionId 为空
      */
     int SESSION_ID_IS_NULL = 10201;

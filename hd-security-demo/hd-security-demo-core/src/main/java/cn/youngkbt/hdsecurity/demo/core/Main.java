@@ -15,13 +15,6 @@ public class Main {
         System.out.println(HdSecurityEventListenerForLog.getStartCostTimeMap());
 
         HdHelper.loginHelper().login("1001");
-
-
-        {
-            
-        }
-
     }
-
 }
 

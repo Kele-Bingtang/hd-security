@@ -3,12 +3,16 @@ package cn.youngkbt.hdsecurity.hd;
 import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.config.HdCookieConfig;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
+import cn.youngkbt.hdsecurity.config.HdSecurityConfigProvider;
+import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 import cn.youngkbt.hdsecurity.context.HdSecurityContext;
 import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityTokenException;
 import cn.youngkbt.hdsecurity.model.cookie.HdCookie;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
 import cn.youngkbt.hdsecurity.model.session.HdSession;
+import cn.youngkbt.hdsecurity.model.session.HdTokenDevice;
+import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryKV;
 import cn.youngkbt.hdsecurity.strategy.TokenGenerateStrategy;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 
@@ -143,19 +147,64 @@ public class HdTokenHelper {
         return TokenGenerateStrategy.instance.createToken.create(loginId, accountType);
     }
 
-    // ---------- Token 最后活跃时间相关操作方法 ----------
+    // ---------- Token 允许的活跃时间相关操作方法 ----------
 
     /**
-     * 添加 Token 的最后活跃时间
+     * 获取 Token 允许的活跃时间（秒），如果指定 Token 允许的活跃时间不存在，则返回全局配置的 Token 允许的活跃时间（秒）
+     *
+     * @param token Token
+     * @return 允许的活跃时间（秒）
+     */
+    public long getTokenActiveTimeOrGlobalConfig(String token) {
+        Long tokenActiveTime = getTokenActiveTime(token);
+        return null == tokenActiveTime ? HdSecurityConfigProvider.getHdSecurityConfig().getTokenActiveExpireTime() : tokenActiveTime;
+    }
+
+    /**
+     * 获取 Token 允许的活跃时间（秒）
+     *
+     * @return 允许的活跃时间（秒）
+     */
+    public Long getTokenActiveTime() {
+        return getTokenActiveTime(getWebToken());
+    }
+
+    /**
+     * 获取 Token 允许的活跃时间（秒）
+     *
+     * @param token Token
+     * @return 允许的活跃时间（秒）
+     */
+    public Long getTokenActiveTime(String token) {
+        if (HdStringUtil.hasEmpty(token)) {
+            return null;
+        }
+
+        // 如果全局未启用动态 activeTimeout 功能，则直接返回 null
+        if (Boolean.FALSE.equals(HdSecurityManager.getConfig().getDynamicActiveTimeout())) {
+            return null;
+        }
+
+        // 获取活跃时间配置
+        String activeTime = (String) HdSecurityManager.getRepository().query(RepositoryKeyHelper.getLastActiveKey(token, accountType));
+        if (HdStringUtil.hasEmpty(activeTime)) {
+            return null;
+        }
+
+        return Long.parseLong(activeTime.split(",")[1]);
+    }
+
+    /**
+     * 添加 Token 活跃时间配置，格式：最后的活跃时间戳,允许的活跃时间（秒）
      *
      * @param token            Token
-     * @param activeExpireTime 最后活跃时间
+     * @param activeExpireTime 允许的活跃时间（秒）
      * @param tokenExpireTime  Token 过期时间
      */
     public void addTokenActiveTime(String token, Long activeExpireTime, Long tokenExpireTime) {
         HdSecurityConfig config = HdSecurityManager.getConfig();
         if (null == tokenExpireTime) {
-            tokenExpireTime = config.getTokenExpireTime();
+            tokenExpireTime = config.getSessionExpireTime();
         }
 
         String key = RepositoryKeyHelper.getLastActiveKey(token, accountType);
@@ -165,7 +214,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 删除 Token 的最后活跃时间
+     * 删除 Token 活跃时间配置
      *
      * @param token Token
      */
@@ -173,7 +222,162 @@ public class HdTokenHelper {
         HdSecurityManager.getRepository().remove(RepositoryKeyHelper.getLastActiveKey(token, accountType));
     }
 
+    // ---------- Token 最后活跃时间相关操作方法 ----------
+
+    /**
+     * 获取 Token 的最后活跃时间
+     *
+     * @return 最后活跃时间
+     */
+    public Long getTokenLastActiveTime() {
+        return getTokenLastActiveTime(getWebToken());
+    }
+
+    /**
+     * 获取 Token 的最后活跃时间（13 位时间戳）
+     *
+     * @param token Token
+     * @return 最后活跃时间（13 位时间戳）
+     */
+    public Long getTokenLastActiveTime(String token) {
+        if (HdStringUtil.hasEmpty(token)) {
+            return null;
+        }
+
+        // 获取最活跃时间
+        String activeTime = (String) HdSecurityManager.getRepository().query(RepositoryKeyHelper.getLastActiveKey(token, accountType));
+        if (HdStringUtil.hasEmpty(activeTime)) {
+            return null;
+        }
+
+        return Long.parseLong(activeTime.split(",")[0]);
+    }
+
+    /**
+     * 续签当前 Token 为当前时间戳，如果 Token 被冻结，则也会续签成功
+     */
+    public void updateTokenLastActiveTimeToNow() {
+        updateTokenLastActiveTimeToNow(getWebToken());
+    }
+
+    /**
+     * 续签当前 Token 为当前时间戳，如果 Token 被冻结，则也会续签成功
+     *
+     * @param token Token
+     */
+    public void updateTokenLastActiveTimeToNow(String token) {
+        String key = RepositoryKeyHelper.getLastActiveKey(token, accountType);
+        String value = System.currentTimeMillis() + "," + getTokenActiveTime(token);
+        HdSecurityManager.getRepository().edit(key, value);
+    }
+
+    /**
+     * 获取 Token 剩余的活跃时间，剩余活跃时间 = (当前时间戳 - 最后一次活跃时间戳) / 1000 - 允许的活跃时间（秒）
+     *
+     * @return 单位: 秒，返回 -1 代表永不冻结，null 代表 Token 已被冻结了或找不到 Token 剩余的活跃时间
+     */
+    public Long getTokenRemainActiveTime() {
+        return getTokenRemainActiveTime(getWebToken());
+    }
+    
+    /**
+     * 获取 Token 剩余的活跃时间，剩余活跃时间 = (当前时间戳 - 最后一次活跃时间戳) / 1000 - 允许的活跃时间（秒）
+     *
+     * @param token Token
+     * @return 单位: 秒，返回 -1 代表永不冻结，null 代表 Token 已被冻结了或找不到 Token 剩余的活跃时间
+     */
+    public Long getTokenRemainActiveTime(String token) {
+        // 如果全局配置了永不冻结, 则直接返回 null
+        if (!HdSecurityConfigProvider.isUseActiveTimeout()) {
+            return null;
+        }
+        // 获取 Token 的最后活跃时间
+        Long lastActiveTime = getTokenLastActiveTime(token);
+        if (null == lastActiveTime) {
+            return null;
+        }
+        // 计算已经活跃的时间（秒），格式：(当前时间戳 - 最后一次活跃时间戳) / 1000
+        long activeTimeDiff = (System.currentTimeMillis() - lastActiveTime) / 1000;
+
+        // 获取 Token 允许的活跃时间（秒）
+        long activeTime = getTokenActiveTimeOrGlobalConfig(token);
+
+        // 如果允许的活跃时间为 -1 ，则代表永不冻结，这里直接返回 -1
+        if (activeTime == HdSecurityRepositoryKV.NEVER_EXPIRE) {
+            return HdSecurityRepositoryKV.NEVER_EXPIRE;
+        }
+
+        // 计算剩余活跃时间（秒）
+        long remainActiveTime = activeTime - activeTimeDiff;
+        if (remainActiveTime <= 0) {
+            return null;
+        }
+
+        return remainActiveTime;
+    }
+
+
+    /**
+     * 检查指定 token 是否已被冻结，如果是则抛出异常
+     *
+     * @param token token
+     */
+    public void checkTokenActiveTime(String token) {
+        // 获取这个 token 剩余的活跃时间
+        Long tokenRemainActiveTime = getTokenRemainActiveTime(token);
+
+        // 如果剩余活跃时间为 null，代表 Token 已被冻结或找不到 Token 剩余的活跃时间，则抛出异常
+        if (null == tokenRemainActiveTime) {
+            throw new HdSecurityTokenException("Token 已被冻结或找不到 Token 剩余的活跃时间").setCode(HdSecurityErrorCode.TOKEN_FREEZE);
+        }
+    }
+
     // ---------- Token 从持久层获取相关操作方法 ----------
+
+    /**
+     * 从持久层获取 Token，如果 Token 为空，则登录
+     *
+     * @param loginId 账号 ID
+     * @return Token
+     */
+    public String getTokenOrLogin(Object loginId) {
+        return getTokenOrLogin(loginId, DefaultConstant.DEFAULT_LOGIN_DEVICE);
+    }
+
+    /**
+     * 从持久层获取 Token，如果 Token 为空，则登录
+     *
+     * @param loginId 账号 ID
+     * @param device  设备
+     * @return Token
+     */
+    public String getTokenOrLogin(Object loginId, String device) {
+        String lastToken = getLastTokenByLoginId(loginId);
+        if (HdStringUtil.hasText(lastToken)) {
+            return lastToken;
+        }
+        return HdHelper.loginHelper(accountType).login(loginId, device);
+    }
+
+    /**
+     * 根据账号从持久层获取注册的 Token
+     *
+     * @param loginId 账号
+     * @return Token
+     */
+    public String getCacheToken(Object loginId) {
+        return getLastTokenByLoginId(loginId);
+    }
+
+    /**
+     * 根据账号获取注册的最后一个 Token
+     *
+     * @param loginId 账号
+     * @return Token
+     */
+    public String getLastTokenByLoginId(Object loginId) {
+        return getLastTokenByLoginId(loginId, DefaultConstant.DEFAULT_LOGIN_DEVICE);
+    }
 
     /**
      * 根据账号和设备获取注册的最后一个 Token
@@ -213,6 +417,53 @@ public class HdTokenHelper {
         return session.getTokenListByDevice(device);
     }
 
+    // --------- 通过 Token 获取设备相关操作方法 ---------
+
+    /**
+     * 获取 Token 对应的设备
+     *
+     * @return 设备
+     */
+    public String getDevice() {
+        return getDeviceByToken(getWebToken());
+    }
+
+    /**
+     * 获取 Token 对应的设备
+     *
+     * @param token Token
+     * @return 设备
+     */
+    public String getDeviceByToken(String token) {
+        if (HdStringUtil.hasEmpty(token)) {
+            return null;
+        }
+
+        // 检查 Token 是否存活
+        if (null == getTokenRemainActiveTime(token)) {
+            return null;
+        }
+
+        // 通过 Token 获取 LoginId
+        Object loginId = getLoginIdByToken(token);
+        if (null == loginId) {
+            return null;
+        }
+
+        // 获取 Account Session
+        HdSession session = HdHelper.sessionHelper(accountType).getAccountSessionByLoginId(loginId);
+        if (null == session) {
+            return null;
+        }
+
+        // 通过 Token 获取 TokenDevice
+        HdTokenDevice tokenDevice = session.getTokenDeviceByToken(token);
+        if (null == tokenDevice) {
+            return null;
+        }
+        return tokenDevice.getDevice();
+    }
+
     // --------- Token 和 LoginId 的映射关系相关操作方法 ---------
 
     /**
@@ -221,8 +472,8 @@ public class HdTokenHelper {
      * @param token Token
      * @return LoginId
      */
-    public String getLoginIdByToken(String token) {
-        return (String) HdSecurityManager.getRepository().query(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType));
+    public Object getLoginIdByToken(String token) {
+        return HdSecurityManager.getRepository().query(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType));
     }
 
     /**
@@ -277,7 +528,10 @@ public class HdTokenHelper {
     public void writeTokenToStorage(String token) {
         HdSecurityConfig config = HdSecurityManager.getConfig();
         String tokenPrefix = config.getTokenPrefix();
-        HdSecurityManager.getContext().getStorage().set("storageToken", HdStringUtil.hasText(tokenPrefix) ? tokenPrefix : " " + token);
+        // 将 Token 写入到 Storage
+        HdSecurityManager.getContext().getStorage().set(DefaultConstant.CREATED_TOKEN, token);
+        // 将有前缀的 Token 写入到 Storage
+        HdSecurityManager.getContext().getStorage().set(DefaultConstant.CREATED_TOKEN_PREFIX, (HdStringUtil.hasText(tokenPrefix) ? tokenPrefix : " ") + token);
     }
 
     /**
@@ -320,12 +574,12 @@ public class HdTokenHelper {
     }
 
     /**
-     * 获取 Token，不做任何检查
+     * 从 Web 获取 Token，不做任何检查
      *
      * @return Token
      */
-    public String getToken() {
-        return getToken(false, false);
+    public String getWebToken() {
+        return getWebToken(false, false);
     }
 
     /**
@@ -333,8 +587,8 @@ public class HdTokenHelper {
      *
      * @return Token
      */
-    public String checkTokenPrefixThenGet() {
-        return getToken(false, true);
+    public String checkWebTokenPrefixThenGet() {
+        return getWebToken(false, true);
     }
 
     /**
@@ -342,18 +596,18 @@ public class HdTokenHelper {
      *
      * @return Token
      */
-    public String checkTokenNonNullThenGet() {
-        return getToken(true, true);
+    public String checkWebTokenNonNullThenGet() {
+        return getWebToken(true, true);
     }
 
     /**
-     * 获取 Token
+     * 从 Web 获取 Token
      *
      * @param tokeNonNull     是否必须存在
      * @param prefixMustMatch 是否必须以指定的前缀开头
      * @return Token
      */
-    public String getToken(boolean tokeNonNull, boolean prefixMustMatch) {
+    public String getWebToken(boolean tokeNonNull, boolean prefixMustMatch) {
         String token = getTokenFromWeb();
 
         if (HdStringUtil.hasEmpty(token)) {
@@ -390,7 +644,7 @@ public class HdTokenHelper {
         HdSecurityContext context = HdSecurityManager.getContext();
         String securityPrefixKey = HdSecurityManager.getConfig().getSecurityPrefixKey();
         // 先尝试从 Storage 中获取
-        String token = String.valueOf(context.getStorage().get("storageToken"));
+        String token = String.valueOf(context.getStorage().get(DefaultConstant.CREATED_TOKEN_PREFIX));
 
         // 再尝试从 Body 中获取，如 URL ? 后面的参数、Form 表单等
         if (HdStringUtil.hasEmpty(token) && Boolean.TRUE.equals(config.getReadBody())) {

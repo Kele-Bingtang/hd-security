@@ -2,7 +2,7 @@ package cn.youngkbt.hdsecurity.config;
 
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
-import cn.youngkbt.hdsecurity.repository.HdSecurityRepository;
+import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryKV;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -73,6 +73,6 @@ public class HdSecurityConfigProvider {
 
     public static boolean isUseActiveTimeout() {
         HdSecurityConfig config = getHdSecurityConfig();
-        return config.getTokenActiveExpireTime() != HdSecurityRepository.NEVER_EXPIRE || config.getDynamicActiveTimeout();
+        return config.getTokenActiveExpireTime() != HdSecurityRepositoryKV.NEVER_EXPIRE || config.getDynamicActiveTimeout();
     }
 }

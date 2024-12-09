@@ -17,7 +17,7 @@ public interface HdSecurityRepositoryKV<K, V> {
     long NEVER_EXPIRE = -1;
 
     /**
-     * 常量，表示缓存中不存在数据（获取剩余存活时间为空时返回此值）
+     * 常量，表示缓存中不存在数据（key 过期或者过期时间为空时返回此值）
      */
     long NOT_VALUE_EXPIRE = -2;
 

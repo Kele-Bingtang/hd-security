@@ -4,7 +4,7 @@ import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 import cn.youngkbt.hdsecurity.hd.RepositoryKeyHelper;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
-import cn.youngkbt.hdsecurity.repository.HdSecurityRepository;
+import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryKV;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 
 import java.io.Serial;
@@ -173,22 +173,17 @@ public class HdSession implements Serializable {
         return devices.stream().map(HdTokenDevice::getToken).toList();
     }
 
-    public HdTokenDevice getTokenDevice(HdTokenDevice tokenDevice) {
-        return getTokenDeviceByToken(tokenDevice.getToken());
-
-    }
-
-    public void addDevice(HdTokenDevice device) {
-        HdTokenDevice oldDevice = getTokenDevice(device);
+    public void addDevice(HdTokenDevice tokenDevice) {
+        HdTokenDevice oldDevice = getTokenDeviceByToken(tokenDevice.getToken());
         if (null == oldDevice) {
-            tokenDeviceList.add(device);
+            tokenDeviceList.add(tokenDevice);
             updateToRepository();
         } else {
             // 存在则更新
             HdTokenDevice newDevice = new HdTokenDevice()
-                    .setToken(device.getToken())
-                    .setDevice(device.getDevice())
-                    .setData(device.getData());
+                    .setToken(tokenDevice.getToken())
+                    .setDevice(tokenDevice.getDevice())
+                    .setData(tokenDevice.getData());
 
             int index = tokenDeviceList.indexOf(oldDevice);
             if (index != -1) {
@@ -257,7 +252,7 @@ public class HdSession implements Serializable {
      * @return 转换后的值
      */
     protected long trans(long value) {
-        return value == HdSecurityRepository.NEVER_EXPIRE ? Long.MAX_VALUE : value;
+        return value == HdSecurityRepositoryKV.NEVER_EXPIRE ? Long.MAX_VALUE : value;
     }
 
     // ---------- attribute 操作相关方法 ---------

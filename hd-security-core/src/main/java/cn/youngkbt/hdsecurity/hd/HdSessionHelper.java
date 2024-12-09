@@ -98,10 +98,10 @@ public class HdSessionHelper {
         if (null == session) {
             // 策略模式创建 Account Session
             session = SessionCreateStrategy.instance.createSession.apply(String.valueOf(loginId));
-            Long tokenExpireTime = Optional.ofNullable(expireTime).orElse(HdSecurityManager.getConfig().getTokenExpireTime());
+            Long sessionExpireTime = Optional.ofNullable(expireTime).orElse(HdSecurityManager.getConfig().getSessionExpireTime());
 
             // 存储到持久层
-            repository.addSession(session, tokenExpireTime);
+            repository.addSession(session, sessionExpireTime);
         } else {
             // 在持久层更新缓存的时间
             session.updateExpireTimeWhenCondition(expireTime, true);

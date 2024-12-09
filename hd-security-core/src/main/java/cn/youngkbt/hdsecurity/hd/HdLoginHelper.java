@@ -94,7 +94,7 @@ public class HdLoginHelper {
 
         return token;
     }
-
+    
     /**
      * 登录模型检查
      *
@@ -167,7 +167,7 @@ public class HdLoginHelper {
         HdSessionHelper hdSessionHelper = HdHelper.sessionHelper(accountType);
         HdTokenHelper tokenHelper = HdHelper.tokenHelper(accountType);
 
-        String loginId = tokenHelper.getLoginIdByToken(token);
+        Object loginId = tokenHelper.getLoginIdByToken(token);
         // 发布注销开始事件
         HdSecurityEventCenter.publishBeforeLogout(accountType, loginId);
 
