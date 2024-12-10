@@ -161,6 +161,10 @@ public class HdSession implements Serializable {
 
     }
 
+    public List<String> getTokenList() {
+        return tokenDeviceList.stream().map(HdTokenDevice::getToken).toList();
+    }
+
     public List<String> getTokenListByDevice(String device) {
         if (HdStringUtil.hasEmpty(device)) {
             return tokenDeviceList.stream().map(HdTokenDevice::getToken).toList();

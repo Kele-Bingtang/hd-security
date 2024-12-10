@@ -37,13 +37,25 @@ public interface HdSecurityErrorCode {
      */
     int TOKEN_IS_NULL = 10102;
     /**
+     * Token 无效（Token 对应的账号不存在）
+     */
+    int TOKEN_INVALID = 10103;
+    /**
      * 前端未按照指定的前缀提交 token
      */
-    int TOKEN_NO_MATCH_PREFIX = 10103;
+    int TOKEN_NO_MATCH_PREFIX = 10104;
     /**
      * Token 已被冻结
      */
-    int TOKEN_FREEZE = 10104;
+    int TOKEN_FREEZE = 10105;
+    /**
+     * Token 已被踢下线
+     */
+    int TOKEN_KICK_OUT = 10106;
+    /**
+     * Token 已被顶下线
+     */
+    int TOKEN_REPLACED = 10107;
     /**
      * 获取 Session 时提供的 SessionId 为空
      */

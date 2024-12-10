@@ -27,9 +27,9 @@ public class HdSecurityConfig implements Serializable {
     private long tokenActiveExpireTime = -1;
 
     /**
-     * 是否启用动态 activeTimeout 功能，如不需要请设置为 false，节省缓存请求次数
+     * 是否启用动态 activeTimeout 功能，如不需要请设置为 false，节省持久层空间（开启后将会将 tokenActiveExpireTime 相关信息存入到持久层）
      */
-    private Boolean dynamicActiveTimeout = false;
+    private Boolean dynamicActiveExpireTime = false;
 
     /**
      * 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
@@ -148,12 +148,12 @@ public class HdSecurityConfig implements Serializable {
         return this;
     }
 
-    public Boolean getDynamicActiveTimeout() {
-        return dynamicActiveTimeout;
+    public Boolean getDynamicActiveExpireTime() {
+        return dynamicActiveExpireTime;
     }
 
-    public HdSecurityConfig setDynamicActiveTimeout(Boolean dynamicActiveTimeout) {
-        this.dynamicActiveTimeout = dynamicActiveTimeout;
+    public HdSecurityConfig setDynamicActiveExpireTime(Boolean dynamicActiveExpireTime) {
+        this.dynamicActiveExpireTime = dynamicActiveExpireTime;
         return this;
     }
 
@@ -325,7 +325,7 @@ public class HdSecurityConfig implements Serializable {
                 "securityPrefixKey='" + securityPrefixKey + '\'' +
                 ", tokenExpireTime=" + sessionExpireTime +
                 ", tokenActiveExpireTime=" + tokenActiveExpireTime +
-                ", dynamicActiveTimeout=" + dynamicActiveTimeout +
+                ", dynamicActiveTimeout=" + dynamicActiveExpireTime +
                 ", isConcurrent=" + isConcurrent +
                 ", isShare=" + isShare +
                 ", maxLoginCount=" + maxLoginCount +

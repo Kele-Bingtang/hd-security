@@ -17,26 +17,71 @@ public interface HdSecurityRepositoryKV<K, V> {
     long NEVER_EXPIRE = -1;
 
     /**
-     * 常量，表示缓存中不存在数据（key 过期或者过期时间为空时返回此值）
+     * 常量，表示持久层中不存在数据（key 过期或者过期时间为空时返回此值）
      */
     long NOT_VALUE_EXPIRE = -2;
 
+    /**
+     * 通过 key 查询持久层中的数据
+     *
+     * @param key 键名称
+     * @return 持久层中的数据或 null
+     */
     V query(K key);
 
+    /**
+     * 添加数据到持久层中，并指定过期时间
+     *
+     * @param key        键名称
+     * @param value      值
+     * @param expireTime 过期时间，单位：秒
+     */
     void add(K key, V value, long expireTime);
 
+    /**
+     * 修改持久层中的数据，不会更新过期时间
+     *
+     * @param key   键名称
+     * @param value 新值
+     */
     void edit(K key, V value);
 
+    /**
+     * 删除持久层中的数据
+     *
+     * @param key 键名称
+     */
     void remove(K key);
-    
+
+    /**
+     * 清空持久层的所有数据
+     */
     void clear();
 
+    /**
+     * 获取 key 的过期时间，单位：秒
+     *
+     * @param key 键名称
+     * @return 过期时间，单位：秒，如果永久不过期，则返回 {@link #NEVER_EXPIRE}，如果 key 不存在，则返回 {@link #NOT_VALUE_EXPIRE}
+     */
     long getExpireTime(K key);
 
+    /**
+     * 更新 key 的过期时间，单位：秒
+     *
+     * @param key        键名称
+     * @param expireTime 过期时间，单位：秒
+     */
     void updateExpireTime(K key, long expireTime);
 
+    /**
+     * 获取所有以 keyword 模糊匹配的 key 列表
+     *
+     * @param keyword 关键词
+     * @return 所有以 keyword 模糊匹配的 key 列表
+     */
     Set<K> keys(String keyword);
-    
+
     /**
      * 当仓库实例被装载时触发
      */

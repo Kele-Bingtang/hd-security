@@ -13,6 +13,8 @@ import cn.youngkbt.hdsecurity.repository.HdSecurityRepository;
 import cn.youngkbt.hdsecurity.strategy.SessionCreateStrategy;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,6 +29,7 @@ public class HdSessionHelper {
         this.accountType = accountType;
     }
 
+    // ---------- Account Session 相关操作方法 ---------
     /**
      * 创建账号会话
      *
@@ -45,7 +48,7 @@ public class HdSessionHelper {
         HdSecurityConfig config = HdSecurityManager.getConfig();
         // 如果不允许一个账号多地同时登录，则需要先将这个账号的历史登录会话标记为 被顶下线
         if (Boolean.FALSE.equals(config.getConcurrent())) {
-            // TODO 顶人下线
+            HdHelper.loginHelper(accountType).replaced(loginId, loginModel.getDevice());
         }
 
         // 获取 Account Session 会话，如果获取失败，则代表第一次登录，需要创建新的会话
@@ -69,7 +72,7 @@ public class HdSessionHelper {
         tokenHelper.addTokenAndLoginIdMapping(loginId, token, loginModel.getTokenExpireTime());
 
         // 更新 Token 最后活跃时间
-        if (HdSecurityConfigProvider.isUseActiveTimeout()) {
+        if (HdSecurityConfigProvider.isUseActiveExpireTime()) {
             tokenHelper.addTokenActiveTime(token, loginModel.getTokenActiveExpireTime(), tokenExpireTime);
         }
 
@@ -123,14 +126,79 @@ public class HdSessionHelper {
         return HdSecurityManager.getRepository().querySession(RepositoryKeyHelper.getAccountSessionKey(loginId, accountType));
     }
 
+    // ---------- Account Session ExpireTime 相关操作方法 ---------
+
+    // ---------- Token Session 相关操作方法 ---------
     /**
      * 根据 Token 获取 Token 会话
      *
-     * @param token       Token
-     * @param accountType 账号类型
+     * @param token Token
      */
-    public void removeTokenSession(String token, String accountType) {
+    public void removeTokenSession(String token) {
         HdSecurityManager.getRepository().removeSession(RepositoryKeyHelper.getTokenSessionKey(token, accountType));
     }
 
+    
+    // --------- TokenDevice 相关操作方法 ---------
+    
+    public List<HdTokenDevice> getTokenDeviceList(Object loginId) {
+        return getTokenDeviceList(loginId, null);
+    }
+
+    public List<HdTokenDevice> getTokenDeviceList(Object loginId, String device) {
+        HdSession session = getAccountSessionByLoginId(loginId);
+        if (session == null) {
+            return new ArrayList<>();
+        }
+
+        return session.getTokenDeviceListByDevice(device);
+    }
+
+    /**
+     * 获取账号会话中的 Token 列表
+     *
+     * @param loginId 登录 ID
+     * @return Token 列表
+     */
+    public List<String> getTokenList(Object loginId) {
+        return getTokenList(loginId, null);
+    }
+
+    /**
+     * 获取账号会话中指定设备的 Token 列表
+     *
+     * @param loginId 登录 ID
+     * @param device  设备
+     * @return Token 列表
+     */
+    public List<String> getTokenList(Object loginId, String device) {
+        HdSession session = getAccountSessionByLoginId(loginId);
+        return session.getTokenListByDevice(device);
+    }
+
+    /**
+     * 获取账号会话中的最后一个 Token
+     *
+     * @param loginId 登录 ID
+     * @return Token
+     */
+    public String getLastToken(Object loginId) {
+        return getLastToken(loginId, null);
+    }
+
+    /**
+     * 获取账号会话中指定设备的最后一个 Token
+     *
+     * @param loginId 登录 ID
+     * @param device  设备
+     * @return Token
+     */
+    public String getLastToken(Object loginId, String device) {
+        HdSession session = getAccountSessionByLoginId(loginId);
+        List<String> tokenList = session.getTokenListByDevice(device);
+        if (tokenList.isEmpty()) {
+            return null;
+        }
+        return tokenList.get(tokenList.size() - 1);
+    }
 }

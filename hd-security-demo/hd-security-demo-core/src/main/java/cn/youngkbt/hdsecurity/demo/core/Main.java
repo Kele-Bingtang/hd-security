@@ -12,7 +12,7 @@ import cn.youngkbt.hdsecurity.listener.impl.HdSecurityEventListenerForLog;
 public class Main {
     public static void main(String[] args) {
         HdSecurityConfigProvider.getHdSecurityConfig();
-        System.out.println(HdSecurityEventListenerForLog.getStartCostTimeMap());
+        System.out.println("Hd Security 启动耗费时长明细：" + HdSecurityEventListenerForLog.getStartCostTimeMap());
 
         HdHelper.loginHelper().login("1001");
     }

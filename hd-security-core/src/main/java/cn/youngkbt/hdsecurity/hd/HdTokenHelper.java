@@ -181,7 +181,7 @@ public class HdTokenHelper {
         }
 
         // 如果全局未启用动态 activeTimeout 功能，则直接返回 null
-        if (Boolean.FALSE.equals(HdSecurityManager.getConfig().getDynamicActiveTimeout())) {
+        if (Boolean.FALSE.equals(HdSecurityManager.getConfig().getDynamicActiveExpireTime())) {
             return null;
         }
 
@@ -208,7 +208,7 @@ public class HdTokenHelper {
         }
 
         String key = RepositoryKeyHelper.getLastActiveKey(token, accountType);
-        String value = System.currentTimeMillis() + "," + (Boolean.TRUE.equals(config.getDynamicActiveTimeout()) && null != activeExpireTime ? activeExpireTime : "");
+        String value = System.currentTimeMillis() + "," + (Boolean.TRUE.equals(config.getDynamicActiveExpireTime()) && null != activeExpireTime ? activeExpireTime : "");
 
         HdSecurityManager.getRepository().add(key, value, tokenExpireTime);
     }
@@ -279,7 +279,7 @@ public class HdTokenHelper {
     public Long getTokenRemainActiveTime() {
         return getTokenRemainActiveTime(getWebToken());
     }
-    
+
     /**
      * 获取 Token 剩余的活跃时间，剩余活跃时间 = (当前时间戳 - 最后一次活跃时间戳) / 1000 - 允许的活跃时间（秒）
      *
@@ -287,8 +287,8 @@ public class HdTokenHelper {
      * @return 单位: 秒，返回 -1 代表永不冻结，null 代表 Token 已被冻结了或找不到 Token 剩余的活跃时间
      */
     public Long getTokenRemainActiveTime(String token) {
-        // 如果全局配置了永不冻结, 则直接返回 null
-        if (!HdSecurityConfigProvider.isUseActiveTimeout()) {
+        // 如果全局配置 Token 永不冻结, 则直接返回 null
+        if (!HdSecurityConfigProvider.isUseActiveExpireTime()) {
             return null;
         }
         // 获取 Token 的最后活跃时间
@@ -323,6 +323,10 @@ public class HdTokenHelper {
      * @param token token
      */
     public void checkTokenActiveTime(String token) {
+        // 如果全局配置 Token 永不冻结, 则直接返回，需要校验
+        if (!HdSecurityConfigProvider.isUseActiveExpireTime()) {
+            return;
+        }
         // 获取这个 token 剩余的活跃时间
         Long tokenRemainActiveTime = getTokenRemainActiveTime(token);
 
@@ -469,10 +473,22 @@ public class HdTokenHelper {
     /**
      * 根据 Token 获取 LoginId
      *
+     * @return LoginId
+     */
+    public Object getLoginIdByToken() {
+        return getLoginIdByToken(getWebToken());
+    }
+
+    /**
+     * 根据 Token 获取 LoginId
+     *
      * @param token Token
      * @return LoginId
      */
     public Object getLoginIdByToken(String token) {
+        if (HdStringUtil.hasEmpty(token)) {
+            return null;
+        }
         return HdSecurityManager.getRepository().query(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType));
     }
 
@@ -488,6 +504,16 @@ public class HdTokenHelper {
     }
 
     /**
+     * 编辑 Token 和 LoginId 的映射关系
+     *
+     * @param loginId 登录 ID
+     * @param token   Token
+     */
+    public void editTokenAndLoginIdMapping(Object loginId, String token) {
+        HdSecurityManager.getRepository().edit(RepositoryKeyHelper.getTokenLoginIdMappingKey(loginId, accountType), token);
+    }
+
+    /**
      * 删除 Token 和 LoginId 的映射关系
      *
      * @param token Token
@@ -495,7 +521,7 @@ public class HdTokenHelper {
     public void removeTokenAndLoginIdMapping(String token) {
         HdSecurityManager.getRepository().remove(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType));
     }
-
+    
     // --------- Token 在 Web 读取和写入相关操作方法 ---------
 
     /**

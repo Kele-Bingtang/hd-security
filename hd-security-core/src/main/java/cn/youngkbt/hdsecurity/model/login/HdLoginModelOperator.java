@@ -57,5 +57,4 @@ public class HdLoginModelOperator {
         return Optional.ofNullable(hdLoginModel.getWriteHeader()).orElse(HdSecurityManager.getConfig().getWriteHeader());
     }
 
-
 }

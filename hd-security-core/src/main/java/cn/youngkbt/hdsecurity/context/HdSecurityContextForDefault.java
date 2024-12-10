@@ -15,7 +15,7 @@ public class HdSecurityContextForDefault implements HdSecurityContext {
     /**
      * 错误提示语
      */
-    public static final String ERROR_MESSAGE = "未能获取有效的上下文处理器";
+    public static final String ERROR_MESSAGE = "Hd Security 当前处于非 Web 环境，未能获取有效的上下文处理器";
 
     @Override
     public HdSecurityRequest getRequest() {

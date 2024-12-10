@@ -71,8 +71,13 @@ public class HdSecurityConfigProvider {
         HdSecurityEventCenter.publishAfterLoadConfig(hdSecurityConfig);
     }
 
-    public static boolean isUseActiveTimeout() {
+    /**
+     * 是否启用 Token 活跃 & 冻结功能
+     *
+     * @return true 启用 Token 活跃 & 冻结功能
+     */
+    public static boolean isUseActiveExpireTime() {
         HdSecurityConfig config = getHdSecurityConfig();
-        return config.getTokenActiveExpireTime() != HdSecurityRepositoryKV.NEVER_EXPIRE || config.getDynamicActiveTimeout();
+        return config.getTokenActiveExpireTime() != HdSecurityRepositoryKV.NEVER_EXPIRE || config.getDynamicActiveExpireTime();
     }
 }
