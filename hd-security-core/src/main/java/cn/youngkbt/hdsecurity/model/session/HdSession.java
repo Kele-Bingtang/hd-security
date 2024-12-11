@@ -231,19 +231,19 @@ public class HdSession implements Serializable {
     /**
      * 更新 Session 的存活时间。当 lessThan 为 true 时，如果当前 Session 的存活时间小于参数 time，则不更新，否则更新。
      *
-     * @param time     新的存活时间
+     * @param expireTime     新的存活时间
      * @param lessThan 当前 Session 的存活时间是否小于参数 time
      */
-    public void updateExpireTimeWhenCondition(long time, boolean lessThan) {
-        long newTime = trans(time);
+    public void updateExpireTimeWhenCondition(long expireTime, boolean lessThan) {
+        long newExpireTime = trans(expireTime);
         long currentExpireTime = trans(getExpireTime());
         if (lessThan) {
-            if (currentExpireTime < newTime) {
-                updateExpireTime(newTime);
+            if (currentExpireTime < newExpireTime) {
+                updateExpireTime(newExpireTime);
             }
         } else {
-            if (currentExpireTime > newTime) {
-                updateExpireTime(newTime);
+            if (currentExpireTime > newExpireTime) {
+                updateExpireTime(newExpireTime);
             }
         }
 

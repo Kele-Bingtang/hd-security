@@ -72,9 +72,9 @@ public class HdSecurityConfigProvider {
     }
 
     /**
-     * 是否启用 Token 活跃 & 冻结功能
+     * 是否启用 Token 活跃时间 & 冻结功能
      *
-     * @return true 启用 Token 活跃 & 冻结功能
+     * @return true 启用 Token 活跃时间 & 冻结功能
      */
     public static boolean isUseActiveExpireTime() {
         HdSecurityConfig config = getHdSecurityConfig();

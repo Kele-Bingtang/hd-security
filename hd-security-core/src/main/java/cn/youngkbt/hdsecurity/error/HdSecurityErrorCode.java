@@ -57,7 +57,16 @@ public interface HdSecurityErrorCode {
      */
     int TOKEN_REPLACED = 10107;
     /**
+     * LoginId 为 Hd Security 关键词
+     */
+    int LOGIN_ID_IS_KEYWORD = 10108;
+    
+    /**
      * 获取 Session 时提供的 SessionId 为空
      */
     int SESSION_ID_IS_NULL = 10201;
+    /**
+     * 获取 Token-Session 时提供的 token 为空 
+     */
+    int TOKEN_IS_NULL_WHEN_GET_TOKEN_SESSION = 10211;
 }

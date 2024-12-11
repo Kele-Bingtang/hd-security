@@ -1,6 +1,7 @@
 package cn.youngkbt.hdsecurity.strategy;
 
 import cn.youngkbt.hdsecurity.function.HdCreateSessionFunction;
+import cn.youngkbt.hdsecurity.model.session.HdAccountSession;
 import cn.youngkbt.hdsecurity.model.session.HdTokenSession;
 
 /**
@@ -14,10 +15,17 @@ public class SessionCreateStrategy {
 
     public static SessionCreateStrategy instance = new SessionCreateStrategy();
 
-    public HdCreateSessionFunction createSession = HdTokenSession::new;
+    public HdCreateSessionFunction<HdAccountSession> createAccountSession = HdAccountSession::new;
+    
+    public HdCreateSessionFunction<HdTokenSession> createTokenSession = HdTokenSession::new;
+    
+    public SessionCreateStrategy setCreateAccountSession(HdCreateSessionFunction createAccountSession) {
+        this.createAccountSession = createAccountSession;
+        return this;
+    }
 
-    public SessionCreateStrategy setCreateSession(HdCreateSessionFunction createSession) {
-        this.createSession = createSession;
+    public SessionCreateStrategy setCreateTokenSession(HdCreateSessionFunction createTokenSession) {
+        this.createTokenSession = createTokenSession;
         return this;
     }
 }

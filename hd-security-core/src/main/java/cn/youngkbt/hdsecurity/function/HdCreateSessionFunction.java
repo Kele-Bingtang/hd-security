@@ -13,5 +13,5 @@ import java.util.function.Function;
  * @since 1.0.0
  */
 @FunctionalInterface
-public interface HdCreateSessionFunction extends Function<String, HdSession> {
+public interface HdCreateSessionFunction<S extends HdSession> extends Function<String, S> {
 }

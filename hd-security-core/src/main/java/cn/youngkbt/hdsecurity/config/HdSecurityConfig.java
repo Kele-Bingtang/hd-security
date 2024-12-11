@@ -19,7 +19,7 @@ public class HdSecurityConfig implements Serializable {
     private String securityPrefixKey = "hd-security";
     
     /** token 过期时间（单位：秒），-1 代表永久有效 */
-    private long sessionExpireTime = 60 * 60 * 24 * 30;
+    private long tokenExpireTime = 60 * 60 * 24 * 30;
 
     /**
      * token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认 -1 代表不限制，永不冻结
@@ -130,12 +130,12 @@ public class HdSecurityConfig implements Serializable {
         return this;
     }
 
-    public long getSessionExpireTime() {
-        return sessionExpireTime;
+    public long getTokenExpireTime() {
+        return tokenExpireTime;
     }
 
-    public HdSecurityConfig setSessionExpireTime(long sessionExpireTime) {
-        this.sessionExpireTime = sessionExpireTime;
+    public HdSecurityConfig setTokenExpireTime(long tokenExpireTime) {
+        this.tokenExpireTime = tokenExpireTime;
         return this;
     }
 
@@ -323,7 +323,7 @@ public class HdSecurityConfig implements Serializable {
     public String toString() {
         return "HdSecurityConfig{" +
                 "securityPrefixKey='" + securityPrefixKey + '\'' +
-                ", tokenExpireTime=" + sessionExpireTime +
+                ", tokenExpireTime=" + tokenExpireTime +
                 ", tokenActiveExpireTime=" + tokenActiveExpireTime +
                 ", dynamicActiveTimeout=" + dynamicActiveExpireTime +
                 ", isConcurrent=" + isConcurrent +

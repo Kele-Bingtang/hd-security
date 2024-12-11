@@ -8,10 +8,14 @@ import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 import cn.youngkbt.hdsecurity.context.HdSecurityContext;
 import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityTokenException;
+import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
 import cn.youngkbt.hdsecurity.model.cookie.HdCookie;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
+import cn.youngkbt.hdsecurity.model.login.HdLoginModelOperator;
+import cn.youngkbt.hdsecurity.model.session.HdAccountSession;
 import cn.youngkbt.hdsecurity.model.session.HdSession;
 import cn.youngkbt.hdsecurity.model.session.HdTokenDevice;
+import cn.youngkbt.hdsecurity.repository.HdSecurityRepository;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryKV;
 import cn.youngkbt.hdsecurity.strategy.TokenGenerateStrategy;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
@@ -198,13 +202,13 @@ public class HdTokenHelper {
      * 添加 Token 活跃时间配置，格式：最后的活跃时间戳,允许的活跃时间（秒）
      *
      * @param token            Token
-     * @param activeExpireTime 允许的活跃时间（秒）
-     * @param tokenExpireTime  Token 过期时间
+     * @param activeExpireTime 允许的活跃时间（秒），为 null 代表使用全局配置的 activeTimeout 值，虽然方法里没有设置，但是在获取的时候会被设置为全局配置的值，@See HdTokenHelper#getTokenActiveTimeOrGlobalConfig(String)
+     * @param tokenExpireTime  Token 过期时间，为 null 代表使用全局配置的 tokenExpireTime 值
      */
     public void addTokenActiveTime(String token, Long activeExpireTime, Long tokenExpireTime) {
         HdSecurityConfig config = HdSecurityManager.getConfig();
         if (null == tokenExpireTime) {
-            tokenExpireTime = config.getSessionExpireTime();
+            tokenExpireTime = config.getTokenExpireTime();
         }
 
         String key = RepositoryKeyHelper.getLastActiveKey(token, accountType);
@@ -495,22 +499,22 @@ public class HdTokenHelper {
     /**
      * 添加 Token 和 LoginId 的映射关系
      *
-     * @param loginId         登录 ID
      * @param token           Token
+     * @param loginId         登录 ID
      * @param tokenExpireTime Token 过期时间
      */
-    public void addTokenAndLoginIdMapping(Object loginId, String token, Long tokenExpireTime) {
-        HdSecurityManager.getRepository().add(RepositoryKeyHelper.getTokenLoginIdMappingKey(loginId, accountType), token, tokenExpireTime);
+    public void addTokenAndLoginIdMapping(String token, Object loginId, Long tokenExpireTime) {
+        HdSecurityManager.getRepository().add(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType), loginId, tokenExpireTime);
     }
 
     /**
      * 编辑 Token 和 LoginId 的映射关系
      *
-     * @param loginId 登录 ID
      * @param token   Token
+     * @param loginId 登录 ID
      */
-    public void editTokenAndLoginIdMapping(Object loginId, String token) {
-        HdSecurityManager.getRepository().edit(RepositoryKeyHelper.getTokenLoginIdMappingKey(loginId, accountType), token);
+    public void editTokenAndLoginIdMapping(String token, Object loginId) {
+        HdSecurityManager.getRepository().edit(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType), loginId);
     }
 
     /**
@@ -521,8 +525,60 @@ public class HdTokenHelper {
     public void removeTokenAndLoginIdMapping(String token) {
         HdSecurityManager.getRepository().remove(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType));
     }
-    
+
+    // ---------- Token 和 LoginId 的映射关系的 ExpireTime 获取操作方法 ---------
+
+    /**
+     * 通过 Token 获取 Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
+     *
+     * @return Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
+     */
+    public long getTokenAndLoginIdExpireTime() {
+        return getTokenAndLoginIdExpireTime(getWebToken());
+    }
+
+    /**
+     * 通过 Token 获取 Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
+     *
+     * @param token Token
+     * @return Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
+     */
+    public long getTokenAndLoginIdExpireTime(String token) {
+        return HdSecurityManager.getRepository().getExpireTime(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType));
+    }
+
+    /**
+     * 通过 LoginId 获取 Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
+     *
+     * @param loginId 登录 ID
+     * @return Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
+     */
+    public long getTokenAndLoginIdExpireTimeByLoginId(Object loginId) {
+        String token = getLastTokenByLoginId(loginId);
+        return getTokenAndLoginIdExpireTime(token);
+    }
+
     // --------- Token 在 Web 读取和写入相关操作方法 ---------
+
+    /**
+     * 写入 Token 到 Web
+     *
+     * @param token Token
+     */
+    public void writeTokenToWeb(String token) {
+        writeTokenToWeb(token, HdLoginModelOperator.build());
+    }
+
+
+    /**
+     * 写入 Token 到 Web
+     *
+     * @param token           Token
+     * @param tokenExpireTime Token 过期时间，如果开启了 Cookie，也是 Cookie 过期时间
+     */
+    public void writeTokenToWeb(String token, long tokenExpireTime) {
+        writeTokenToWeb(token, HdLoginModelOperator.create().setTokenExpireTime(tokenExpireTime));
+    }
 
     /**
      * 写入 Token 到 Web
@@ -687,5 +743,67 @@ public class HdTokenHelper {
         }
 
         return token;
+    }
+
+    // --------- Token 续期相关操作方法 ----------
+
+    /**
+     * 对 webToken 进行续期
+     *
+     * @param expireTime 要续期的时间 (单位: 秒，-1 代表要续为永久有效)
+     */
+    public void renewTokenExpireTime(long expireTime) {
+        String webToken = getWebToken();
+        renewTokenExpireTime(webToken, expireTime);
+    }
+
+    /**
+     * 对 webToken 进行续期
+     *
+     * @param token      Token
+     * @param expireTime 要续期的时间 (单位: 秒，-1 代表要续为永久有效)
+     */
+    public void renewTokenExpireTime(String token, long expireTime) {
+        // 如果 Token 为空，则直接返回
+        if (HdStringUtil.hasEmpty(token)) {
+            return;
+        }
+        // 如果 Token 映射的 LoginId 不存在或已经过期，则直接返回
+        Object loginId = getLoginIdByToken(token);
+        if (null == loginId) {
+            return;
+        }
+
+        // 发布续期前置事件
+        HdSecurityEventCenter.publishBeforeRenewExpireTime(token, loginId, expireTime);
+
+        HdSecurityRepository repository = HdSecurityManager.getRepository();
+        // Token 和 LoginId 的映射关系续期
+        repository.updateExpireTime(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType), expireTime);
+
+        // Token Session 续期
+        repository.updateSessionTimeout(RepositoryKeyHelper.getTokenSessionKey(token, accountType), expireTime);
+
+        // Token 对应的 Account Session 续期
+        HdAccountSession accountSession = HdHelper.sessionHelper(accountType).getAccountSessionByLoginId(loginId);
+        if (null != accountSession) {
+            accountSession.updateExpireTimeWhenCondition(expireTime, true);
+        }
+
+        // Token 最后活跃时间续期
+        if (HdSecurityConfigProvider.isUseActiveExpireTime()) {
+            repository.updateExpireTime(RepositoryKeyHelper.getLastActiveKey(token, accountType), expireTime);
+        }
+
+        // 发布续期后置事件：某某 token 被续期了
+        HdSecurityEventCenter.publishAfterRenewExpireTime(token, loginId, expireTime);
+
+        // 持久层续期后，Cookie 也需要续期
+        if (Boolean.TRUE.equals(HdSecurityManager.getConfig().getReadCookie())) {
+            if (expireTime == HdSecurityRepositoryKV.NEVER_EXPIRE || expireTime > Integer.MAX_VALUE) {
+                expireTime = Integer.MAX_VALUE;
+            }
+            writeTokenToCookie(token, Math.toIntExact(expireTime));
+        }
     }
 }

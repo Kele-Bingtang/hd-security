@@ -157,50 +157,11 @@ public class HdLoginHelper {
             return null;
         }
 
-        // 如果 loginId 为 Hd Security 内部使用的关键词中的值，则返回 null
+        // 如果 loginId 为 Hd Security 内部使用的关键词，则返回 null
         if (HdSecurityLoginException.KEYWORD_LIST.contains(String.valueOf(loginId))) {
             return null;
         }
         return loginId;
-    }
-
-    /**
-     * 检查当前会话是否已经登录，没有登录则抛出异常
-     */
-    public void checkLogin() {
-        checkLogin(HdHelper.tokenHelper(accountType).getWebToken());
-    }
-
-    /**
-     * 检查当前会话是否已经登录，没有登录则抛出异常
-     *
-     * @param token Token
-     */
-    public void checkLogin(String token) {
-        // 如果 Token 为空，则抛出异常
-        if (HdStringUtil.hasEmpty(token)) {
-            throw new HdSecurityLoginException("未能读取到有效 Token").setCode(HdSecurityErrorCode.TOKEN_IS_NULL);
-        }
-        // 如果 Token 被冻结（过期），则抛出异常
-        HdHelper.tokenHelper(accountType).checkTokenActiveTime(token);
-
-        // 查找 token 对应的 loginId
-        Object loginId = HdHelper.tokenHelper(accountType).getLoginIdByToken(token);
-
-        // 如果 loginId 不存在，则抛出异常
-        if (HdStringUtil.hasEmpty(loginId)) {
-            throw new HdSecurityLoginException("Token 无效或者登录过期").setCode(HdSecurityErrorCode.TOKEN_INVALID);
-        }
-
-        // 如果 loginId 被标注为踢人下线，则抛出异常
-        if (Objects.equals(loginId, HdSecurityLoginException.KICK_OUT)) {
-            throw new HdSecurityLoginException("Token 已被踢下线").setCode(HdSecurityErrorCode.TOKEN_KICK_OUT);
-        }
-
-        // 如果 loginId 被标注为顶人下线，则抛出异常
-        if (Objects.equals(loginId, HdSecurityLoginException.REPLACED)) {
-            throw new HdSecurityLoginException("Token 已被顶下线").setCode(HdSecurityErrorCode.TOKEN_REPLACED);
-        }
     }
 
     /**
@@ -228,6 +189,75 @@ public class HdLoginHelper {
     public boolean isLogin(Object loginId) {
         List<HdTokenDevice> tokenDeviceList = HdHelper.sessionHelper(accountType).getTokenDeviceList(loginId);
         return HdCollectionUtil.isNotEmpty(tokenDeviceList);
+    }
+
+    /**
+     * 检查当前会话是否已经登录，没有登录则抛出异常
+     */
+    public void checkLogin() {
+        checkLogin(HdHelper.tokenHelper(accountType).getWebToken());
+    }
+
+    /**
+     * 检查当前会话是否已经登录，没有登录则抛出异常
+     *
+     * @param token Token
+     */
+    public void checkLogin(String token) {
+        // 如果 Token 为空，则抛出异常
+        if (HdStringUtil.hasEmpty(token)) {
+            throw new HdSecurityLoginException("未能读取到有效 Token").setCode(HdSecurityErrorCode.TOKEN_IS_NULL);
+        }
+        // 如果 Token 被冻结（过期），则抛出异常
+        HdHelper.tokenHelper(accountType).checkTokenActiveTime(token);
+
+        // 查找 token 对应的 loginId
+        Object loginId = HdHelper.tokenHelper(accountType).getLoginIdByToken(token);
+
+        // 如果开启 Token 冻结功能和续签功能，则更新 Token 的最活跃时间为现在
+        if (HdSecurityConfigProvider.isUseActiveExpireTime() && Boolean.TRUE.equals(HdSecurityManager.getConfig().getAutoRenew())) {
+            HdHelper.tokenHelper(accountType).updateTokenLastActiveTimeToNow(token);
+        }
+
+        // 如果 loginId 不存在，则抛出异常
+        if (HdStringUtil.hasEmpty(loginId)) {
+            throw new HdSecurityLoginException("Token 无效或者登录过期").setCode(HdSecurityErrorCode.TOKEN_INVALID);
+        }
+
+        // 如果 loginId 被标注为踢人下线，则抛出异常
+        if (Objects.equals(loginId, HdSecurityLoginException.KICK_OUT)) {
+            throw new HdSecurityLoginException("Token 已被踢下线").setCode(HdSecurityErrorCode.TOKEN_KICK_OUT);
+        }
+
+        // 如果 loginId 被标注为顶人下线，则抛出异常
+        if (Objects.equals(loginId, HdSecurityLoginException.REPLACED)) {
+            throw new HdSecurityLoginException("Token 已被顶下线").setCode(HdSecurityErrorCode.TOKEN_REPLACED);
+        }
+
+        // 如果 loginId 为 Hd Security 内部使用的关键词中的值，则返回 null
+        if (HdSecurityLoginException.KEYWORD_LIST.contains(String.valueOf(loginId))) {
+            throw new HdSecurityLoginException("LoginId 为内部使用的关键词").setCode(HdSecurityErrorCode.LOGIN_ID_IS_KEYWORD);
+        }
+    }
+
+    /**
+     * 检查当前会话是否已经登录，没有登录则抛出异常，登录则返回 LoginId
+     *
+     * @return LoginId
+     */
+    public Object checkLoginThenGet() {
+        return checkLoginThenGet(HdHelper.tokenHelper(accountType).getWebToken());
+    }
+
+    /**
+     * 检查当前会话是否已经登录，没有登录则抛出异常，登录则返回 LoginId
+     *
+     * @param token Token
+     * @return LoginId
+     */
+    public Object checkLoginThenGet(String token) {
+        checkLogin(token);
+        return getLoginIdByToken(token);
     }
 
     // ---------- 注销相关操作方法 ----------
@@ -361,7 +391,7 @@ public class HdLoginHelper {
     }
 
     // --------- 顶人下线相关操作方法 ----------
-    
+
     /**
      * 根据登录 ID 顶人下线
      *

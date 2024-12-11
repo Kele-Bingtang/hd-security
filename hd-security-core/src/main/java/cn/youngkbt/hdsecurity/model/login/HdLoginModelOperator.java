@@ -25,7 +25,7 @@ public class HdLoginModelOperator {
     public static HdLoginModel build(HdSecurityConfig hdSecurityConfig) {
         return create()
                 .setWriteHeader(hdSecurityConfig.getWriteHeader())
-                .setTokenExpireTime(hdSecurityConfig.getSessionExpireTime())
+                .setTokenExpireTime(hdSecurityConfig.getTokenExpireTime())
                 .setTokenActiveExpireTime(hdSecurityConfig.getTokenActiveExpireTime());
     }
     
@@ -35,7 +35,7 @@ public class HdLoginModelOperator {
         }
         
         if(null == hdLoginModel.getTokenExpireTime()) {
-            hdLoginModel.setTokenExpireTime(HdSecurityManager.getConfig().getSessionExpireTime());
+            hdLoginModel.setTokenExpireTime(HdSecurityManager.getConfig().getTokenExpireTime());
         }
         
         if(null == hdLoginModel.getTokenActiveExpireTime()) {
@@ -46,7 +46,7 @@ public class HdLoginModelOperator {
     }
 
     public static Long getTokenExpireTimeout(HdLoginModel hdLoginModel) {
-        return Optional.ofNullable(hdLoginModel.getTokenExpireTime()).orElse(HdSecurityManager.getConfig().getSessionExpireTime());
+        return Optional.ofNullable(hdLoginModel.getTokenExpireTime()).orElse(HdSecurityManager.getConfig().getTokenExpireTime());
     }
 
     public static Long getTokenActiveExpireTime(HdLoginModel hdLoginModel) {

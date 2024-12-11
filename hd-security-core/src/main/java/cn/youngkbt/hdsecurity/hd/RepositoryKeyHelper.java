@@ -16,12 +16,12 @@ public class RepositoryKeyHelper {
         return HdSecurityManager.getConfig().getSecurityPrefixKey() + ":" + accountType + ":accountSession:" + loginId;
     }
 
-    public static String getTokenSessionKey(Object loginId, String accountType) {
-        return HdSecurityManager.getConfig().getSecurityPrefixKey() + ":" + accountType + ":tokenSession:" + loginId;
+    public static String getTokenSessionKey(String token, String accountType) {
+        return HdSecurityManager.getConfig().getSecurityPrefixKey() + ":" + accountType + ":tokenSession:" + token;
     }
 
-    public static String getTokenLoginIdMappingKey(Object loginId, String accountType) {
-        return HdSecurityManager.getConfig().getSecurityPrefixKey() + ":" + accountType + ":tokenLoginMapping:" + loginId;
+    public static String getTokenLoginIdMappingKey(String token, String accountType) {
+        return HdSecurityManager.getConfig().getSecurityPrefixKey() + ":" + accountType + ":tokenLoginMapping:" + token;
     }
 
     public static String getLastActiveKey(String token, String accountType) {
