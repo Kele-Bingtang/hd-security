@@ -26,35 +26,36 @@ public class HdLoginModelOperator {
         return create()
                 .setWriteHeader(hdSecurityConfig.getWriteHeader())
                 .setTokenExpireTime(hdSecurityConfig.getTokenExpireTime())
-                .setTokenActiveExpireTime(hdSecurityConfig.getTokenActiveExpireTime());
+                .setTokenActiveExpireTime(Boolean.TRUE.equals(hdSecurityConfig.getDynamicActiveExpireTime()) ? hdSecurityConfig.getTokenActiveExpireTime() : null);
     }
-    
+
     public static HdLoginModel mutate(HdLoginModel hdLoginModel) {
-        if(null == hdLoginModel.getWriteHeader()) {
-            hdLoginModel.setWriteHeader(HdSecurityManager.getConfig().getWriteHeader());
+        HdSecurityConfig config = HdSecurityManager.getConfig(hdLoginModel.getAccountType());
+        if (null == hdLoginModel.getWriteHeader()) {
+            hdLoginModel.setWriteHeader(config.getWriteHeader());
         }
-        
-        if(null == hdLoginModel.getTokenExpireTime()) {
-            hdLoginModel.setTokenExpireTime(HdSecurityManager.getConfig().getTokenExpireTime());
+
+        if (null == hdLoginModel.getTokenExpireTime()) {
+            hdLoginModel.setTokenExpireTime(config.getTokenExpireTime());
         }
-        
-        if(null == hdLoginModel.getTokenActiveExpireTime()) {
-            hdLoginModel.setTokenActiveExpireTime(HdSecurityManager.getConfig().getTokenActiveExpireTime());
+
+        if (Boolean.TRUE.equals(config.getDynamicActiveExpireTime()) && null == hdLoginModel.getTokenActiveExpireTime()) {
+            hdLoginModel.setTokenActiveExpireTime(config.getTokenActiveExpireTime());
         }
-        
+
         return hdLoginModel;
     }
 
     public static Long getTokenExpireTimeout(HdLoginModel hdLoginModel) {
-        return Optional.ofNullable(hdLoginModel.getTokenExpireTime()).orElse(HdSecurityManager.getConfig().getTokenExpireTime());
+        return Optional.ofNullable(hdLoginModel.getTokenExpireTime()).orElse(HdSecurityManager.getConfig(hdLoginModel.getAccountType()).getTokenExpireTime());
     }
 
     public static Long getTokenActiveExpireTime(HdLoginModel hdLoginModel) {
-        return Optional.ofNullable(hdLoginModel.getTokenActiveExpireTime()).orElse(HdSecurityManager.getConfig().getTokenActiveExpireTime());
+        return Optional.ofNullable(hdLoginModel.getTokenActiveExpireTime()).orElse(HdSecurityManager.getConfig(hdLoginModel.getAccountType()).getTokenActiveExpireTime());
     }
 
     public static Boolean getWriteHeader(HdLoginModel hdLoginModel) {
-        return Optional.ofNullable(hdLoginModel.getWriteHeader()).orElse(HdSecurityManager.getConfig().getWriteHeader());
+        return Optional.ofNullable(hdLoginModel.getWriteHeader()).orElse(HdSecurityManager.getConfig(hdLoginModel.getAccountType()).getWriteHeader());
     }
 
 }

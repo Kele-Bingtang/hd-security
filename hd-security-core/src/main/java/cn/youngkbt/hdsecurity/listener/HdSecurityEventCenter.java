@@ -115,8 +115,8 @@ public class HdSecurityEventCenter {
         publishEvent(HdSecurityEventBeforeListener::beforeLoadConfig);
     }
 
-    public static void publishAfterLoadConfig(HdSecurityConfig hdSecurityConfig) {
-        publishEvent(listener -> listener.afterLoadConfig(hdSecurityConfig));
+    public static void publishAfterLoadConfig(String accountType, HdSecurityConfig hdSecurityConfig) {
+        publishEvent(listener -> listener.afterLoadConfig(accountType, hdSecurityConfig));
     }
 
     public static void publishBeforeLogin(String accountType, Object loginId) {
@@ -149,6 +149,22 @@ public class HdSecurityEventCenter {
 
     public static void publishAfterReplaced(String accountType, Object loginId, String token) {
         publishEvent(listener -> listener.afterReplaced(accountType, loginId, token));
+    }
+
+    public static void publishBeforeBanAccount(String accountType, Object loginId, long disableTime, String realm, int level) {
+        publishEvent(listener -> listener.beforeBanAccount(accountType, loginId, disableTime, realm, level));
+    }
+
+    public static void publishAfterBanAccount(String accountType, Object loginId, long disableTime, String realm, int level) {
+        publishEvent(listener -> listener.afterBanAccount(accountType, loginId, disableTime, realm, level));
+    }
+
+    public static void publishBeforeUnBanAccount(String accountType, Object loginId, String realm) {
+        publishEvent(listener -> listener.beforeUnBanAccount(accountType, loginId, realm));
+    }
+
+    public static void publishAfterUnBanAccount(String accountType, Object loginId, String realm) {
+        publishEvent(listener -> listener.afterUnBanAccount(accountType, loginId, realm));
     }
 
     public static void publishBeforeCreateSession(String sessionId) {

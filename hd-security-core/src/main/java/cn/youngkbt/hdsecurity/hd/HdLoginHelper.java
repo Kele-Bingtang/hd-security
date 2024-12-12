@@ -94,7 +94,7 @@ public class HdLoginHelper {
         HdSecurityEventCenter.publishAfterLogin(accountType, loginModel.getLoginId(), token, loginModel);
 
         // 将 Token 写入到 Cookie、响应体等
-        HdHelper.tokenHelper(accountType).writeTokenToWeb(token, loginModel);
+        // HdHelper.tokenHelper(accountType).writeTokenToWeb(token, loginModel);
 
         return token;
     }
@@ -117,7 +117,7 @@ public class HdLoginHelper {
         }
 
         // 如果全局配置未启动动态 activeTimeout 功能，但是此次登录却传入了 activeTimeout 参数，那么就打印警告信息
-        if (!Boolean.TRUE.equals(HdSecurityManager.getConfig().getDynamicActiveExpireTime()) && null == loginModel.getTokenActiveExpireTime()) {
+        if (Boolean.FALSE.equals(HdSecurityManager.getConfig(accountType).getDynamicActiveExpireTime()) && null != loginModel.getTokenActiveExpireTime()) {
             HdSecurityManager.getLog().warn("当前全局配置未开启动态 activeTimeout 功能，传入的 activeTimeout 参数将被忽略");
         }
     }
@@ -146,7 +146,7 @@ public class HdLoginHelper {
         HdHelper.tokenHelper(accountType).checkTokenActiveTime(token);
 
         // 如果开启 Token 冻结功能和续签功能，则更新 Token 的最活跃时间为现在
-        if (HdSecurityConfigProvider.isUseActiveExpireTime() && Boolean.TRUE.equals(HdSecurityManager.getConfig().getAutoRenew())) {
+        if (HdSecurityConfigProvider.isUseActiveExpireTime() && Boolean.TRUE.equals(HdSecurityManager.getConfig(accountType).getAutoRenew())) {
             HdHelper.tokenHelper(accountType).updateTokenLastActiveTimeToNow(token);
         }
 
@@ -215,7 +215,7 @@ public class HdLoginHelper {
         Object loginId = HdHelper.tokenHelper(accountType).getLoginIdByToken(token);
 
         // 如果开启 Token 冻结功能和续签功能，则更新 Token 的最活跃时间为现在
-        if (HdSecurityConfigProvider.isUseActiveExpireTime() && Boolean.TRUE.equals(HdSecurityManager.getConfig().getAutoRenew())) {
+        if (HdSecurityConfigProvider.isUseActiveExpireTime() && Boolean.TRUE.equals(HdSecurityManager.getConfig(accountType).getAutoRenew())) {
             HdHelper.tokenHelper(accountType).updateTokenLastActiveTimeToNow(token);
         }
 

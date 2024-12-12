@@ -139,7 +139,7 @@ public class HdLoginModel {
         }
 
         if (null == tokenExpireTime) {
-            long expireTime = HdSecurityManager.getConfig().getTokenExpireTime();
+            long expireTime = HdSecurityManager.getConfig(accountType).getTokenExpireTime();
             if (-1 == expireTime || expireTime > Integer.MAX_VALUE) {
                 return Integer.MAX_VALUE;
             }

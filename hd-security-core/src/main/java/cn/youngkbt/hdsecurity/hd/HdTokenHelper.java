@@ -114,7 +114,7 @@ public class HdTokenHelper {
             return loginModel.getToken();
         }
 
-        HdSecurityConfig config = HdSecurityManager.getConfig();
+        HdSecurityConfig config = HdSecurityManager.getConfig(accountType);
         Object loginId = loginModel.getLoginId();
         // 如果配置了是否允许同一账号多地同时登录
         if (Boolean.TRUE.equals(config.getConcurrent()) && Boolean.TRUE.equals(config.getShare())) {
@@ -185,7 +185,7 @@ public class HdTokenHelper {
         }
 
         // 如果全局未启用动态 activeTimeout 功能，则直接返回 null
-        if (Boolean.FALSE.equals(HdSecurityManager.getConfig().getDynamicActiveExpireTime())) {
+        if (Boolean.FALSE.equals(HdSecurityManager.getConfig(accountType).getDynamicActiveExpireTime())) {
             return null;
         }
 
@@ -206,7 +206,7 @@ public class HdTokenHelper {
      * @param tokenExpireTime  Token 过期时间，为 null 代表使用全局配置的 tokenExpireTime 值
      */
     public void addTokenActiveTime(String token, Long activeExpireTime, Long tokenExpireTime) {
-        HdSecurityConfig config = HdSecurityManager.getConfig();
+        HdSecurityConfig config = HdSecurityManager.getConfig(accountType);
         if (null == tokenExpireTime) {
             tokenExpireTime = config.getTokenExpireTime();
         }
@@ -608,7 +608,7 @@ public class HdTokenHelper {
      * @param token Token
      */
     public void writeTokenToStorage(String token) {
-        HdSecurityConfig config = HdSecurityManager.getConfig();
+        HdSecurityConfig config = HdSecurityManager.getConfig(accountType);
         String tokenPrefix = config.getTokenPrefix();
         // 将 Token 写入到 Storage
         HdSecurityManager.getContext().getStorage().set(DefaultConstant.CREATED_TOKEN, token);
@@ -622,7 +622,7 @@ public class HdTokenHelper {
      * @param token Token
      */
     public void writeTokenToHeader(String token) {
-        HdSecurityConfig config = HdSecurityManager.getConfig();
+        HdSecurityConfig config = HdSecurityManager.getConfig(accountType);
 
         if (Boolean.TRUE.equals(config.getWriteHeader())) {
             String securityPrefixKey = config.getSecurityPrefixKey();
@@ -637,7 +637,7 @@ public class HdTokenHelper {
      * @param cookieExpireTime Cookie 过期时间
      */
     public void writeTokenToCookie(String token, int cookieExpireTime) {
-        HdSecurityConfig config = HdSecurityManager.getConfig();
+        HdSecurityConfig config = HdSecurityManager.getConfig(accountType);
 
         if (Boolean.TRUE.equals(config.getReadCookie())) {
             HdCookieConfig cookieConfig = config.getCookie();
@@ -699,7 +699,7 @@ public class HdTokenHelper {
             return null;
         }
 
-        String tokenPrefix = HdSecurityManager.getConfig().getTokenPrefix();
+        String tokenPrefix = HdSecurityManager.getConfig(accountType).getTokenPrefix();
         // 如果有前缀，则需要处理
         if (HdStringUtil.hasText(tokenPrefix)) {
             if (!token.startsWith(tokenPrefix)) {
@@ -722,9 +722,9 @@ public class HdTokenHelper {
      * @return Token
      */
     public String getTokenFromWeb() {
-        HdSecurityConfig config = HdSecurityManager.getConfig();
+        HdSecurityConfig config = HdSecurityManager.getConfig(accountType);
         HdSecurityContext context = HdSecurityManager.getContext();
-        String securityPrefixKey = HdSecurityManager.getConfig().getSecurityPrefixKey();
+        String securityPrefixKey = HdSecurityManager.getConfig(accountType).getSecurityPrefixKey();
         // 先尝试从 Storage 中获取
         String token = String.valueOf(context.getStorage().get(DefaultConstant.CREATED_TOKEN_PREFIX));
 
@@ -799,7 +799,7 @@ public class HdTokenHelper {
         HdSecurityEventCenter.publishAfterRenewExpireTime(token, loginId, expireTime);
 
         // 持久层续期后，Cookie 也需要续期
-        if (Boolean.TRUE.equals(HdSecurityManager.getConfig().getReadCookie())) {
+        if (Boolean.TRUE.equals(HdSecurityManager.getConfig(accountType).getReadCookie())) {
             if (expireTime == HdSecurityRepositoryKV.NEVER_EXPIRE || expireTime > Integer.MAX_VALUE) {
                 expireTime = Integer.MAX_VALUE;
             }

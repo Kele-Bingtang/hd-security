@@ -12,7 +12,7 @@ import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
 public class HdSecurityEventAfterListenerForSimple implements HdSecurityEventAfterListener {
 
     @Override
-    public void afterLoadConfig(HdSecurityConfig hdSecurityConfig) {
+    public void afterLoadConfig(String accountType, HdSecurityConfig hdSecurityConfig) {
         
     }
 
@@ -33,6 +33,16 @@ public class HdSecurityEventAfterListenerForSimple implements HdSecurityEventAft
 
     @Override
     public void afterReplaced(String accountType, Object loginId, String token) {
+
+    }
+
+    @Override
+    public void afterBanAccount(String accountType, Object loginId, long disableTime, String realm, int level) {
+        
+    }
+
+    @Override
+    public void afterUnBanAccount(String accountType, Object loginId, String realm) {
 
     }
 

@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class HdSecurityConfigProvider {
 
-    public static Map<String, HdSecurityConfig> accountTypeConfigMap = new ConcurrentHashMap<>();
+    public static final Map<String, HdSecurityConfig> accountTypeConfigMap = new ConcurrentHashMap<>();
 
     private HdSecurityConfigProvider() {
     }
@@ -68,7 +68,7 @@ public class HdSecurityConfigProvider {
     public static void setHdSecurityConfig(String accountType, HdSecurityConfig hdSecurityConfig) {
         accountTypeConfigMap.put(accountType, hdSecurityConfig);
         // 发布事件
-        HdSecurityEventCenter.publishAfterLoadConfig(hdSecurityConfig);
+        HdSecurityEventCenter.publishAfterLoadConfig(accountType, hdSecurityConfig);
     }
 
     /**

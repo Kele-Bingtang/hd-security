@@ -1,5 +1,7 @@
 package cn.youngkbt.hdsecurity;
 
+import cn.youngkbt.hdsecurity.authorize.HdSecurityAuthorize;
+import cn.youngkbt.hdsecurity.authorize.HdSecurityAuthorizeProvider;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfigProvider;
 import cn.youngkbt.hdsecurity.context.HdSecurityContext;
@@ -59,5 +61,13 @@ public class HdSecurityManager {
 
     public static void setContext(HdSecurityContext context) {
         HdSecurityContextProvider.setHdSecurityContext(context);
+    }
+
+    public static HdSecurityAuthorize getAuthorize() {
+        return HdSecurityAuthorizeProvider.getHdSecurityAuthorize();
+    }
+
+    public static void setAuthorize(HdSecurityAuthorize hdSecurityAuthorize) {
+        HdSecurityAuthorizeProvider.setHdSecurityAuthorize(hdSecurityAuthorize);
     }
 }

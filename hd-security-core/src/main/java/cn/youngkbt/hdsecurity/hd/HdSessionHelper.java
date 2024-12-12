@@ -49,7 +49,7 @@ public class HdSessionHelper {
         // 检查登录模型
         HdHelper.loginHelper(accountType).checkLoginModel(loginModel);
 
-        HdSecurityConfig config = HdSecurityManager.getConfig();
+        HdSecurityConfig config = HdSecurityManager.getConfig(accountType);
         // 如果不允许一个账号多地同时登录，则需要先将这个账号的历史登录会话标记为 被顶下线
         if (Boolean.FALSE.equals(config.getConcurrent())) {
             HdHelper.loginHelper(accountType).replaced(loginId, loginModel.getDevice());
@@ -99,8 +99,8 @@ public class HdSessionHelper {
 
         if (null == accountSession) {
             // 策略模式创建 Account Session
-            accountSession = SessionCreateStrategy.instance.createAccountSession.apply(String.valueOf(loginId));
-            Long sessionExpireTime = Optional.ofNullable(expireTime).orElse(HdSecurityManager.getConfig().getTokenExpireTime());
+            accountSession = SessionCreateStrategy.instance.createAccountSession.apply(String.valueOf(loginId), accountType);
+            Long sessionExpireTime = Optional.ofNullable(expireTime).orElse(HdSecurityManager.getConfig(accountType).getTokenExpireTime());
 
             // 存储到持久层
             HdSecurityManager.getRepository().addSession(accountSession, sessionExpireTime);
@@ -173,7 +173,7 @@ public class HdSessionHelper {
         String token = TokenGenerateStrategy.instance.generateUniqueElement.generate(
                 "Token",
                 // 最大尝试次数
-                HdSecurityManager.getConfig().getMaxTryTimes(),
+                HdSecurityManager.getConfig(accountType).getMaxTryTimes(),
                 // 创建 Token
                 () -> tokenHelper.createToken(""),
                 // 验证 Token 唯一性，这里从持久层获取根据创建的 Token 获取登录 ID，获取成功代表有用户在用，则不唯一
@@ -203,7 +203,7 @@ public class HdSessionHelper {
      */
     public HdTokenSession getTokenSession() {
         // 如果配置了 tokenSessionCheckLogin == true，则需要先校验当前是否登录，未登录情况下不允许拿到 Token-Session
-        if (Boolean.TRUE.equals(HdSecurityManager.getConfig().getTokenSessionCheckLogin())) {
+        if (Boolean.TRUE.equals(HdSecurityManager.getConfig(accountType).getTokenSessionCheckLogin())) {
             HdHelper.loginHelper(accountType).checkLogin();
         }
 
@@ -218,7 +218,7 @@ public class HdSessionHelper {
      */
     public HdTokenSession getTokenSessionOrCreate() {
         // 如果配置了 tokenSessionCheckLogin == true，则需要先校验当前是否登录，未登录情况下不允许拿到 Token-Session
-        if (Boolean.TRUE.equals(HdSecurityManager.getConfig().getTokenSessionCheckLogin())) {
+        if (Boolean.TRUE.equals(HdSecurityManager.getConfig(accountType).getTokenSessionCheckLogin())) {
             HdHelper.loginHelper(accountType).checkLogin();
         }
 
@@ -236,9 +236,9 @@ public class HdSessionHelper {
 
         if (null == tokenSession) {
             // 策略模式创建 Account Session
-            tokenSession = SessionCreateStrategy.instance.createTokenSession.apply(String.valueOf(token));
+            tokenSession = SessionCreateStrategy.instance.createTokenSession.apply(String.valueOf(token), accountType);
             // 默认 Token Session 的过期时间与 Token 和 LoginId 映射的过期时间一致
-            long expireTime = HdSecurityManager.getConfig().getTokenExpireTime();
+            long expireTime = HdSecurityManager.getConfig(accountType).getTokenExpireTime();
             // 存储到持久层
             HdSecurityManager.getRepository().addSession(tokenSession, expireTime);
         }

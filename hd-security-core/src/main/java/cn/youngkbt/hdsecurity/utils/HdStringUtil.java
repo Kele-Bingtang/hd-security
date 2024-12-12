@@ -81,9 +81,9 @@ public class HdStringUtil {
 
     /**
      * 字符串模糊匹配
-     * <p>example:
-     * <p> user* user-add   --  true
-     * <p> user* art-add    --  false
+     * example:
+     *  user* user-add   --  true
+     *  user* art-add    --  false
      *
      * @param pattern 表达式
      * @param str     待匹配的字符串

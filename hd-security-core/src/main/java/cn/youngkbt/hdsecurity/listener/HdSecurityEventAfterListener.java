@@ -13,15 +13,15 @@ public interface HdSecurityEventAfterListener {
     /**
      * 加载配置文件后触发
      */
-    void afterLoadConfig(HdSecurityConfig hdSecurityConfig);
+    void afterLoadConfig(String accountType, HdSecurityConfig hdSecurityConfig);
 
     /**
      * 登录后触发
      *
-     * @param accountType  账号类别
-     * @param loginId    账号id
-     * @param token      本次登录产生的 token 值
-     * @param loginModel 登录参数
+     * @param accountType 账号类别
+     * @param loginId     账号id
+     * @param token       本次登录产生的 token 值
+     * @param loginModel  登录参数
      */
     void afterLogin(String accountType, Object loginId, String token, HdLoginModel loginModel);
 
@@ -29,8 +29,8 @@ public interface HdSecurityEventAfterListener {
      * 注销后触发
      *
      * @param accountType 账号类别
-     * @param loginId   账号 ID
-     * @param token     token 值
+     * @param loginId     账号 ID
+     * @param token       token 值
      */
     void afterLogout(String accountType, Object loginId, String token);
 
@@ -38,8 +38,8 @@ public interface HdSecurityEventAfterListener {
      * 踢人下线后触发
      *
      * @param accountType 账号类别
-     * @param loginId   账号 ID
-     * @param token     token 值
+     * @param loginId     账号 ID
+     * @param token       token 值
      */
     void afterKickout(String accountType, Object loginId, String token);
 
@@ -47,10 +47,30 @@ public interface HdSecurityEventAfterListener {
      * 顶人下线后触发
      *
      * @param accountType 账号类别
-     * @param loginId   账号 ID
-     * @param token     token 值
+     * @param loginId     账号 ID
+     * @param token       token 值
      */
     void afterReplaced(String accountType, Object loginId, String token);
+
+    /**
+     * 封禁账号后触发
+     *
+     * @param accountType 账号类别
+     * @param loginId     账号 ID
+     * @param disableTime        封禁时长，单位：秒
+     * @param realm       封禁类型
+     * @param level       封禁级别
+     */
+    void afterBanAccount(String accountType, Object loginId, long disableTime, String realm, int level);
+
+    /**
+     * 解封账号后触发
+     *
+     * @param accountType 账号类别
+     * @param loginId     账号 ID
+     * @param realm       解封原因
+     */
+    void afterUnBanAccount(String accountType, Object loginId, String realm);
 
     /**
      * 创建 Session 时触发
@@ -69,8 +89,8 @@ public interface HdSecurityEventAfterListener {
     /**
      * Token 续期时触发（注意：是 timeout 续期，而不是 active-timeout 续期）
      *
-     * @param token   token 值
-     * @param loginId 账号 ID
+     * @param token      token 值
+     * @param loginId    账号 ID
      * @param expireTime 续期时间
      */
     void afterRenewExpireTime(String token, Object loginId, long expireTime);
@@ -82,4 +102,5 @@ public interface HdSecurityEventAfterListener {
      * @param componentObject 组件对象
      */
     void afterComponentRegister(String componentName, Object componentObject);
+
 }

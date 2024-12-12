@@ -14,6 +14,8 @@ public enum GlobalEventEnums {
     LOGOUT("logout", "注销"),
     KICKOUT("kickout", "踢人下线"),
     REPLACED("replaced", "顶人下线"),
+    BAN("ban", "账号封禁"),
+    UN_BAN("unBan", "账号解封"),
     CREATE_SESSION("CreateSession", "创建 Session"),
     LOGOUT_SESSION("LogoutSession", "注销 Session"),
     RENEW_EXPIRE_TIME("RenewExpireTime", "刷新 Session 过期时间"),

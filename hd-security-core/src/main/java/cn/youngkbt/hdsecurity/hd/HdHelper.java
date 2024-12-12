@@ -57,11 +57,11 @@ public class HdHelper {
 
     // ---------- 代理常用方法 ----------
     public static String login(Object loginId) {
-        return loginHelper().login(loginId);
+        return loginHelper(ACCOUNT_TYPE).login(loginId);
     }
 
     public static String login(Object loginId, HdLoginModel loginModel) {
-        return loginHelper().login(loginModel.setLoginId(loginId));
+        return loginHelper(loginModel.getAccountType()).login(loginModel.setLoginId(loginId));
     }
 
     public static void logout(Object loginId, String device) {

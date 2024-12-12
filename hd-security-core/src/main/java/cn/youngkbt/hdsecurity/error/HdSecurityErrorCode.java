@@ -69,4 +69,33 @@ public interface HdSecurityErrorCode {
      * 获取 Token-Session 时提供的 token 为空 
      */
     int TOKEN_IS_NULL_WHEN_GET_TOKEN_SESSION = 10211;
+
+    /**
+     * 封禁的账号无效
+     */
+    int BAN_ACCOUNT_INVALID = 10301;
+
+    /**
+     * 封禁的领域无效
+     */
+    int BAN_REALM_INVALID = 10302;
+
+    /**
+     * 封禁的级别无效
+     */
+    int BAN_LEVEL_INVALID = 10303;
+    /**
+     * 当前账号未通过领域封禁校验
+     */
+    int BAN_NOT_PASS = 10304;
+
+    /**
+     * 认证的角色码无效
+     */
+    int AUTHORIZE_ROLE_INVALID = 10401;
+    /**
+     * 认证的权限码无效
+     */
+    int AUTHORIZE_PERMISSION_INVALID = 10402;
+    
 }

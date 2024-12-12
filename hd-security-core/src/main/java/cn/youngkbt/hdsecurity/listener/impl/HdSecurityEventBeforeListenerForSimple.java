@@ -34,6 +34,16 @@ public class HdSecurityEventBeforeListenerForSimple implements HdSecurityEventBe
     }
 
     @Override
+    public void beforeBanAccount(String accountType, Object loginId, long disableTime, String realm, int level) {
+        
+    }
+
+    @Override
+    public void beforeUnBanAccount(String accountType, Object loginId, String realm) {
+
+    }
+
+    @Override
     public void beforeCreateSession(String sessionId) {
 
     }

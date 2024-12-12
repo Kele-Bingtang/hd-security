@@ -4,6 +4,7 @@ import cn.youngkbt.hdsecurity.GlobalEventEnums;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventListener;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
+import cn.youngkbt.hdsecurity.utils.DateUtil;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -29,10 +30,10 @@ public class HdSecurityEventListenerForLog implements HdSecurityEventListener {
     }
 
     @Override
-    public void afterLoadConfig(HdSecurityConfig hdSecurityConfig) {
+    public void afterLoadConfig(String accountType, HdSecurityConfig hdSecurityConfig) {
         long currentTimeMillis = System.currentTimeMillis();
         startCostTimeMap.put(GlobalEventEnums.LOAD_CONFIG, currentTimeMillis - startCostTimeMap.getOrDefault(GlobalEventEnums.LOAD_CONFIG, currentTimeMillis));
-        log.info("全局配置加载成功 {}", hdSecurityConfig);
+        log.info("账号类型【" + accountType + "】全局配置加载成功 {}", hdSecurityConfig);
     }
 
     @Override
@@ -81,6 +82,31 @@ public class HdSecurityEventListenerForLog implements HdSecurityEventListener {
         long currentTimeMillis = System.currentTimeMillis();
         startCostTimeMap.put(GlobalEventEnums.REPLACED, currentTimeMillis - startCostTimeMap.getOrDefault(GlobalEventEnums.REPLACED, currentTimeMillis));
         log.info("账号 {} 被顶下线，账号类型 accountType = {}, 会话凭证 token = {}", loginId, accountType, token);
+    }
+
+    @Override
+    public void beforeBanAccount(String accountType, Object loginId, long disableTime, String realm, int level) {
+        startCostTimeMap.put(GlobalEventEnums.BAN, System.currentTimeMillis());
+    }
+
+    @Override
+    public void afterBanAccount(String accountType, Object loginId, long disableTime, String realm, int level) {
+        long currentTimeMillis = System.currentTimeMillis();
+        startCostTimeMap.put(GlobalEventEnums.BAN, currentTimeMillis - startCostTimeMap.getOrDefault(GlobalEventEnums.BAN, currentTimeMillis));
+        log.info("账号 {} 在 {} 领域被封禁，账号类型：{}, 封禁等级：{}, 解封时间：{}", loginId, accountType, realm, level, DateUtil.formatDateTime(disableTime * 1000));
+    }
+
+
+    @Override
+    public void beforeUnBanAccount(String accountType, Object loginId, String realm) {
+        startCostTimeMap.put(GlobalEventEnums.UN_BAN, System.currentTimeMillis());
+    }
+
+    @Override
+    public void afterUnBanAccount(String accountType, Object loginId, String realm) {
+        long currentTimeMillis = System.currentTimeMillis();
+        startCostTimeMap.put(GlobalEventEnums.UN_BAN, currentTimeMillis - startCostTimeMap.getOrDefault(GlobalEventEnums.UN_BAN, currentTimeMillis));
+        log.info("账号 {} 在 {} 领域解封成功，账号类型：{}", loginId, realm, accountType);
     }
 
     @Override

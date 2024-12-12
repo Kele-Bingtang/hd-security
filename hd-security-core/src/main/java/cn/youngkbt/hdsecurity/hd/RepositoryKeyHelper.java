@@ -13,22 +13,26 @@ public class RepositoryKeyHelper {
     }
 
     public static String getAccountSessionKey(Object loginId, String accountType) {
-        return HdSecurityManager.getConfig().getSecurityPrefixKey() + ":" + accountType + ":accountSession:" + loginId;
+        return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":accountSession:" + loginId;
     }
 
     public static String getTokenSessionKey(String token, String accountType) {
-        return HdSecurityManager.getConfig().getSecurityPrefixKey() + ":" + accountType + ":tokenSession:" + token;
+        return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":tokenSession:" + token;
     }
 
     public static String getTokenLoginIdMappingKey(String token, String accountType) {
-        return HdSecurityManager.getConfig().getSecurityPrefixKey() + ":" + accountType + ":tokenLoginMapping:" + token;
+        return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":tokenLoginMapping:" + token;
     }
 
     public static String getLastActiveKey(String token, String accountType) {
-        return HdSecurityManager.getConfig().getSecurityPrefixKey() + ":" + accountType + ":lastActive" + token;
+        return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":lastActive:" + token;
     }
 
     public static String getApplicationKey(String key) {
         return HdSecurityManager.getConfig().getSecurityPrefixKey() + ":var:" + key;
+    }
+
+    public static String getDisableAccountKey(String accountType, Object loginId, String realm) {
+        return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":disable:" + realm + ":" + loginId;
     }
 }

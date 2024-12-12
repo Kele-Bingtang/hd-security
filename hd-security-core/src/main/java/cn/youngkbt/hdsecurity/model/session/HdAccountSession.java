@@ -1,5 +1,7 @@
 package cn.youngkbt.hdsecurity.model.session;
 
+import cn.youngkbt.hdsecurity.constants.DefaultConstant;
+
 /**
  * @author Tianke
  * @date 2024/11/26 22:22:53
@@ -9,7 +11,7 @@ public class HdAccountSession extends HdSession {
     private String loginId;
 
     public HdAccountSession(String loginId) {
-        this(loginId, null);
+        this(loginId, DefaultConstant.DEFAULT_ACCOUNT_TYPE);
     }
 
     public HdAccountSession(String loginId, String accountType) {
