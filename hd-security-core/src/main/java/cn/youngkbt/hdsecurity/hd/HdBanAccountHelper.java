@@ -117,6 +117,9 @@ public class HdBanAccountHelper {
             throw new HdSecurityBanException("封禁级别不能小于 " + DefaultConstant.MIN_BAN_LIMIT_LEVEL).setCode(HdSecurityErrorCode.BAN_LEVEL_INVALID);
         }
 
+        // 发布封禁账号前置事件
+        HdSecurityEventCenter.publishBeforeBanAccount(accountType, loginId, disableTime, realm, level);
+
         // 打上封禁标记
         HdSecurityManager.getRepository().add(getDisableAccountKey(accountType, loginId, realm), level, disableTime);
 
@@ -149,6 +152,9 @@ public class HdBanAccountHelper {
         }
 
         for (String realm : realms) {
+            // 发布解封账号前置事件
+            HdSecurityEventCenter.publishBeforeUnBanAccount(accountType, loginId, realm);
+            
             // 解除账号封禁
             HdSecurityManager.getRepository().remove(getDisableAccountKey(accountType, loginId, realm));
 
