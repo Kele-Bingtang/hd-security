@@ -5,20 +5,24 @@ import java.io.Serializable;
 
 /**
  * Hd Security 配置类
- * 
+ *
  * @author Tianke
  * @date 2024/11/25 00:51:23
  * @since 1.0.0
  */
 public class HdSecurityConfig implements Serializable {
-    
+
     @Serial
     private static final long serialVersionUID = 1L;
-    
-    /** token 名称、存储 token 到 Cookie 的 key、前端提交 token 时参数的名称、存储 token 的 key 前缀 */
+
+    /**
+     * token 名称、存储 token 到 Cookie 的 key、前端提交 token 时参数的名称、存储 token 的 key 前缀
+     */
     private String securityPrefixKey = "hd-security";
-    
-    /** token 过期时间（单位：秒），-1 代表永久有效 */
+
+    /**
+     * token 过期时间（单位：秒），-1 代表永久有效
+     */
     private long tokenExpireTime = 60 * 60 * 24 * 30;
 
     /**
@@ -112,7 +116,12 @@ public class HdSecurityConfig implements Serializable {
     private String logLevel = "trace";
 
     /**
-     * Cookie 配置对象 
+     * http basic 认证的默认账号和密码，冒号隔开，格式样例(Hd:123456)
+     */
+    private String httpBasicAccount = "";
+
+    /**
+     * Cookie 配置对象
      */
     public HdCookieConfig cookie = new HdCookieConfig();
 
@@ -310,6 +319,15 @@ public class HdSecurityConfig implements Serializable {
         return this;
     }
 
+    public String getHttpBasicAccount() {
+        return httpBasicAccount;
+    }
+
+    public HdSecurityConfig setHttpBasicAccount(String httpBasicAccount) {
+        this.httpBasicAccount = httpBasicAccount;
+        return this;
+    }
+
     public HdCookieConfig getCookie() {
         return cookie;
     }
@@ -325,7 +343,7 @@ public class HdSecurityConfig implements Serializable {
                 "securityPrefixKey='" + securityPrefixKey + '\'' +
                 ", tokenExpireTime=" + tokenExpireTime +
                 ", tokenActiveExpireTime=" + tokenActiveExpireTime +
-                ", dynamicActiveTimeout=" + dynamicActiveExpireTime +
+                ", dynamicActiveExpireTime=" + dynamicActiveExpireTime +
                 ", isConcurrent=" + isConcurrent +
                 ", isShare=" + isShare +
                 ", maxLoginCount=" + maxLoginCount +
@@ -342,6 +360,7 @@ public class HdSecurityConfig implements Serializable {
                 ", isPrint=" + isPrint +
                 ", isLog=" + isLog +
                 ", logLevel='" + logLevel + '\'' +
+                ", httpBasicAuth='" + httpBasicAccount + '\'' +
                 ", cookie=" + cookie +
                 ", logLevelInt=" + logLevelInt +
                 '}';

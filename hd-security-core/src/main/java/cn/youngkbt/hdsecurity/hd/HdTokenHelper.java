@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Token 工具类
+ * Hd Security Token 模块
  *
  * @author Tianke
  * @date 2024/11/26 21:55:21

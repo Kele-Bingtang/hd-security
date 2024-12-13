@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Authorize 工具类
+ * Hd Security Authorize 模块
  *
  * @author Tianke
  * @date 2024/12/12 23:12:40

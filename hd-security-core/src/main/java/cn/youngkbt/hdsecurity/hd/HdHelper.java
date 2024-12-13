@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * Hd Security 模块门户
+ *
  * @author Tianke
  * @date 2024/11/30 16:07:12
  * @since 1.0.0

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 登录工具类
+ * Hd Security 登录模块
  * 包含：登录、注销、踢人下线、注销他人、获取登录信息
  *
  * @author Tianke

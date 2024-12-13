@@ -97,5 +97,9 @@ public interface HdSecurityErrorCode {
      * 认证的权限码无效
      */
     int AUTHORIZE_PERMISSION_INVALID = 10402;
-    
+
+    /**
+     * 未能通过 Http Basic 认证校验
+     */
+    int HTTP_BASIC_AUTH_FAIL = 10501;
 }

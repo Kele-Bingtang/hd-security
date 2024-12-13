@@ -4,6 +4,8 @@ import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 
 /**
+ * Hd Security 持久层 Key 模块
+ *
  * @author Tianke
  * @date 2024/11/28 01:44:37
  * @since 1.0.0
@@ -36,7 +38,7 @@ public class RepositoryKeyHelper {
     public static String getDisableAccountKey(String accountType, Object loginId, String realm) {
         return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":disable:" + realm + ":" + loginId;
     }
-    
+
     public static String getSwitchLoginIdKey(String accountType) {
         return DefaultConstant.SWITCH_TO_SAVE_KEY + "accountType";
     }

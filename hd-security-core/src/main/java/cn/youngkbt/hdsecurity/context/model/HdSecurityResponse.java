@@ -56,9 +56,18 @@ public interface HdSecurityResponse {
 
     /**
      * 写入指定 Cookie
+     *
      * @param cookie Cookie
      */
     default void addCookie(HdCookie cookie) {
         addHeader(HdCookie.HEADER_NAME, cookie.buildCookieStr());
     }
+
+    /**
+     * 设置响应状态码
+     *
+     * @param code 响应状态码
+     * @return 对象自身
+     */
+    HdSecurityResponse setStatus(int code);
 }

@@ -10,7 +10,7 @@ import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 import static cn.youngkbt.hdsecurity.hd.RepositoryKeyHelper.getDisableAccountKey;
 
 /**
- * 封禁账号工具类
+ * Hd Security 封禁账号模块
  *
  * @author Tianke
  * @date 2024/12/13 00:40:28

@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * Hd Security Session 模块
+ * 
  * @author Tianke
  * @date 2024/11/28 01:26:59
  * @since 1.0.0
