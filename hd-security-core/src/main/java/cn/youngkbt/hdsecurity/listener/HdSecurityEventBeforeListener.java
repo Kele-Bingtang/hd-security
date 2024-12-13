@@ -87,6 +87,25 @@ public interface HdSecurityEventBeforeListener {
     void beforeRenewExpireTime(String token, Object loginId, long expireTime);
 
     /**
+     * 二次认证开启前触发
+     *
+     * @param accountType 账号类别
+     * @param token    webToken
+     * @param realm       认证方式
+     * @param secondAuthTime    认证时间
+     */
+    void beforeSecondAuthOpen(String accountType, String token, String realm, long secondAuthTime);
+
+    /**
+     * 二次认证关闭前触发
+     *
+     * @param accountType 账号类别
+     * @param token    webToken
+     * @param realm       认证方式
+     */
+    void beforeSecondAuthClose(String accountType, String token, String realm);
+    
+    /**
      * 全局组件注册前触发
      *
      * @param componentName   组件名称

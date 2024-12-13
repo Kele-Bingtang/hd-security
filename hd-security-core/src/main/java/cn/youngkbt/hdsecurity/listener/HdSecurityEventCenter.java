@@ -191,6 +191,22 @@ public class HdSecurityEventCenter {
         publishEvent(listener -> listener.afterRenewExpireTime(token, loginId, expireTime));
     }
 
+    public static void publishBeforeSecondAuthOpen(String accountType, String webToken, String realm, long secondAuthTime) {
+        publishEvent(listener -> listener.beforeSecondAuthOpen(accountType, webToken, realm, secondAuthTime));
+    }
+
+    public static void publishAfterSecondAuthOpen(String accountType, String webToken, String realm, long secondAuthTime) {
+        publishEvent(listener -> listener.afterSecondAuthOpen(accountType, webToken, realm, secondAuthTime));
+    }
+
+    public static void publishBeforeSecondAuthClose(String accountType, String webToken, String realm) {
+        publishEvent(listener -> listener.beforeSecondAuthClose(accountType, webToken, realm));
+    }
+
+    public static void publishAfterSecondAuthClose(String accountType, String webToken, String realm) {
+        publishEvent(listener -> listener.afterSecondAuthClose(accountType, webToken, realm));
+    }
+    
     public static void publishBeforeComponentRegister(String componentName, Object componentObject) {
         publishEvent(listener -> listener.beforeComponentRegister(componentName, componentObject));
     }

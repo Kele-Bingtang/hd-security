@@ -96,6 +96,25 @@ public interface HdSecurityEventAfterListener {
     void afterRenewExpireTime(String token, Object loginId, long expireTime);
 
     /**
+     * 二次认证开启后触发
+     *
+     * @param accountType 账号类别
+     * @param token    webToken 值
+     * @param realm       认证类型
+     * @param secondAuthTime    认证时间
+     */
+    void afterSecondAuthOpen(String accountType, String token, String realm, long secondAuthTime);
+
+    /**
+     * 二次认证关闭后触发
+     *
+     * @param accountType 账号类别
+     * @param token    webToken 值
+     * @param realm       认证类型
+     */
+    void afterSecondAuthClose(String accountType, String token, String realm);
+    
+    /**
      * 全局组件注册后触发
      *
      * @param componentName   组件名称

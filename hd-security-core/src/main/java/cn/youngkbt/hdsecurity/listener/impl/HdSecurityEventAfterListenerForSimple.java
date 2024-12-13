@@ -62,6 +62,16 @@ public class HdSecurityEventAfterListenerForSimple implements HdSecurityEventAft
     }
 
     @Override
+    public void afterSecondAuthOpen(String accountType, String token, String realm, long secondAuthTime) {
+        
+    }
+
+    @Override
+    public void afterSecondAuthClose(String accountType, String token, String realm) {
+        
+    }
+
+    @Override
     public void afterComponentRegister(String componentName, Object componentObject) {
         
     }

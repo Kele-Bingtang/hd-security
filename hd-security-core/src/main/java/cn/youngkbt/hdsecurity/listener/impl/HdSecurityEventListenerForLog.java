@@ -93,7 +93,7 @@ public class HdSecurityEventListenerForLog implements HdSecurityEventListener {
     public void afterBanAccount(String accountType, Object loginId, long disableTime, String realm, int level) {
         long currentTimeMillis = System.currentTimeMillis();
         startCostTimeMap.put(GlobalEventEnums.BAN, currentTimeMillis - startCostTimeMap.getOrDefault(GlobalEventEnums.BAN, currentTimeMillis));
-        log.info("账号 {} 在 {} 领域被封禁，账号类型：{}, 封禁等级：{}, 解封时间：{}", loginId, accountType, realm, level, DateUtil.formatDateTime(disableTime * 1000));
+        log.info("账号 {} 在 {} 领域被封禁，账号类型 = {}, 封禁等级 = {}, 解封时间 = {}", loginId, accountType, realm, level, DateUtil.formatDateTime(disableTime * 1000));
     }
 
 
@@ -106,7 +106,7 @@ public class HdSecurityEventListenerForLog implements HdSecurityEventListener {
     public void afterUnBanAccount(String accountType, Object loginId, String realm) {
         long currentTimeMillis = System.currentTimeMillis();
         startCostTimeMap.put(GlobalEventEnums.UN_BAN, currentTimeMillis - startCostTimeMap.getOrDefault(GlobalEventEnums.UN_BAN, currentTimeMillis));
-        log.info("账号 {} 在 {} 领域解封成功，账号类型：{}", loginId, realm, accountType);
+        log.info("账号 {} 在 {} 领域解封成功，账号类型 = {}", loginId, realm, accountType);
     }
 
     @Override
@@ -143,6 +143,30 @@ public class HdSecurityEventListenerForLog implements HdSecurityEventListener {
         long currentTimeMillis = System.currentTimeMillis();
         startCostTimeMap.put(GlobalEventEnums.RENEW_EXPIRE_TIME, currentTimeMillis - startCostTimeMap.getOrDefault(GlobalEventEnums.RENEW_EXPIRE_TIME, currentTimeMillis));
         log.info("token 续期成功, {} 秒后到期, 帐号 = {}, token = {} ", expireTime, loginId, token);
+    }
+
+    @Override
+    public void beforeSecondAuthOpen(String accountType, String webToken, String realm, long secondAuthTime) {
+        startCostTimeMap.put(GlobalEventEnums.SECOND_AUTH_OPEN, System.currentTimeMillis());
+    }
+
+    @Override
+    public void afterSecondAuthOpen(String accountType, String webToken, String realm, long secondAuthTime) {
+        long currentTimeMillis = System.currentTimeMillis();
+        startCostTimeMap.put(GlobalEventEnums.SECOND_AUTH_OPEN, currentTimeMillis - startCostTimeMap.getOrDefault(GlobalEventEnums.SECOND_AUTH_OPEN, currentTimeMillis));
+        log.info("账号类型 {} 的 token 二级认证成功, 领域标识 = {}, 有效期 = {} 秒, Token：{}", accountType, realm, secondAuthTime, webToken);
+    }
+
+    @Override
+    public void beforeSecondAuthClose(String accountType, String token, String realm) {
+        startCostTimeMap.put(GlobalEventEnums.SECOND_AUTH_CLOSE, System.currentTimeMillis());
+    }
+
+    @Override
+    public void afterSecondAuthClose(String accountType, String token, String realm) {
+        long currentTimeMillis = System.currentTimeMillis();
+        startCostTimeMap.put(GlobalEventEnums.SECOND_AUTH_CLOSE, currentTimeMillis - startCostTimeMap.getOrDefault(GlobalEventEnums.SECOND_AUTH_CLOSE, currentTimeMillis));
+        log.info("账号类型 {} 的 token 二级认证关闭, 领域标识 = {}, Token = {}", accountType, realm, token);
     }
 
     @Override

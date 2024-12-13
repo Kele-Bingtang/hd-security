@@ -15,7 +15,7 @@ public interface HdSecurityStorage {
 
     Object get(String key);
 
-    HdSecurityStorage set(String key, String token);
+    HdSecurityStorage set(String key, Object value);
 
     HdSecurityStorage remove(String key);
 }

@@ -59,6 +59,16 @@ public class HdSecurityEventBeforeListenerForSimple implements HdSecurityEventBe
     }
 
     @Override
+    public void beforeSecondAuthOpen(String accountType, String webToken, String realm, long secondAuthTime) {
+        
+    }
+
+    @Override
+    public void beforeSecondAuthClose(String accountType, String webToken, String realm) {
+        
+    }
+
+    @Override
     public void beforeComponentRegister(String componentName, Object componentObject) {
         
     }

@@ -1,6 +1,7 @@
 package cn.youngkbt.hdsecurity.hd;
 
 import cn.youngkbt.hdsecurity.HdSecurityManager;
+import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 
 /**
  * @author Tianke
@@ -34,5 +35,13 @@ public class RepositoryKeyHelper {
 
     public static String getDisableAccountKey(String accountType, Object loginId, String realm) {
         return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":disable:" + realm + ":" + loginId;
+    }
+    
+    public static String getSwitchLoginIdKey(String accountType) {
+        return DefaultConstant.SWITCH_TO_SAVE_KEY + "accountType";
+    }
+
+    public static String getSecondAuthKey(String accountType, String webToken, String realm) {
+        return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":secondAuth:" + realm + ":" + webToken;
     }
 }
