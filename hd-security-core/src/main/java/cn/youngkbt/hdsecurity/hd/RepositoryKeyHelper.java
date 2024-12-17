@@ -46,4 +46,8 @@ public class RepositoryKeyHelper {
     public static String getSecondAuthKey(String accountType, String webToken, String realm) {
         return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":secondAuth:" + realm + ":" + webToken;
     }
+    
+    public static String getTempTokenKey(String accountType, String realm, Object value) {
+        return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":tempToken:" + realm + ":" + value;
+    }
 }

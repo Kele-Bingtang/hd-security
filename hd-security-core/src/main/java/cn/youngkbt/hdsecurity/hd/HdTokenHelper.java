@@ -258,14 +258,14 @@ public class HdTokenHelper {
     }
 
     /**
-     * 续签当前 Token 为当前时间戳，如果 Token 被冻结，则也会续签成功
+     * 续签当前 Token 为当前时间戳，如果 Token 被冻结，则也会续期成功
      */
     public void updateTokenLastActiveTimeToNow() {
         updateTokenLastActiveTimeToNow(getWebToken());
     }
 
     /**
-     * 续签当前 Token 为当前时间戳，如果 Token 被冻结，则也会续签成功
+     * 续签当前 Token 为当前时间戳，如果 Token 被冻结，则也会续期成功
      *
      * @param token Token
      */
@@ -805,5 +805,135 @@ public class HdTokenHelper {
             }
             writeTokenToCookie(token, Math.toIntExact(expireTime));
         }
+    }
+
+    // ---------- 临时 Token 相关操作方法 ----------
+
+    /**
+     * 创建指定领域的临时 Token，存储 Value
+     *
+     * @param value      指定值
+     * @param expireTime 有效时间，单位：秒，-1 代表永久有效
+     * @return 临时 Token
+     */
+    public String createTempToken(Object value, long expireTime) {
+        return createTempToken(DefaultConstant.DEFAULT_TEMP_TOKEN_REALM, value, expireTime);
+    }
+
+    /**
+     * 创建指定领域的临时 Token，存储 Value
+     *
+     * @param realm      领域
+     * @param value      指定值
+     * @param expireTime 有效时间，单位：秒，-1 代表永久有效
+     * @return 临时 Token
+     */
+    public String createTempToken(String realm, Object value, long expireTime) {
+        // 如果不存在旧 Token，则创建新 Token
+        String tempToken = TokenGenerateStrategy.instance.generateUniqueElement.generate(
+                "Token",
+                // 最大尝试次数
+                HdSecurityManager.getConfig().getMaxTryTimes(),
+                // 创建 Token
+                () -> createToken(""),
+                // 验证 Token 唯一性，这里从持久层获取根据创建的 Token 获取登录 ID，获取成功代表有用户在用，则不唯一
+                newToken -> getLoginIdByToken(newToken) == null,
+                // 捕获异常
+                e -> {
+                    throw e;
+                }
+        );
+
+        String tempTokenKey = RepositoryKeyHelper.getTempTokenKey(accountType, realm, tempToken);
+        HdSecurityManager.getRepository().add(tempTokenKey, value, expireTime);
+
+        // 返回临时 Token
+        return tempToken;
+    }
+
+    /**
+     * 解析临时 Token 获取 Value
+     *
+     * @param tempToken 临时 Token
+     * @return 获取 Value
+     */
+    public Object parseTempToken(String tempToken) {
+        return parseTempToken(DefaultConstant.DEFAULT_TEMP_TOKEN_REALM, tempToken);
+    }
+
+    /**
+     * 解析指定领域的临时 Token获取 Value
+     *
+     * @param realm     领域
+     * @param tempToken 临时 Token
+     * @return 指定领域的 Value
+     */
+    public Object parseTempToken(String realm, String tempToken) {
+        return HdSecurityManager.getRepository().query(RepositoryKeyHelper.getTempTokenKey(accountType, realm, tempToken));
+    }
+
+    /**
+     * 解析临时 Token 获取 Value，并转换为指定类型
+     *
+     * @param tempToken 临时 Token
+     * @param cs        指定类型
+     * @param <T>       指定类型
+     * @return 获取 Value，并转换为指定类型
+     */
+    public <T> T parseTempToken(String tempToken, Class<T> cs) {
+        return parseTempToken(DefaultConstant.DEFAULT_TEMP_TOKEN_REALM, tempToken, cs);
+    }
+
+    /**
+     * 解析指定领域的临时 Token 获取 Value，并转换为指定类型
+     *
+     * @param realm     领域
+     * @param tempToken 临时 Token
+     * @param cs        指定类型
+     * @param <T>       指定类型
+     * @return 指定领域的 Value，并转换为指定类型
+     */
+    public <T> T parseTempToken(String realm, String tempToken, Class<T> cs) {
+        return (T) HdSecurityManager.getRepository().query(RepositoryKeyHelper.getTempTokenKey(accountType, realm, tempToken));
+    }
+
+    /**
+     * 移除临时 Token
+     *
+     * @param tempToken 临时 Token
+     */
+    public void removeTempToken(String tempToken) {
+        removeTempToken(DefaultConstant.DEFAULT_TEMP_TOKEN_REALM, tempToken);
+    }
+
+    /**
+     * 移除指定领域下的临时 Token
+     *
+     * @param realm     领域
+     * @param tempToken 临时 Token
+     */
+    public void removeTempToken(String realm, String tempToken) {
+        HdSecurityManager.getRepository().remove(RepositoryKeyHelper.getTempTokenKey(accountType, realm, tempToken));
+    }
+
+    /**
+     * 获取临时 Token 的有效时间
+     *
+     * @param tempToken 临时 Token
+     * @return 有效时间
+     */
+    public long getTempTokenExpireTime(String tempToken) {
+        return getTempTokenExpireTime(DefaultConstant.DEFAULT_TEMP_TOKEN_REALM, tempToken);
+    }
+
+    /**
+     * 获取指定领域下的临时 Token 的有效时间
+     *
+     * @param realm     领域
+     * @param tempToken 临时 Token
+     * @return 有效时间
+     */
+    public long getTempTokenExpireTime(String realm, String tempToken) {
+        return HdSecurityManager.getRepository().getExpireTime(RepositoryKeyHelper.getTempTokenKey(accountType, realm, tempToken));
     }
 }

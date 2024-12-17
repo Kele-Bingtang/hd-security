@@ -152,6 +152,11 @@ public class HdLoginHelper {
             HdHelper.tokenHelper(accountType).updateTokenLastActiveTimeToNow(token);
         }
 
+        // 先判断一下当前会话是否正在临时身份切换, 如果是则返回临时身份
+        if (isSwitch()) {
+            return getSwitchLoginId();
+        }
+
         // 查找 token 对应的 loginId
         Object loginId = HdHelper.tokenHelper(accountType).getLoginIdByToken(token);
         // 如果 loginId 不存在，则返回 null

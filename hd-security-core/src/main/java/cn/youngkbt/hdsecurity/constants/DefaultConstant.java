@@ -10,6 +10,7 @@ public interface DefaultConstant {
     String DEFAULT_ACCOUNT_TYPE = "default-account";
     String CREATED_TOKEN = "CREATED_TOKEN";
     String CREATED_TOKEN_PREFIX = "CREATED_TOKEN_PREFIX";
+    String DEFAULT_TEMP_TOKEN_REALM = "default-temp-token-realm";
     /**
      * 临时身份切换时使用的 key
      */
