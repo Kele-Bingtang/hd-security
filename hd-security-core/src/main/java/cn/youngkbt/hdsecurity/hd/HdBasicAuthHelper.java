@@ -18,9 +18,6 @@ import java.util.Objects;
  */
 public class HdBasicAuthHelper {
 
-    private HdBasicAuthHelper() {
-    }
-
     /**
      * 默认的 Realm 领域名称
      */

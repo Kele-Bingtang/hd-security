@@ -320,6 +320,13 @@ public class HdTokenHelper {
         return remainActiveTime;
     }
 
+    /**
+     * 检查 token 是否已被冻结，如果是则抛出异常
+     *
+     */
+    public void checkTokenActiveTime() {
+        checkTokenActiveTime(getWebToken());
+    }
 
     /**
      * 检查指定 token 是否已被冻结，如果是则抛出异常

@@ -91,6 +91,15 @@ public class HdSessionHelper {
     }
 
     /**
+     * 获取账号会话
+     *
+     * @return 账号会话
+     */
+    public HdAccountSession getAccountSession() {
+        return getAccountSessionByLoginId(HdHelper.loginHelper(accountType).getLoginId());
+    }
+    
+    /**
      * 获取账号会话，如果不存在账号会话，则创建一个
      *
      * @param loginId 登录 ID

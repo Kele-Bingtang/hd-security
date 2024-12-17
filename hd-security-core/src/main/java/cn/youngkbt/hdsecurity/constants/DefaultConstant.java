@@ -6,10 +6,25 @@ package cn.youngkbt.hdsecurity.constants;
  * @since 1.0.0
  */
 public interface DefaultConstant {
+    /**
+     * 默认设备
+     */
     String DEFAULT_LOGIN_DEVICE = "default-device";
+    /**
+     * 默认账号类型
+     */
     String DEFAULT_ACCOUNT_TYPE = "default-account";
+    /**
+     * 获取和存储刚创建 Token 的标识
+     */
     String CREATED_TOKEN = "CREATED_TOKEN";
+    /**
+     * 获取和存储刚创建且带有前置 Token 的标识
+     */
     String CREATED_TOKEN_PREFIX = "CREATED_TOKEN_PREFIX";
+    /**
+     * 默认临时 Token 前缀
+     */
     String DEFAULT_TEMP_TOKEN_REALM = "default-temp-token-realm";
     /**
      * 临时身份切换时使用的 key

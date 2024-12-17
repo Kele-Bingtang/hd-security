@@ -1,11 +1,7 @@
 package cn.youngkbt.hdsecurity.strategy;
 
-import cn.youngkbt.hdsecurity.function.helper.HdLoginHelperCreateFunction;
-import cn.youngkbt.hdsecurity.function.helper.HdSessionHelperCreateFunction;
-import cn.youngkbt.hdsecurity.function.helper.HdTokenHelperCreateFunction;
-import cn.youngkbt.hdsecurity.hd.HdLoginHelper;
-import cn.youngkbt.hdsecurity.hd.HdSessionHelper;
-import cn.youngkbt.hdsecurity.hd.HdTokenHelper;
+import cn.youngkbt.hdsecurity.function.helper.*;
+import cn.youngkbt.hdsecurity.hd.*;
 
 /**
  * Helper 创建策略
@@ -21,6 +17,8 @@ public class HelperCreateStrategy {
     public HdLoginHelperCreateFunction createLoginHelper = HdLoginHelper::new;
     public HdSessionHelperCreateFunction createSessionHelper = HdSessionHelper::new;
     public HdTokenHelperCreateFunction createTokenHelper = HdTokenHelper::new;
+    public HdBanAccountHelperCreateFunction createBanAccountHelper = HdBanAccountHelper::new;
+    public HdAuthorizeHelperCreateFunction createAuthorizeHelper = HdAuthorizeHelper::new;
 
     public HelperCreateStrategy setCreateLoginHelper(HdLoginHelperCreateFunction createLoginHelper) {
         this.createLoginHelper = createLoginHelper;
@@ -34,6 +32,16 @@ public class HelperCreateStrategy {
 
     public HelperCreateStrategy setCreateTokenHelper(HdTokenHelperCreateFunction createTokenHelper) {
         this.createTokenHelper = createTokenHelper;
+        return this;
+    }
+
+    public HelperCreateStrategy setCreateBanAccountHelper(HdBanAccountHelperCreateFunction createBanAccountHelper) {
+        this.createBanAccountHelper = createBanAccountHelper;
+        return this;
+    }
+
+    public HelperCreateStrategy setCreateAuthorizeHelper(HdAuthorizeHelperCreateFunction createAuthorizeHelper) {
+        this.createAuthorizeHelper = createAuthorizeHelper;
         return this;
     }
 }
