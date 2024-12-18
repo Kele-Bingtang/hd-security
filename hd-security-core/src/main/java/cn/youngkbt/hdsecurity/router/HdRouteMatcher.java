@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 public class HdRouteMatcher {
 
     /**
-     * 是否开启命中
+     * 是否开启命中。当某个方法执行失败或者返回 false，则接下来的所有链式方法都不应该执行，所以加一个 useHit 来标记判断
      */
     private boolean useHit = true;
 
