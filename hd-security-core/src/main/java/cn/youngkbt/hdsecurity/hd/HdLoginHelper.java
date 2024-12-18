@@ -96,7 +96,7 @@ public class HdLoginHelper {
         HdSecurityEventCenter.publishAfterLogin(accountType, loginModel.getLoginId(), token, loginModel);
 
         // 将 Token 写入到 Cookie、响应体等
-        // HdHelper.tokenHelper(accountType).writeTokenToWeb(token, loginModel);
+        HdHelper.tokenHelper(accountType).writeTokenToWeb(token, loginModel);
 
         return token;
     }

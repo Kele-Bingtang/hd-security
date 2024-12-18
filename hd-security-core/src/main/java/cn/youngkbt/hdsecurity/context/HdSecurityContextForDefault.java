@@ -5,6 +5,7 @@ import cn.youngkbt.hdsecurity.context.model.HdSecurityResponse;
 import cn.youngkbt.hdsecurity.context.model.HdSecurityStorage;
 import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityContextException;
+import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 
 /**
  * @author Tianke
@@ -30,5 +31,10 @@ public class HdSecurityContextForDefault implements HdSecurityContext {
     @Override
     public HdSecurityStorage getStorage() {
         throw new HdSecurityContextException(ERROR_MESSAGE).setCode(HdSecurityErrorCode.CONTEXT_GET_NULL);
+    }
+
+    @Override
+    public boolean matchPath(String pattern, String path) {
+        return HdStringUtil.vagueMatch(pattern, path);
     }
 }

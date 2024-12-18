@@ -27,4 +27,18 @@ public interface HdSecurityContext {
      * @return Storage 包装对象
      */
     HdSecurityStorage getStorage();
+
+    /**
+     * 判断：指定路由匹配符是否可以匹配成功指定路径
+     * <pre>
+     *     判断规则由底层 web 框架决定，例如在 springboot 中：
+     *     	- matchPath("/user/*", "/user/login")  返回: true
+     *     	- matchPath("/user/*", "/article/edit")  返回: false
+     * </pre>
+     *
+     * @param pattern 路由匹配符 
+     * @param path 需要匹配的路径 
+     * @return 是否匹配成功
+     */
+    boolean matchPath(String pattern, String path);
 }
