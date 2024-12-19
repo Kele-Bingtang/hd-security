@@ -128,6 +128,10 @@ public class HdHelper {
     public static HdAuthorizeHelper authorizeHelper(String accountType) {
         return AUTHORIZE_HELPER_MAP.computeIfAbsent(accountType, key -> HelperCreateStrategy.instance.createAuthorizeHelper.apply(key));
     }
+    
+    public static HdBasicAuthHelper basicAuthHelper() {
+        return new HdBasicAuthHelper();
+    }
 
     // ---------- 代理默认账号的常用方法，具体用法代理方法的注释 ----------
 

@@ -184,14 +184,14 @@ public class HdRouter {
     /**
      * 停止匹配，跳出当前匹配函数
      */
-    public void stopMatch() {
+    public static void stopMatch() {
         new HdRouteMatcher().stopMatch();
     }
 
     /**
      * 停止匹配，结束匹配链
      */
-    public void continueMatch() {
+    public static void continueMatch() {
         new HdRouteMatcher().continueMatch();
     }
 
@@ -200,7 +200,8 @@ public class HdRouter {
      *
      * @param result 结果
      */
-    public void continueMatch(String result) {
+    public static void continueMatch(String result) {
         new HdRouteMatcher().continueMatch(result);
     }
+
 }

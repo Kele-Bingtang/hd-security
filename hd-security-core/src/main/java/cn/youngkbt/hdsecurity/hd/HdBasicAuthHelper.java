@@ -51,11 +51,15 @@ public class HdBasicAuthHelper {
     }
 
     public void checkBasicAuth(String account) {
+        checkBasicAuth(DEFAULT_REALM, account);
+    }
+
+    public void checkBasicAuth(String realm, String account) {
         boolean basicAuth = isBasicAuth(account);
         if (!basicAuth) {
             HdSecurityManager.getContext().getResponse()
                     .setStatus(401)
-                    .addHeader("WWW-Authenticate", "Basic Realm=" + DEFAULT_REALM);
+                    .addHeader("WWW-Authenticate", "Basic Realm=" + realm);
 
             throw new HdSecurityHttpBasicAuthException("Http Basic 认证失败：" + account).setCode(HdSecurityErrorCode.HTTP_BASIC_AUTH_FAIL);
         }
