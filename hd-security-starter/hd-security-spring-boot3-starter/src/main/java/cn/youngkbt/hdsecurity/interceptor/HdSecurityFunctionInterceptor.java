@@ -17,7 +17,7 @@ import java.util.function.Consumer;
  */
 public class HdSecurityFunctionInterceptor implements HandlerInterceptor {
 
-    public Consumer<Object> auth = handler -> {
+    private Consumer<Object> auth = handler -> {
     };
 
     public void setAuth(Consumer<Object> auth) {
