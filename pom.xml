@@ -8,9 +8,13 @@
     <artifactId>hd-security</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
+    
     <modules>
         <module>hd-security-core</module>
         <module>hd-security-demo/hd-security-demo-core</module>
+        <module>hd-security-starter</module>
+        <module>hd-security-dependencies</module>
+        <module>hd-security-bom</module>
     </modules>
 
     <properties>
@@ -20,6 +24,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.youngkbt</groupId>
+                <artifactId>hd-security-dependencies</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
     <!-- 开源协议 apache 2.0 -->
     <licenses>
         <license>

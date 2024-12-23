@@ -30,6 +30,13 @@ public interface HdSecurityRequest {
      *
      * @return 参数列表
      */
+    Map<String, String[]> getParamsMap();
+
+    /**
+     * 获取请求体提交的所有参数（key 重复取第一个）
+     *
+     * @return 参数列表
+     */
     Map<String, String> getParamMap();
 
     /**
@@ -41,19 +48,11 @@ public interface HdSecurityRequest {
     String getHeader(String name);
 
     /**
-     * 在 Cookie 作用域里获取一个值
+     * 在 Cookie 作用域里获取一个值（key 重复则取最后一个值）
      * @param name 键 
      * @return 值
      */
     String getCookieValue(String name);
-
-    /**
-     * 在 Cookie 作用域里获取一个值 (name 的最后一个值)
-     *
-     * @param name 键
-     * @return 值
-     */
-    String getCookieLastValue(String name);
 
     /**
      * 返回当前请求 path (不包括上下文名称)

@@ -6,10 +6,14 @@ import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfigProvider;
 import cn.youngkbt.hdsecurity.context.HdSecurityContext;
 import cn.youngkbt.hdsecurity.context.HdSecurityContextProvider;
+import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
+import cn.youngkbt.hdsecurity.listener.HdSecurityEventListener;
 import cn.youngkbt.hdsecurity.log.HdSecurityLog;
 import cn.youngkbt.hdsecurity.log.HdSecurityLogProvider;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepository;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryProvider;
+
+import java.util.List;
 
 /**
  * 管理所有全局组件，可通过此类快速获取、写入各种全局组件对象
@@ -69,5 +73,13 @@ public class HdSecurityManager {
 
     public static void setAuthorize(HdSecurityAuthorize hdSecurityAuthorize) {
         HdSecurityAuthorizeProvider.setHdSecurityAuthorize(hdSecurityAuthorize);
+    }
+
+    public static List<HdSecurityEventListener> getEventListener() {
+        return HdSecurityEventCenter.getListenerList();
+    }
+
+    public static void setEventListener(List<HdSecurityEventListener> eventListener) {
+        HdSecurityEventCenter.setListenerList(eventListener);
     }
 }

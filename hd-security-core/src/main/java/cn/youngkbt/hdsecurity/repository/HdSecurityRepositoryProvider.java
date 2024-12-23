@@ -33,7 +33,12 @@ public class HdSecurityRepositoryProvider {
      */
     public static void setHdSecurityRepository(HdSecurityRepository hdSecurityRepository) {
         HdSecurityEventCenter.publishBeforeComponentRegister(GlobalEventEnums.REGISTER_REPOSITORY.getFunctionName(), hdSecurityRepository);
-        hdSecurityRepository.init();
+        if (null != HdSecurityRepositoryProvider.hdSecurityRepository) {
+            hdSecurityRepository.destroy();
+        }
+        if (null != hdSecurityRepository) {
+            hdSecurityRepository.init();
+        }
         HdSecurityRepositoryProvider.hdSecurityRepository = hdSecurityRepository;
         // 发布组件注册事件
         HdSecurityEventCenter.publishAfterComponentRegister(GlobalEventEnums.REGISTER_REPOSITORY.getFunctionName(), hdSecurityRepository);
