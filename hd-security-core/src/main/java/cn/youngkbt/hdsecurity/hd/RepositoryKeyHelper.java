@@ -1,7 +1,6 @@
 package cn.youngkbt.hdsecurity.hd;
 
 import cn.youngkbt.hdsecurity.HdSecurityManager;
-import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 
 /**
  * Hd Security 持久层 Key 模块
@@ -40,14 +39,22 @@ public class RepositoryKeyHelper {
     }
 
     public static String getSwitchLoginIdKey(String accountType) {
-        return DefaultConstant.SWITCH_TO_SAVE_KEY + "accountType";
+        return HdSecurityManager.getConfig().getSecurityPrefixKey() + ":" + accountType + ":var:switch";
     }
 
     public static String getSecondAuthKey(String accountType, String webToken, String realm) {
         return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":secondAuth:" + realm + ":" + webToken;
     }
-    
+
     public static String getTempTokenKey(String accountType, String realm, Object value) {
         return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":tempToken:" + realm + ":" + value;
+    }
+
+    public static String getSameOriginTokenKey() {
+        return HdSecurityManager.getConfig().getSecurityPrefixKey() + ":var:sameOriginToken";
+    }
+
+    public static String getSameOriginSecondTokenKey() {
+        return HdSecurityManager.getConfig().getSecurityPrefixKey() + ":var:sameOriginSecondToken";
     }
 }

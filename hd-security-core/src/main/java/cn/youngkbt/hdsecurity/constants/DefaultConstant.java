@@ -26,10 +26,6 @@ public interface DefaultConstant {
      * 默认临时 Token 前缀
      */
     String DEFAULT_TEMP_TOKEN_REALM = "default-temp-token-realm";
-    /**
-     * 临时身份切换时使用的 key
-     */
-    String SWITCH_TO_SAVE_KEY = "SWITCH_TO_KEY_";
 
     // ---------- 账号封禁 ----------
     /**
@@ -58,4 +54,9 @@ public interface DefaultConstant {
      * 二次认证默认领域
      */
     String DEFAULT_SECOND_AUTH_REALM = "default-second-auth-realm";
+
+    /**
+     * 同源 Token 标识
+     */
+    String SAME_ORIGIN_TOKEN_TAG = "SAME_ORIGIN_TOKEN_TAG";
 }

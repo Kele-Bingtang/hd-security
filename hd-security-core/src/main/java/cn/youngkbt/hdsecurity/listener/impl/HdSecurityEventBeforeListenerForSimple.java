@@ -1,6 +1,9 @@
 package cn.youngkbt.hdsecurity.listener.impl;
 
+import cn.youngkbt.hdsecurity.annotation.handler.HdAnnotationHandler;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventBeforeListener;
+
+import java.lang.annotation.Annotation;
 
 /**
  * @author Tianke
@@ -70,6 +73,11 @@ public class HdSecurityEventBeforeListenerForSimple implements HdSecurityEventBe
 
     @Override
     public void beforeComponentRegister(String componentName, Object componentObject) {
+        
+    }
+
+    @Override
+    public void beforeRegisterAnnotationHandler(HdAnnotationHandler<? extends Annotation> annotationHandler) {
         
     }
 }

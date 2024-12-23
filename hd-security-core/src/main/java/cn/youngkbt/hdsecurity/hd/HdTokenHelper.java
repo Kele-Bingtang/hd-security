@@ -322,7 +322,6 @@ public class HdTokenHelper {
 
     /**
      * 检查 token 是否已被冻结，如果是则抛出异常
-     *
      */
     public void checkTokenActiveTime() {
         checkTokenActiveTime(getWebToken());
@@ -943,4 +942,5 @@ public class HdTokenHelper {
     public long getTempTokenExpireTime(String realm, String tempToken) {
         return HdSecurityManager.getRepository().getExpireTime(RepositoryKeyHelper.getTempTokenKey(accountType, realm, tempToken));
     }
+
 }

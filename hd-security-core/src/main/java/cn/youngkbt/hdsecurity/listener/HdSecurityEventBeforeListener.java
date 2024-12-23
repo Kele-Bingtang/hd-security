@@ -1,5 +1,9 @@
 package cn.youngkbt.hdsecurity.listener;
 
+import cn.youngkbt.hdsecurity.annotation.handler.HdAnnotationHandler;
+
+import java.lang.annotation.Annotation;
+
 /**
  * Hd Security 事件监听器
  *
@@ -113,4 +117,10 @@ public interface HdSecurityEventBeforeListener {
      */
     void beforeComponentRegister(String componentName, Object componentObject);
 
+    /**
+     * 注解处理器注册前触发
+     *
+     * @param annotationHandler 注解处理器
+     */
+    void beforeRegisterAnnotationHandler(HdAnnotationHandler<? extends Annotation> annotationHandler);
 }

@@ -21,9 +21,10 @@ public enum GlobalEventEnums {
     RENEW_EXPIRE_TIME("RenewExpireTime", "刷新 Session 过期时间"),
     SECOND_AUTH_OPEN("secondAuthOpen", "开启二次认证"),
     SECOND_AUTH_CLOSE("secondAuthClose", "关闭二次认证"),
-    REGISTER_LOG("HdSecurityLog", "加载日志组件"),
-    REGISTER_REPOSITORY("HdSecurityRepository", "加载持久仓库组件"),
-    REGISTER_CONTEXT("HdSecurityContext", "加载上下文组件"),
+    REGISTER_LOG("HdSecurityLog", "注册日志组件"),
+    REGISTER_REPOSITORY("HdSecurityRepository", "注册持久仓库组件"),
+    REGISTER_CONTEXT("HdSecurityContext", "注册上下文组件"),
+    REGISTER_ANNOTATION_HANDLER("HdSecurityAnnotationHandler", "注册注解处理器"),
 
     ;
 

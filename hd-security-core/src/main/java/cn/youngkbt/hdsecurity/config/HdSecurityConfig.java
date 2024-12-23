@@ -121,6 +121,11 @@ public class HdSecurityConfig implements Serializable {
     private String httpBasicAccount = "";
 
     /**
+     * SameOrigin Token 的有效期 (单位: 秒)
+     */
+    private long sameOriginTokenExpireTime = 60 * 60 * 24;
+
+    /**
      * Cookie 配置对象
      */
     public HdCookieConfig cookie = new HdCookieConfig();
@@ -325,6 +330,15 @@ public class HdSecurityConfig implements Serializable {
 
     public HdSecurityConfig setHttpBasicAccount(String httpBasicAccount) {
         this.httpBasicAccount = httpBasicAccount;
+        return this;
+    }
+
+    public long getSameOriginTokenExpireTime() {
+        return sameOriginTokenExpireTime;
+    }
+
+    public HdSecurityConfig setSameOriginTokenExpireTime(long sameOriginTokenExpireTime) {
+        this.sameOriginTokenExpireTime = sameOriginTokenExpireTime;
         return this;
     }
 

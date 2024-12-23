@@ -1,7 +1,10 @@
 package cn.youngkbt.hdsecurity.listener;
 
+import cn.youngkbt.hdsecurity.annotation.handler.HdAnnotationHandler;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
+
+import java.lang.annotation.Annotation;
 
 /**
  * @author Tianke
@@ -122,4 +125,10 @@ public interface HdSecurityEventAfterListener {
      */
     void afterComponentRegister(String componentName, Object componentObject);
 
+    /**
+     * 注解处理器注册后触发
+     *
+     * @param annotationHandler 注解处理器
+     */
+    void afterRegisterAnnotationHandler(HdAnnotationHandler<? extends Annotation> annotationHandler);
 }

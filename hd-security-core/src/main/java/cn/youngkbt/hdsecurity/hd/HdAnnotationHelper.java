@@ -1,6 +1,8 @@
-package cn.youngkbt.hdsecurity.annotation;
+package cn.youngkbt.hdsecurity.hd;
 
+import cn.youngkbt.hdsecurity.annotation.*;
 import cn.youngkbt.hdsecurity.annotation.handler.*;
+import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -73,7 +75,12 @@ public class HdAnnotationHelper {
      * @param annotationHandler 注解处理器
      */
     public void addAnnotationHandler(Class<? extends Annotation> annotationClass, HdAnnotationHandler<? extends Annotation> annotationHandler) {
-        this.annotationHandlerMap.put(annotationClass, annotationHandler);
+        // 发布注解处理器注册前置事件
+        HdSecurityEventCenter.publishBeforeRegisterAnnotationHandler(annotationHandler);
+        // 注册注解处理器
+        annotationHandlerMap.put(annotationClass, annotationHandler);
+        // 发布注解处理器注册后置事件
+        HdSecurityEventCenter.publishAfterRegisterAnnotationHandler(annotationHandler);
     }
 
     /**

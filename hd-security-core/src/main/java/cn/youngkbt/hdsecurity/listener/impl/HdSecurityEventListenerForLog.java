@@ -1,11 +1,13 @@
 package cn.youngkbt.hdsecurity.listener.impl;
 
 import cn.youngkbt.hdsecurity.GlobalEventEnums;
+import cn.youngkbt.hdsecurity.annotation.handler.HdAnnotationHandler;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventListener;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
 import cn.youngkbt.hdsecurity.utils.DateUtil;
 
+import java.lang.annotation.Annotation;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -180,5 +182,20 @@ public class HdSecurityEventListenerForLog implements HdSecurityEventListener {
         startCostTimeMap.put(GlobalEventEnums.getByFunctionName(componentName), currentTimeMillis - startCostTimeMap.getOrDefault(GlobalEventEnums.REGISTER_LOG, currentTimeMillis));
         String canonicalName = componentName == null ? null : componentObject.getClass().getCanonicalName();
         log.info("全局组件 {} 载入成功: {}", componentName, canonicalName);
+    }
+
+    @Override
+    public void beforeRegisterAnnotationHandler(HdAnnotationHandler<? extends Annotation> annotationHandler) {
+        startCostTimeMap.put(GlobalEventEnums.REGISTER_ANNOTATION_HANDLER, System.currentTimeMillis());
+    }
+
+    @Override
+    public void afterRegisterAnnotationHandler(HdAnnotationHandler<? extends Annotation> annotationHandler) {
+        if (null == annotationHandler) {
+            return;
+        }
+        long currentTimeMillis = System.currentTimeMillis();
+        startCostTimeMap.put(GlobalEventEnums.REGISTER_ANNOTATION_HANDLER, currentTimeMillis - startCostTimeMap.getOrDefault(GlobalEventEnums.REGISTER_ANNOTATION_HANDLER, currentTimeMillis));
+        log.info("注解扩展 @{} (处理器: {})", annotationHandler.getHandlerAnnotationClass().getSimpleName(), annotationHandler.getClass().getCanonicalName());
     }
 }

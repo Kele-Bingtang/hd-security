@@ -128,9 +128,17 @@ public class HdHelper {
     public static HdAuthorizeHelper authorizeHelper(String accountType) {
         return AUTHORIZE_HELPER_MAP.computeIfAbsent(accountType, key -> HelperCreateStrategy.instance.createAuthorizeHelper.apply(key));
     }
-    
+
+    public static HdAnnotationHelper annotationHelper() {
+        return new HdAnnotationHelper();
+    }
+
     public static HdBasicAuthHelper basicAuthHelper() {
         return new HdBasicAuthHelper();
+    }
+
+    public static HdSameOriginTokenHelper sameOriginTokenHelper() {
+        return new HdSameOriginTokenHelper();
     }
 
     // ---------- 代理默认账号的常用方法，具体用法代理方法的注释 ----------

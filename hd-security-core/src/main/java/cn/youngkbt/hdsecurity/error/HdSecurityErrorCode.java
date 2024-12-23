@@ -102,4 +102,10 @@ public interface HdSecurityErrorCode {
      * 未能通过 Http Basic 认证校验
      */
     int HTTP_BASIC_AUTH_FAIL = 10501;
+
+    /**
+     * 无效的 SameOrigin Token
+     */
+    int SAME_ORIGIN_TOKEN_INVALID = 10502;
+
 }

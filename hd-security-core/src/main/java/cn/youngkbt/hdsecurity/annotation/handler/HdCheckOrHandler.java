@@ -1,8 +1,8 @@
 package cn.youngkbt.hdsecurity.annotation.handler;
 
-import cn.youngkbt.hdsecurity.annotation.HdAnnotationHelper;
 import cn.youngkbt.hdsecurity.annotation.HdCheckOr;
 import cn.youngkbt.hdsecurity.exception.HdSecurityException;
+import cn.youngkbt.hdsecurity.hd.HdHelper;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -39,7 +39,7 @@ public class HdCheckOrHandler implements HdAnnotationHandler<HdCheckOr> {
         List<HdSecurityException> errorList = new ArrayList<>();
         for (Annotation a : annotationList) {
             try {
-                new HdAnnotationHelper().getAnnotationHandler(a.annotationType()).handleAnnotation(a, method);
+                HdHelper.annotationHelper().getAnnotationHandler(a.annotationType()).handleAnnotation(a, method);
                 // 只要有一个校验通过，就直接返回，否则捕获异常继续校验
                 return;
             } catch (HdSecurityException e) {

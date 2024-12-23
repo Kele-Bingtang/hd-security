@@ -1,5 +1,6 @@
 package cn.youngkbt.hdsecurity.listener;
 
+import cn.youngkbt.hdsecurity.annotation.handler.HdAnnotationHandler;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
 import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityEventException;
@@ -7,6 +8,7 @@ import cn.youngkbt.hdsecurity.listener.impl.HdSecurityEventListenerForLog;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
 import cn.youngkbt.hdsecurity.utils.HdCollectionUtil;
 
+import java.lang.annotation.Annotation;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
@@ -219,5 +221,13 @@ public class HdSecurityEventCenter {
         for (HdSecurityEventListener listener : listenerList) {
             listenerConsumer.accept(listener);
         }
+    }
+
+    public static void publishBeforeRegisterAnnotationHandler(HdAnnotationHandler<? extends Annotation> annotationHandler) {
+        publishEvent(listener -> listener.beforeRegisterAnnotationHandler(annotationHandler));
+    }
+
+    public static void publishAfterRegisterAnnotationHandler(HdAnnotationHandler<? extends Annotation> annotationHandler) {
+        publishEvent(listener -> listener.afterRegisterAnnotationHandler(annotationHandler));
     }
 }
