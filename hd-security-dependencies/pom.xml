@@ -14,10 +14,14 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <revision>1.0.0</revision>
-        <springboot.version>2.7.18</springboot.version>
-        <reactor-core.version>3.1.4.RELEASE</reactor-core.version>
-        <servlet-api.version>3.1.0</servlet-api.version>
-        <jakarta-servlet-api.version>6.0.0</jakarta-servlet-api.version>
+        <springboot2.version>2.7.18</springboot2.version>
+        <reactor-core.version>3.7.1</reactor-core.version>
+        <servlet-api.version>4.0.1</servlet-api.version>
+        <jakarta-servlet-api.version>6.1.0</jakarta-servlet-api.version>
+        <jackson-databind.version>2.18.2</jackson-databind.version>
+        <jackson-datatype-jsr310.version>2.18.2</jackson-datatype-jsr310.version>
+        <fastjson.version>2.0.53</fastjson.version>
+        <fastjson2.version>2.0.53</fastjson2.version>
     </properties>
 
     <dependencyManagement>
@@ -34,14 +38,14 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
-                <version>${springboot.version}</version>
+                <version>${springboot2.version}</version>
             </dependency>
 
             <!-- spring-boot-configuration-processor -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-configuration-processor</artifactId>
-                <version>${springboot.version}</version>
+                <version>${springboot2.version}</version>
             </dependency>
 
             <!-- reactor-core -->
@@ -63,6 +67,41 @@
                 <groupId>jakarta.servlet</groupId>
                 <artifactId>jakarta.servlet-api</artifactId>
                 <version>${jakarta-servlet-api.version}</version>
+            </dependency>
+
+            <!-- spring-boot-starter-data-redis -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${springboot2.version}</version>
+            </dependency>
+            
+            <!-- jackson-databind -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson-databind.version}</version>
+            </dependency>
+
+            <!-- jackson-datatype-jsr310 -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson-datatype-jsr310.version}</version>
+            </dependency>
+
+            <!-- fastjson -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <!-- fastjson2 -->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

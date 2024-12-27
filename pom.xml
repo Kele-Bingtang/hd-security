@@ -15,6 +15,7 @@
         <module>hd-security-starter</module>
         <module>hd-security-dependencies</module>
         <module>hd-security-bom</module>
+        <module>hd-security-plugin</module>
     </modules>
 
     <properties>

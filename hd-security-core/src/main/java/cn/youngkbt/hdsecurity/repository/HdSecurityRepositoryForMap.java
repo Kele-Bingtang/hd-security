@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * Hd Security 持久层 Map 存储
+ *
  * @author Tianke
  * @date 2024/11/28 22:33:48
  * @since 1.0.0
@@ -46,7 +48,7 @@ public class HdSecurityRepositoryForMap implements HdSecurityRepository {
     @Override
     public void edit(String key, Object value) {
         long expireTime = getExpireTime(key);
-        if (expireTime == HdSecurityRepositoryKV.NEVER_EXPIRE) {
+        if (expireTime == HdSecurityRepositoryKV.NOT_VALUE_EXPIRE) {
             return;
         }
 
