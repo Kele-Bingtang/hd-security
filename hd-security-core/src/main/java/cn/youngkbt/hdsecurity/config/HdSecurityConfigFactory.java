@@ -1,6 +1,6 @@
 package cn.youngkbt.hdsecurity.config;
 
-import cn.youngkbt.hdsecurity.utils.PropertiesUtil;
+import cn.youngkbt.hdsecurity.utils.HdPropertiesUtil;
 
 import java.util.Optional;
 
@@ -38,6 +38,6 @@ public class HdSecurityConfigFactory {
      * @return HdSecurity 配置对象
      */
     public static HdSecurityConfig createConfig(String path) {
-        return Optional.ofNullable(PropertiesUtil.readerThenConvert(path, HdSecurityConfig.class)).orElse(new HdSecurityConfig());
+        return Optional.ofNullable(HdPropertiesUtil.readerThenConvert(path, HdSecurityConfig.class)).orElse(new HdSecurityConfig());
     }
 }

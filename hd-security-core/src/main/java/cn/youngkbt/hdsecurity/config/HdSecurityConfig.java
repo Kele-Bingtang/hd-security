@@ -121,7 +121,7 @@ public class HdSecurityConfig implements Serializable {
     private String httpBasicAccount = "";
 
     /**
-     * SameOrigin Token 的有效期 (单位: 秒)
+     * SameOrigin Token 的有效期 (单位：秒)
      */
     private long sameOriginTokenExpireTime = 60 * 60 * 24;
 

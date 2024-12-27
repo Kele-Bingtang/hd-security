@@ -13,7 +13,7 @@ import cn.youngkbt.hdsecurity.model.session.HdSession;
 import cn.youngkbt.hdsecurity.model.session.HdTokenDevice;
 import cn.youngkbt.hdsecurity.utils.HdCollectionUtil;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
-import cn.youngkbt.hdsecurity.utils.ObjectUtil;
+import cn.youngkbt.hdsecurity.utils.HdObjectUtil;
 
 import java.util.List;
 import java.util.Objects;
@@ -114,7 +114,7 @@ public class HdLoginHelper {
         }
 
         // 账号 id 不能是复杂类型
-        if (!ObjectUtil.isBasicType(loginId.getClass())) {
+        if (!HdObjectUtil.isBasicType(loginId.getClass())) {
             HdSecurityManager.getLog().warn("loginId 应该为简单类型，例如：String | int | long，不推荐使用复杂类型：" + loginId.getClass());
         }
 

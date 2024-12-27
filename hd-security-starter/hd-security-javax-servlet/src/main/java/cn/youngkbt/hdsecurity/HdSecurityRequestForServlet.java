@@ -45,9 +45,7 @@ public class HdSecurityRequestForServlet implements HdSecurityRequest {
         Map<String, String[]> parameterMap = request.getParameterMap();
         Map<String, String> map = new LinkedHashMap<>(parameterMap.size());
 
-        parameterMap.forEach((key, value) -> {
-            map.put(key, value[0]);
-        });
+        parameterMap.forEach((key, value) -> map.put(key, value[0]));
 
         return map;
     }

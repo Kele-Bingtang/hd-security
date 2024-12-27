@@ -5,7 +5,7 @@ package cn.youngkbt.hdsecurity.utils;
  * @date 2024/11/27 23:25:23
  * @since 1.0.0
  */
-public class ObjectUtil {
+public class HdObjectUtil {
     /**
      * 判断类型是否为 8 大包装类型
      *

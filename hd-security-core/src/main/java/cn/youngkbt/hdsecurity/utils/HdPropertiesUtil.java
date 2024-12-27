@@ -18,9 +18,9 @@ import java.util.Properties;
  * @date 2024/11/25 23:27:29
  * @since 1.0.0
  */
-public class PropertiesUtil {
+public class HdPropertiesUtil {
     // 私有构造函数，防止实例化
-    private PropertiesUtil() {
+    private HdPropertiesUtil() {
     }
 
     /**
@@ -31,7 +31,7 @@ public class PropertiesUtil {
      */
     public static Properties readerProperties(String path) {
         Properties properties = new Properties();
-        try (InputStream inputStream = PropertiesUtil.class.getClassLoader().getResourceAsStream(path)) {
+        try (InputStream inputStream = HdPropertiesUtil.class.getClassLoader().getResourceAsStream(path)) {
 
             if (inputStream == null) {
                 throw new IOException();
