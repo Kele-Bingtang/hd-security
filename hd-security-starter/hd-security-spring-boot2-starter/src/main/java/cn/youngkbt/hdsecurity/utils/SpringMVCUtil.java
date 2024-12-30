@@ -52,7 +52,9 @@ public class SpringMVCUtil {
     }
 
     public static void responseWrite(HttpServletResponse response, String contentType, Object message) {
-        response.setContentType(contentType);
+        if (HdStringUtil.hasEmpty(response.getContentType())) {
+            response.setContentType(contentType);
+        }
         PrintWriter writer = null;
         try {
             writer = response.getWriter();

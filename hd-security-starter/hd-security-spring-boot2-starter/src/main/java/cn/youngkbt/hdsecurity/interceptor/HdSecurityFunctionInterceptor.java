@@ -2,6 +2,7 @@ package cn.youngkbt.hdsecurity.interceptor;
 
 import cn.youngkbt.hdsecurity.exception.HdSecurityContinueMatchException;
 import cn.youngkbt.hdsecurity.exception.HdSecurityStopException;
+import cn.youngkbt.hdsecurity.utils.SpringMVCUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,10 +33,7 @@ public class HdSecurityFunctionInterceptor implements HandlerInterceptor {
             // HdSecurityStopException 异常代表：停止匹配，进入 Controller
 
         } catch (HdSecurityContinueMatchException e) {
-            if (response.getContentType() == null) {
-                response.setContentType("text/plain; charset=utf-8");
-            }
-            response.getWriter().print(e.getMessage());
+            SpringMVCUtil.responseWrite(response, e.getMessage());
             return false;
         }
         return true;
