@@ -18,12 +18,12 @@ public class HdSecurityPathCheckStrategy {
     /**
      * 请求 path 不允许出现的字符
      */
-    public static String[] INVALID_CHARACTER = DefaultConstant.INVALID_CHARACTER;
+    public String[] INVALID_CHARACTER = DefaultConstant.INVALID_CHARACTER;
 
     public HdSecurityPathCheckFunction pathCheckFunction = (path, request, response) -> {
         // 请求地址不允许为 Null
         if (null == path) {
-            throw new HdSecurityPathInvalidException("请求路径不能为 Null").setPath(path);
+            throw new HdSecurityPathInvalidException("请求路径为 Null").setPath(path);
         }
 
         // 不允许包含非法字符
