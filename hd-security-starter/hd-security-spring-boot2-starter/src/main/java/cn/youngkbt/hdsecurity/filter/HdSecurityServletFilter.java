@@ -32,12 +32,21 @@ public class HdSecurityServletFilter implements Filter, HdSecurityFilter {
      */
     public List<String> excludeList = new ArrayList<>();
 
+    /**
+     * 认证前执行函数
+     */
     public Runnable beforeAuth = () -> {
     };
 
+    /**
+     * 认证函数
+     */
     public Runnable auth = () -> {
     };
 
+    /**
+     * 认证异常或者逻辑异常处理函数
+     */
     public Function<Throwable, Object> error = e -> {
         throw new HdSecurityException(e).setCode(HdSecuritySpringErrorCode.DEFAULT_FILTER_ERROR);
     };

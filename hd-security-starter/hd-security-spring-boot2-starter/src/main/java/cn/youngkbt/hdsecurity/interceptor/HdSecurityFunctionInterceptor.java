@@ -18,6 +18,9 @@ import java.util.function.Consumer;
  */
 public class HdSecurityFunctionInterceptor implements HandlerInterceptor {
 
+    /**
+     * 认证函数
+     */
     public Consumer<Object> auth = handler -> {
     };
 
