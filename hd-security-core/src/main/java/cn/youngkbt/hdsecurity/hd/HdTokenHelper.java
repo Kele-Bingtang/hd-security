@@ -17,7 +17,7 @@ import cn.youngkbt.hdsecurity.model.session.HdSession;
 import cn.youngkbt.hdsecurity.model.session.HdTokenDevice;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepository;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryKV;
-import cn.youngkbt.hdsecurity.strategy.TokenGenerateStrategy;
+import cn.youngkbt.hdsecurity.strategy.HdSecurityTokenGenerateStrategy;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 
 import java.util.Collections;
@@ -126,7 +126,7 @@ public class HdTokenHelper {
         }
 
         // 如果不存在旧 Token，则创建新 Token
-        return TokenGenerateStrategy.instance.generateUniqueElement.generate(
+        return HdSecurityTokenGenerateStrategy.instance.generateUniqueElement.generate(
                 "Token",
                 // 最大尝试次数
                 config.getMaxTryTimes(),
@@ -148,7 +148,7 @@ public class HdTokenHelper {
      * @return Token
      */
     public String createToken(Object loginId) {
-        return TokenGenerateStrategy.instance.createToken.create(loginId, accountType);
+        return HdSecurityTokenGenerateStrategy.instance.createToken.create(loginId, accountType);
     }
 
     // ---------- Token 允许的活跃时间相关操作方法 ----------
@@ -836,7 +836,7 @@ public class HdTokenHelper {
      */
     public String createTempToken(String realm, Object value, long expireTime) {
         // 如果不存在旧 Token，则创建新 Token
-        String tempToken = TokenGenerateStrategy.instance.generateUniqueElement.generate(
+        String tempToken = HdSecurityTokenGenerateStrategy.instance.generateUniqueElement.generate(
                 "Token",
                 // 最大尝试次数
                 HdSecurityManager.getConfig().getMaxTryTimes(),

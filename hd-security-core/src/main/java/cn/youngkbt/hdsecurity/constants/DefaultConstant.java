@@ -44,7 +44,7 @@ public interface DefaultConstant {
      * 未封禁标记
      */
     int NOT_BAN_TAG = -2;
-    
+
     // ---------- 二次认证 ----------
     /**
      * 在进行 Token 二级认证时，往持久层写入的 value 值
@@ -59,4 +59,16 @@ public interface DefaultConstant {
      * 同源 Token 标识
      */
     String SAME_ORIGIN_TOKEN_TAG = "SAME_ORIGIN_TOKEN_TAG";
+
+
+    /**
+     * 违法字符，在 Web 框架校验请求的 Path 用到
+     */
+    String[] INVALID_CHARACTER = {
+            "//", "\\",
+            "%2e", "%2E",    // .
+            "%2f", "%2F",    // /
+            "%5c", "%5C",    // \
+            "%25"    // 空格
+    };
 }

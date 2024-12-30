@@ -10,7 +10,7 @@ import java.util.function.Supplier;
  * @date 2024/11/28 00:27:57
  * @since 1.0.0
  */
-public enum TokenGenerateEnums {
+public enum HdSecurityTokenGenerateEnums {
     UUID("uuid", HdTokenHelper::createUuidToken),
     SIMPLE_UUID("simple-uuid", HdTokenHelper::createSimpleUuidToken),
     RANDOM_32("random-32", HdTokenHelper::createRandom32Token),
@@ -22,7 +22,7 @@ public enum TokenGenerateEnums {
     private final Supplier<String> generator;
 
     public static String getTokenByStyle(String style) {
-        for (TokenGenerateEnums enums : TokenGenerateEnums.values()) {
+        for (HdSecurityTokenGenerateEnums enums : HdSecurityTokenGenerateEnums.values()) {
             if (enums.getStyle().equals(style)) {
                 return enums.getGenerator().get();
             }
@@ -30,7 +30,7 @@ public enum TokenGenerateEnums {
         return null;
     }
 
-    TokenGenerateEnums(String style, Supplier<String> generator) {
+    HdSecurityTokenGenerateEnums(String style, Supplier<String> generator) {
         this.style = style;
         this.generator = generator;
     }

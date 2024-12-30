@@ -12,8 +12,8 @@ import cn.youngkbt.hdsecurity.model.session.HdAccountSession;
 import cn.youngkbt.hdsecurity.model.session.HdSession;
 import cn.youngkbt.hdsecurity.model.session.HdTokenDevice;
 import cn.youngkbt.hdsecurity.model.session.HdTokenSession;
-import cn.youngkbt.hdsecurity.strategy.SessionCreateStrategy;
-import cn.youngkbt.hdsecurity.strategy.TokenGenerateStrategy;
+import cn.youngkbt.hdsecurity.strategy.HdSecuritySessionCreateStrategy;
+import cn.youngkbt.hdsecurity.strategy.HdSecurityTokenGenerateStrategy;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 
 import java.util.ArrayList;
@@ -110,7 +110,7 @@ public class HdSessionHelper {
 
         if (null == accountSession) {
             // 策略模式创建 Account Session
-            accountSession = SessionCreateStrategy.instance.createAccountSession.apply(String.valueOf(loginId), accountType);
+            accountSession = HdSecuritySessionCreateStrategy.instance.createAccountSession.apply(String.valueOf(loginId), accountType);
             Long sessionExpireTime = Optional.ofNullable(expireTime).orElse(HdSecurityManager.getConfig(accountType).getTokenExpireTime());
 
             // 存储到持久层
@@ -181,7 +181,7 @@ public class HdSessionHelper {
         HdTokenHelper tokenHelper = HdHelper.tokenHelper(accountType);
 
         // 创建一个 Token
-        String token = TokenGenerateStrategy.instance.generateUniqueElement.generate(
+        String token = HdSecurityTokenGenerateStrategy.instance.generateUniqueElement.generate(
                 "Token",
                 // 最大尝试次数
                 HdSecurityManager.getConfig(accountType).getMaxTryTimes(),
@@ -247,7 +247,7 @@ public class HdSessionHelper {
 
         if (null == tokenSession) {
             // 策略模式创建 Account Session
-            tokenSession = SessionCreateStrategy.instance.createTokenSession.apply(String.valueOf(token), accountType);
+            tokenSession = HdSecuritySessionCreateStrategy.instance.createTokenSession.apply(String.valueOf(token), accountType);
             // 默认 Token Session 的过期时间与 Token 和 LoginId 映射的过期时间一致
             long expireTime = HdSecurityManager.getConfig(accountType).getTokenExpireTime();
             // 存储到持久层

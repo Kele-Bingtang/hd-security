@@ -4,7 +4,7 @@ import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.authorize.AuthorizeType;
 import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityAuthorizeException;
-import cn.youngkbt.hdsecurity.strategy.ElementVagueMatchStrategy;
+import cn.youngkbt.hdsecurity.strategy.HdSecurityElementVagueMatchStrategy;
 import cn.youngkbt.hdsecurity.utils.HdCollectionUtil;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 
@@ -181,7 +181,7 @@ public class HdAuthorizeHelper {
      * @return 是否含有指定权限
      */
     public boolean hasAuthorize(List<String> authorities, String authority) {
-        return ElementVagueMatchStrategy.instance.vagueMatchElement.apply(authorities, authority);
+        return HdSecurityElementVagueMatchStrategy.instance.vagueMatchElement.apply(authorities, authority);
     }
 
     /**

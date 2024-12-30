@@ -4,7 +4,7 @@ import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
 import cn.youngkbt.hdsecurity.model.session.HdAccountSession;
 import cn.youngkbt.hdsecurity.model.session.HdTokenSession;
-import cn.youngkbt.hdsecurity.strategy.HelperCreateStrategy;
+import cn.youngkbt.hdsecurity.strategy.HdSecurityHelperCreateStrategy;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,7 +50,7 @@ public class HdHelper {
      * @return HdSessionHelper
      */
     public static HdLoginHelper loginHelper(String accountType) {
-        return LOGIN_HELPER_MAP.computeIfAbsent(accountType, key -> HelperCreateStrategy.instance.createLoginHelper.apply(key));
+        return LOGIN_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.createLoginHelper.apply(key));
     }
 
     /**
@@ -69,7 +69,7 @@ public class HdHelper {
      * @return HdSessionHelper
      */
     public static HdSessionHelper sessionHelper(String accountType) {
-        return SESSION_HELPER_MAP.computeIfAbsent(accountType, key -> HelperCreateStrategy.instance.createSessionHelper.apply(key));
+        return SESSION_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.createSessionHelper.apply(key));
     }
 
     /**
@@ -88,7 +88,7 @@ public class HdHelper {
      * @return HdTokenHelper
      */
     public static HdTokenHelper tokenHelper(String accountType) {
-        return TOKEN_HELPER_MAP.computeIfAbsent(accountType, key -> HelperCreateStrategy.instance.createTokenHelper.apply(key));
+        return TOKEN_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.createTokenHelper.apply(key));
     }
 
     /**
@@ -107,7 +107,7 @@ public class HdHelper {
      * @return HdBanAccountHelper
      */
     public static HdBanAccountHelper banAccountHelper(String accountType) {
-        return BAN_ACCOUNT_HELPER_MAP.computeIfAbsent(accountType, key -> HelperCreateStrategy.instance.createBanAccountHelper.apply(key));
+        return BAN_ACCOUNT_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.createBanAccountHelper.apply(key));
     }
 
     /**
@@ -126,7 +126,7 @@ public class HdHelper {
      * @return HdAuthorizeHelper
      */
     public static HdAuthorizeHelper authorizeHelper(String accountType) {
-        return AUTHORIZE_HELPER_MAP.computeIfAbsent(accountType, key -> HelperCreateStrategy.instance.createAuthorizeHelper.apply(key));
+        return AUTHORIZE_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.createAuthorizeHelper.apply(key));
     }
 
     public static HdAnnotationHelper annotationHelper() {

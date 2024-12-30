@@ -10,9 +10,9 @@ import cn.youngkbt.hdsecurity.hd.*;
  * @date 2024/11/30 18:14:51
  * @since 1.0.0
  */
-public class HelperCreateStrategy {
+public class HdSecurityHelperCreateStrategy {
 
-    public static HelperCreateStrategy instance = new HelperCreateStrategy();
+    public static HdSecurityHelperCreateStrategy instance = new HdSecurityHelperCreateStrategy();
 
     public HdLoginHelperCreateFunction createLoginHelper = HdLoginHelper::new;
     public HdSessionHelperCreateFunction createSessionHelper = HdSessionHelper::new;
@@ -20,27 +20,27 @@ public class HelperCreateStrategy {
     public HdBanAccountHelperCreateFunction createBanAccountHelper = HdBanAccountHelper::new;
     public HdAuthorizeHelperCreateFunction createAuthorizeHelper = HdAuthorizeHelper::new;
 
-    public HelperCreateStrategy setCreateLoginHelper(HdLoginHelperCreateFunction createLoginHelper) {
+    public HdSecurityHelperCreateStrategy setCreateLoginHelper(HdLoginHelperCreateFunction createLoginHelper) {
         this.createLoginHelper = createLoginHelper;
         return this;
     }
 
-    public HelperCreateStrategy setCreateSessionHelper(HdSessionHelperCreateFunction createSessionHelper) {
+    public HdSecurityHelperCreateStrategy setCreateSessionHelper(HdSessionHelperCreateFunction createSessionHelper) {
         this.createSessionHelper = createSessionHelper;
         return this;
     }
 
-    public HelperCreateStrategy setCreateTokenHelper(HdTokenHelperCreateFunction createTokenHelper) {
+    public HdSecurityHelperCreateStrategy setCreateTokenHelper(HdTokenHelperCreateFunction createTokenHelper) {
         this.createTokenHelper = createTokenHelper;
         return this;
     }
 
-    public HelperCreateStrategy setCreateBanAccountHelper(HdBanAccountHelperCreateFunction createBanAccountHelper) {
+    public HdSecurityHelperCreateStrategy setCreateBanAccountHelper(HdBanAccountHelperCreateFunction createBanAccountHelper) {
         this.createBanAccountHelper = createBanAccountHelper;
         return this;
     }
 
-    public HelperCreateStrategy setCreateAuthorizeHelper(HdAuthorizeHelperCreateFunction createAuthorizeHelper) {
+    public HdSecurityHelperCreateStrategy setCreateAuthorizeHelper(HdAuthorizeHelperCreateFunction createAuthorizeHelper) {
         this.createAuthorizeHelper = createAuthorizeHelper;
         return this;
     }

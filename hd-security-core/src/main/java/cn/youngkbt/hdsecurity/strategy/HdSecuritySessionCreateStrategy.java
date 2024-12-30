@@ -11,20 +11,20 @@ import cn.youngkbt.hdsecurity.model.session.HdTokenSession;
  * @date 2024/11/30 18:09:54
  * @since 1.0.0
  */
-public class SessionCreateStrategy {
+public class HdSecuritySessionCreateStrategy {
 
-    public static SessionCreateStrategy instance = new SessionCreateStrategy();
+    public static HdSecuritySessionCreateStrategy instance = new HdSecuritySessionCreateStrategy();
 
     public HdCreateSessionFunction<HdAccountSession> createAccountSession = HdAccountSession::new;
     
     public HdCreateSessionFunction<HdTokenSession> createTokenSession = HdTokenSession::new;
     
-    public SessionCreateStrategy setCreateAccountSession(HdCreateSessionFunction createAccountSession) {
+    public HdSecuritySessionCreateStrategy setCreateAccountSession(HdCreateSessionFunction createAccountSession) {
         this.createAccountSession = createAccountSession;
         return this;
     }
 
-    public SessionCreateStrategy setCreateTokenSession(HdCreateSessionFunction createTokenSession) {
+    public HdSecuritySessionCreateStrategy setCreateTokenSession(HdCreateSessionFunction createTokenSession) {
         this.createTokenSession = createTokenSession;
         return this;
     }

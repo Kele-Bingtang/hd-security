@@ -13,9 +13,9 @@ import cn.youngkbt.hdsecurity.utils.HdStringUtil;
  * @date 2024/11/28 00:08:15
  * @since 1.0.0
  */
-public class TokenGenerateStrategy {
+public class HdSecurityTokenGenerateStrategy {
 
-    public static TokenGenerateStrategy instance = new TokenGenerateStrategy();
+    public static HdSecurityTokenGenerateStrategy instance = new HdSecurityTokenGenerateStrategy();
 
     public HdGenerateUniqueElementFunction generateUniqueElement = ((elementName, maxTryTimes, createElementFunction, checkUniquePredicate, exceptionConsumer) -> {
         // 循环生成
@@ -43,21 +43,21 @@ public class TokenGenerateStrategy {
     public HdCreateTokenFunction createToken = ((loginId, accountType) -> {
         String tokenStyle = HdSecurityManager.getConfig(accountType).getTokenStyle();
 
-        String tokenByStyle = TokenGenerateEnums.getTokenByStyle(tokenStyle);
+        String tokenByStyle = HdSecurityTokenGenerateEnums.getTokenByStyle(tokenStyle);
         if (HdStringUtil.hasText(tokenByStyle)) {
             return tokenByStyle;
         }
         // 默认返回 uuid
-        return TokenGenerateEnums.UUID.getGenerator().get();
+        return HdSecurityTokenGenerateEnums.UUID.getGenerator().get();
     });
 
 
-    public TokenGenerateStrategy setGenerateUniqueElement(HdGenerateUniqueElementFunction generateUniqueElement) {
+    public HdSecurityTokenGenerateStrategy setGenerateUniqueElement(HdGenerateUniqueElementFunction generateUniqueElement) {
         this.generateUniqueElement = generateUniqueElement;
         return this;
     }
 
-    public TokenGenerateStrategy setCreateToken(HdCreateTokenFunction createToken) {
+    public HdSecurityTokenGenerateStrategy setCreateToken(HdCreateTokenFunction createToken) {
         this.createToken = createToken;
         return this;
     }

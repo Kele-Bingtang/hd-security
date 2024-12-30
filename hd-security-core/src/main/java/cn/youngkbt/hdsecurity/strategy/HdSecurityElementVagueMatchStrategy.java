@@ -10,13 +10,13 @@ import cn.youngkbt.hdsecurity.utils.HdCollectionUtil;
  * @date 2024/11/30 18:33:12
  * @since 1.0.0
  */
-public class ElementVagueMatchStrategy {
+public class HdSecurityElementVagueMatchStrategy {
 
-    public static ElementVagueMatchStrategy instance = new ElementVagueMatchStrategy();
+    public static HdSecurityElementVagueMatchStrategy instance = new HdSecurityElementVagueMatchStrategy();
 
     public HdVagueMatchElementFunction vagueMatchElement = HdCollectionUtil::vagueMatchElement;
 
-    public ElementVagueMatchStrategy setVagueMatchElement(HdVagueMatchElementFunction vagueMatchElement) {
+    public HdSecurityElementVagueMatchStrategy setVagueMatchElement(HdVagueMatchElementFunction vagueMatchElement) {
         this.vagueMatchElement = vagueMatchElement;
         return this;
     }
