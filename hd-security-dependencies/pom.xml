@@ -54,13 +54,6 @@
                 <version>${springboot2.version}</version>
             </dependency>
 
-            <!-- reactor-core -->
-            <dependency>
-                <groupId>io.projectreactor</groupId>
-                <artifactId>reactor-core</artifactId>
-                <version>${reactor-core.version}</version>
-            </dependency>
-
             <!-- Servlet API（旧版）-->
             <dependency>
                 <groupId>javax.servlet</groupId>
