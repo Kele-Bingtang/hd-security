@@ -1,9 +1,14 @@
 package cn.youngkbt.hdsecurity;
 
 import cn.youngkbt.hdsecurity.context.model.HdSecurityRequest;
+import cn.youngkbt.hdsecurity.error.HdSecurityErrorCodeForServlet;
+import cn.youngkbt.hdsecurity.exception.HdSecurityException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -88,5 +93,16 @@ public class HdSecurityRequestForServlet implements HdSecurityRequest {
     @Override
     public String getMethod() {
         return request.getMethod();
+    }
+
+    @Override
+    public Object forward(String path) {
+        HttpServletResponse response = (HttpServletResponse) HdSecurityManager.getContext().getResponse().getSource();
+        try {
+            request.getRequestDispatcher(path).forward(request, response);
+        } catch (ServletException | IOException e) {
+            throw new HdSecurityException(e).setCode(HdSecurityErrorCodeForServlet.FORWARD_FAILURE);
+        }
+        return null;
     }
 }

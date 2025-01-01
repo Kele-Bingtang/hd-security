@@ -4,7 +4,7 @@ import cn.youngkbt.hdsecurity.exception.HdSecurityContinueMatchException;
 import cn.youngkbt.hdsecurity.exception.HdSecurityStopException;
 import cn.youngkbt.hdsecurity.hd.HdAnnotationHelper;
 import cn.youngkbt.hdsecurity.hd.HdHelper;
-import cn.youngkbt.hdsecurity.utils.SpringMVCUtil;
+import cn.youngkbt.hdsecurity.utils.SpringMVCHolder;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -38,7 +38,7 @@ public class HdSecurityAnnotationInterceptor implements HandlerInterceptor {
             // HdSecurityStopException 异常代表：停止匹配，进入 Controller
 
         } catch (HdSecurityContinueMatchException e) {
-            SpringMVCUtil.responseWrite(response, e.getMessage());
+            SpringMVCHolder.responseWrite(response, e.getMessage());
             return false;
         }
         return true;

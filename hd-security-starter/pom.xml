@@ -16,6 +16,8 @@
         <module>hd-security-javax-servlet</module>
         <module>hd-security-jakarta-servlet</module>
         <module>hd-security-spring-boot3-starter</module>
+        <module>hd-security-reactor-spring-boot2-starter</module>
+        <module>hd-security-reactor-spring-boot3-starter</module>
     </modules>
 
     <properties>

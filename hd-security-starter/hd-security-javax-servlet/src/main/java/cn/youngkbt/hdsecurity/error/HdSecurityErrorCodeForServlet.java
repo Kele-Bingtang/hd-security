@@ -7,7 +7,12 @@ package cn.youngkbt.hdsecurity.error;
  */
 public interface HdSecurityErrorCodeForServlet {
     /**
+     * 转发失败
+     */
+    int FORWARD_FAILURE = 20001;
+
+    /**
      * 重定向失败
      */
-    int REDIRECT_FAILURE = 20001;
+    int REDIRECT_FAILURE = 20002;
 }

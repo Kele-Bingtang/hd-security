@@ -1,10 +1,10 @@
 package cn.youngkbt.hdsecurity.strategy;
 
-import cn.youngkbt.hdsecurity.constants.DefaultConstant;
+import cn.youngkbt.hdsecurity.constants.WebConstant;
 import cn.youngkbt.hdsecurity.exception.HdSecurityPathInvalidException;
 import cn.youngkbt.hdsecurity.function.HdSecurityPathCheckFunction;
 import cn.youngkbt.hdsecurity.function.HdSecurityPathInvalidHandleFunction;
-import cn.youngkbt.hdsecurity.utils.SpringMVCUtil;
+import cn.youngkbt.hdsecurity.utils.SpringMVCHolder;
 
 /**
  * @author Tianke
@@ -18,7 +18,7 @@ public class HdSecurityPathCheckStrategy {
     /**
      * 请求 path 不允许出现的字符
      */
-    public String[] INVALID_CHARACTER = DefaultConstant.INVALID_CHARACTER;
+    public String[] INVALID_CHARACTER = WebConstant.INVALID_CHARACTER;
 
     public HdSecurityPathCheckFunction pathCheckFunction = (path, request, response) -> {
         // 请求地址不允许为 Null
@@ -39,7 +39,6 @@ public class HdSecurityPathCheckStrategy {
         }
     };
 
-    public HdSecurityPathInvalidHandleFunction pathInvalidHandleFunction = (e, request, response) -> {
-        SpringMVCUtil.responseWrite(response, "请求地址：" + e.getPath() + "，异常信息：" + e.getMessage());
-    };
+    public HdSecurityPathInvalidHandleFunction pathInvalidHandleFunction = (e, request, response) -> 
+            SpringMVCHolder.responseWrite(response, "请求地址：" + e.getPath() + "，异常信息：" + e.getMessage());
 }

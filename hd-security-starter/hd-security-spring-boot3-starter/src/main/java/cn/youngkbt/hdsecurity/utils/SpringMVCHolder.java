@@ -16,9 +16,9 @@ import java.io.PrintWriter;
  * @date 2024/12/24 00:36:55
  * @since 1.0.0
  */
-public class SpringMVCUtil {
+public class SpringMVCHolder {
 
-    private SpringMVCUtil() {
+    private SpringMVCHolder() {
     }
 
     /**

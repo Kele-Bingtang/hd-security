@@ -5,6 +5,7 @@ import cn.youngkbt.hdsecurity.annotation.handler.HdAnnotationHandler;
 import cn.youngkbt.hdsecurity.authorize.HdSecurityAuthorize;
 import cn.youngkbt.hdsecurity.context.HdSecurityContext;
 import cn.youngkbt.hdsecurity.context.HdSecurityContextForSpring;
+import cn.youngkbt.hdsecurity.filter.HdSecurityPathCheckFilter;
 import cn.youngkbt.hdsecurity.hd.HdHelper;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventListener;
 import cn.youngkbt.hdsecurity.log.HdSecurityLog;
@@ -40,6 +41,11 @@ public class HdSecurityAutoConfiguration {
     @Bean
     public HdSecurityContextForSpring hdSecurityContextForSpring() {
         return new HdSecurityContextForSpring();
+    }
+
+    @Bean
+    public HdSecurityPathCheckFilter hdSecurityPathCheckFilter() {
+        return new HdSecurityPathCheckFilter();
     }
 
     @Autowired(required = false)

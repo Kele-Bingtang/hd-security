@@ -49,7 +49,8 @@ public interface HdSecurityRequest {
 
     /**
      * 在 Cookie 作用域里获取一个值（key 重复则取最后一个值）
-     * @param name 键 
+     *
+     * @param name 键
      * @return 值
      */
     String getCookieValue(String name);
@@ -74,6 +75,14 @@ public interface HdSecurityRequest {
      * @return /
      */
     String getMethod();
+
+    /**
+     * 请求转发
+     *
+     * @param path 转发路径
+     * @return /
+     */
+    Object forward(String path);
 
     /**
      * 在请求体里检测是否存在某个参数

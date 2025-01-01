@@ -7,7 +7,7 @@ import cn.youngkbt.hdsecurity.context.model.HdSecurityRequest;
 import cn.youngkbt.hdsecurity.context.model.HdSecurityResponse;
 import cn.youngkbt.hdsecurity.context.model.HdSecurityStorage;
 import cn.youngkbt.hdsecurity.utils.PathMatcherHolder;
-import cn.youngkbt.hdsecurity.utils.SpringMVCUtil;
+import cn.youngkbt.hdsecurity.utils.SpringMVCHolder;
 
 /**
  * @author Tianke
@@ -17,17 +17,17 @@ import cn.youngkbt.hdsecurity.utils.SpringMVCUtil;
 public class HdSecurityContextForSpring implements HdSecurityContext {
     @Override
     public HdSecurityRequest getRequest() {
-        return new HdSecurityRequestForServlet(SpringMVCUtil.getRequest());
+        return new HdSecurityRequestForServlet(SpringMVCHolder.getRequest());
     }
 
     @Override
     public HdSecurityResponse getResponse() {
-        return new HdSecurityResponseForServlet(SpringMVCUtil.getResponse());
+        return new HdSecurityResponseForServlet(SpringMVCHolder.getResponse());
     }
 
     @Override
     public HdSecurityStorage getStorage() {
-        return new HdSecurityStorageForServlet(SpringMVCUtil.getRequest());
+        return new HdSecurityStorageForServlet(SpringMVCHolder.getRequest());
     }
 
     @Override
