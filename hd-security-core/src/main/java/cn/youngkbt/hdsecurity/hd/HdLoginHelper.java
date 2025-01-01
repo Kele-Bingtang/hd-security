@@ -30,6 +30,10 @@ public class HdLoginHelper {
 
     private final String accountType;
 
+    public HdLoginHelper() {
+        this(DefaultConstant.DEFAULT_ACCOUNT_TYPE);
+    }
+
     public HdLoginHelper(String accountType) {
         this.accountType = accountType;
     }

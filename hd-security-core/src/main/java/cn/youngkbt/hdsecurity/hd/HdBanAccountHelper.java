@@ -20,6 +20,10 @@ public class HdBanAccountHelper {
 
     private final String accountType;
 
+    public HdBanAccountHelper() {
+        this(DefaultConstant.DEFAULT_ACCOUNT_TYPE);
+    }
+
     public HdBanAccountHelper(String accountType) {
         this.accountType = accountType;
     }

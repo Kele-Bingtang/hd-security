@@ -2,6 +2,7 @@ package cn.youngkbt.hdsecurity.hd;
 
 import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.authorize.AuthorizeType;
+import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityAuthorizeException;
 import cn.youngkbt.hdsecurity.strategy.HdSecurityElementVagueMatchStrategy;
@@ -22,6 +23,10 @@ import java.util.List;
 public class HdAuthorizeHelper {
     
     private final String accountType;
+
+    public HdAuthorizeHelper() {
+        this(DefaultConstant.DEFAULT_ACCOUNT_TYPE);
+    }
 
     public HdAuthorizeHelper(String accountType) {
         this.accountType = accountType;

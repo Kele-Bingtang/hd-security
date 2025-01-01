@@ -1,6 +1,6 @@
 package cn.youngkbt.hdsecurity.filter;
 
-import cn.youngkbt.hdsecurity.error.HdSecuritySpringErrorCode;
+import cn.youngkbt.hdsecurity.error.HdSecuritySpringReactorErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityContinueMatchException;
 import cn.youngkbt.hdsecurity.exception.HdSecurityException;
 import cn.youngkbt.hdsecurity.exception.HdSecurityStopException;
@@ -50,7 +50,7 @@ public class HdSecurityFilterForReactor implements WebFilter, HdSecurityFilter {
      * 认证异常或者逻辑异常处理函数
      */
     private Function<Throwable, Object> error = e -> {
-        throw new HdSecurityException(e).setCode(HdSecuritySpringErrorCode.DEFAULT_FILTER_ERROR);
+        throw new HdSecurityException(e).setCode(HdSecuritySpringReactorErrorCode.DEFAULT_FILTER_ERROR);
     };
 
     @Override

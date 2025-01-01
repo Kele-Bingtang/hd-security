@@ -34,6 +34,10 @@ import java.util.UUID;
 public class HdTokenHelper {
     private final String accountType;
 
+    public HdTokenHelper() {
+        this(DefaultConstant.DEFAULT_ACCOUNT_TYPE);
+    }
+
     public HdTokenHelper(String accountType) {
         this.accountType = accountType;
     }

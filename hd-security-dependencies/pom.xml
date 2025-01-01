@@ -22,6 +22,8 @@
         <jackson-datatype-jsr310.version>2.18.2</jackson-datatype-jsr310.version>
         <fastjson.version>2.0.53</fastjson.version>
         <fastjson2.version>2.0.53</fastjson2.version>
+        <jjwt.version>0.12.6</jjwt.version>
+        <commons-pool2.version>2.12.0</commons-pool2.version>
     </properties>
 
     <dependencyManagement>
@@ -101,6 +103,18 @@
                 <groupId>com.alibaba.fastjson2</groupId>
                 <artifactId>fastjson2</artifactId>
                 <version>${fastjson2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
+            </dependency>
+
+            <!-- jjwt -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

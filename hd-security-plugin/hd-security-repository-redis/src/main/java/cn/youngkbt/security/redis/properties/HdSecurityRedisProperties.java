@@ -1,5 +1,6 @@
 package cn.youngkbt.security.redis.properties;
 
+import cn.youngkbt.security.redis.config.HdSecurityRedisRepositoryAutoConfiguration;
 import cn.youngkbt.security.redis.enums.HdSecuritySerializerType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -10,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @date 2024/12/28 02:52:36
  * @since 1.0.0
  */
-@ConfigurationProperties(prefix = "hd-security.redis")
+@ConfigurationProperties(prefix = HdSecurityRedisRepositoryAutoConfiguration.REDIS_PREFIX)
 public class HdSecurityRedisProperties {
     /**
      * Redis 序列化器

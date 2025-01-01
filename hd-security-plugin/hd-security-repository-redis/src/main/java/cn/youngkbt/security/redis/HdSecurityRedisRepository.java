@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
  * @since 1.0.0
  */
 public abstract class HdSecurityRedisRepository implements HdSecurityRepository {
+    
     private final RedisTemplate<String, Object> redisTemplate;
 
     private boolean isInit = false;

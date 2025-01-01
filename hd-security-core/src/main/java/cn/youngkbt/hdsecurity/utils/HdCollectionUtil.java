@@ -1,9 +1,6 @@
 package cn.youngkbt.hdsecurity.utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -20,7 +17,7 @@ public class HdCollectionUtil {
         return array == null || array.length == 0;
     }
 
-    public static <T> boolean isEmpty(List<T> list) {
+    public static <T> boolean isEmpty(Collection<T> list) {
         return list == null || list.isEmpty();
     }
 
@@ -28,11 +25,11 @@ public class HdCollectionUtil {
         return !isEmpty(array);
     }
 
-    public static <T> boolean isNotEmpty(List<T> list) {
+    public static <T> boolean isNotEmpty(Collection<T> list) {
         return !isEmpty(list);
     }
 
-    public static <T> boolean isEmptyWithElement(List<T> list) {
+    public static <T> boolean isEmptyWithElement(Collection<T> list) {
         if (isEmpty(list)) {
             return true;
         } else {
@@ -40,11 +37,11 @@ public class HdCollectionUtil {
         }
     }
 
-    public static <T> boolean elementIsEmpty(List<T> list) {
+    public static <T> boolean elementIsEmpty(Collection<T> list) {
         return list.stream().allMatch(Objects::isNull);
     }
 
-    public static <T> boolean elementIsNotEmpty(List<T> list) {
+    public static <T> boolean elementIsNotEmpty(Collection<T> list) {
         return !elementIsEmpty(list);
     }
 
@@ -84,7 +81,7 @@ public class HdCollectionUtil {
      * @param element 元素
      * @return 集合中是否包含指定元素
      */
-    public static boolean vagueMatchElement(List<String> strList, String element) {
+    public static boolean vagueMatchElement(Collection<String> strList, String element) {
         // 空集合直接返回 false
         if (isEmpty(strList)) {
             return false;
