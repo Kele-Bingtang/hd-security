@@ -109,14 +109,31 @@ public class HdSecurityRepositoryForMap implements HdSecurityRepository {
         return list.isEmpty() ? Set.of() : Set.copyOf(list);
     }
 
+    /**
+     * 获取实际的过期时间（单位：毫秒）
+     *
+     * @param expireTime 过期时间
+     * @return 过期时间（单位：毫秒）
+     */
     public long getExpireTimeMillis(long expireTime) {
         return expireTime == HdSecurityRepositoryKV.NEVER_EXPIRE ? HdSecurityRepositoryKV.NEVER_EXPIRE : System.currentTimeMillis() + expireTime * 1000;
     }
 
+    /**
+     * 获取当前 key 的剩余过期时间
+     *
+     * @param key key
+     * @return key 的剩余过期时间
+     */
     public long getCurrentExpireTime(String key) {
         return (expireMap.get(key) - System.currentTimeMillis()) / 1000;
     }
 
+    /**
+     * 尝试清理过期数据
+     *
+     * @param key key
+     */
     public void tryClearDataWhenExpire(String key) {
         Long expireTime = expireMap.get(key);
 
