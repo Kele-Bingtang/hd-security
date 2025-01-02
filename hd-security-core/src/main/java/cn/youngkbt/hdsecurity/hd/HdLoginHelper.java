@@ -162,7 +162,6 @@ public class HdLoginHelper {
             HdSecurityManager.getContext().getStorage().set(DefaultConstant.TOKEN_ACTIVE_TIME_CHECK, true);
         }
 
-
         // 先判断一下当前会话是否正在临时身份切换, 如果是则返回临时身份
         if (isSwitch()) {
             return getSwitchLoginId();
