@@ -87,6 +87,12 @@ public class HdSessionHelper {
             tokenHelper.addTokenActiveTime(token, loginModel.getTokenActiveExpireTime(), tokenExpireTime);
         }
 
+        // 如果该 token 对应的 Token-Session 已经存在，则续期
+        HdSession tokenSession = getTokenSessionByToken(token);
+        if(null != tokenSession) {
+            tokenSession.updateExpireTimeWhenCondition(loginModel.getTokenExpireTime(), true);
+        }
+
         // 检查此账号会话数量是否超出最大值，如果超过，则按照登录时间顺序，把最开始登录的给注销掉
         if (config.getMaxLoginCount() != -1) {
             HdHelper.loginHelper(accountType).logoutByMaxLoginCount(loginId, accountSession, null, config.getMaxLoginCount());
