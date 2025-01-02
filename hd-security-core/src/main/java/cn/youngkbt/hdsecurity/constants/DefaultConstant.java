@@ -23,6 +23,10 @@ public interface DefaultConstant {
      */
     String CREATED_TOKEN_PREFIX = "CREATED_TOKEN_PREFIX";
     /**
+     * 获取和存储刚创建且带有前置 Token 的标识
+     */
+    String TOKEN_ACTIVE_TIME_CHECK = "TOKEN_ACTIVE_TIME_CHECK";
+    /**
      * 默认临时 Token 前缀
      */
     String DEFAULT_TEMP_TOKEN_REALM = "default-temp-token-realm";

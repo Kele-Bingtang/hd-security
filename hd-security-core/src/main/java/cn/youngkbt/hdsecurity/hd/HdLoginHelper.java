@@ -148,13 +148,20 @@ public class HdLoginHelper {
         if (HdStringUtil.hasEmpty(token)) {
             return null;
         }
-        // 检查 Token 是否被冻结
-        HdHelper.tokenHelper(accountType).checkTokenActiveTime(token);
 
-        // 如果开启 Token 冻结功能和续签功能，则更新 Token 的最活跃时间为现在
-        if (HdSecurityConfigProvider.isUseActiveExpireTime() && Boolean.TRUE.equals(HdSecurityManager.getConfig(accountType).getAutoRenew())) {
-            HdHelper.tokenHelper(accountType).updateTokenLastActiveTimeToNow(token);
+        // 防止同一请求内多次检查 Token 冻结与续期
+        Object check = HdSecurityManager.getContext().getStorage().get(DefaultConstant.TOKEN_ACTIVE_TIME_CHECK);
+        if (null == check) {
+            // 检查 Token 是否被冻结
+            HdHelper.tokenHelper(accountType).checkTokenActiveTime(token);
+
+            // 如果开启 Token 冻结功能和续签功能，则更新 Token 的最活跃时间为现在
+            if (HdSecurityConfigProvider.isUseActiveExpireTime() && Boolean.TRUE.equals(HdSecurityManager.getConfig(accountType).getAutoRenew())) {
+                HdHelper.tokenHelper(accountType).updateTokenLastActiveTimeToNow(token);
+            }
+            HdSecurityManager.getContext().getStorage().set(DefaultConstant.TOKEN_ACTIVE_TIME_CHECK, true);
         }
+
 
         // 先判断一下当前会话是否正在临时身份切换, 如果是则返回临时身份
         if (isSwitch()) {
