@@ -6,10 +6,10 @@
     <parent>
         <groupId>cn.youngkbt</groupId>
         <artifactId>hd-security-plugin</artifactId>
-        <version>${revision}</version>
+        <version>1.0.0</version>
     </parent>
 
-    <artifactId>hd-security-repository-redis</artifactId>
+    <artifactId>hd-security-repository-redisson</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -18,16 +18,10 @@
     </properties>
 
     <dependencies>
-        <!-- spring-boot-starter-data-redis -->
+        <!-- Redisson 相关操作API -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <!-- spring-boot-configuration -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
         </dependency>
         <!-- jackson-databind -->
         <dependency>
@@ -39,24 +33,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!-- fastjson -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!-- fastjson2 -->
-        <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!-- commons-pool2 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>

@@ -15,6 +15,7 @@
         <module>hd-security-repository-redis</module>
         <module>hd-security-jwt</module>
         <module>hd-security-aop</module>
+        <module>hd-security-repository-redisson</module>
     </modules>
 
     <properties>

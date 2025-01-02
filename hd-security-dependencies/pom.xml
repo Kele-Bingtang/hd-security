@@ -24,6 +24,7 @@
         <fastjson2.version>2.0.53</fastjson2.version>
         <jjwt.version>0.12.6</jjwt.version>
         <commons-pool2.version>2.12.0</commons-pool2.version>
+        <redisson.version>3.19.0</redisson.version>
     </properties>
 
     <dependencyManagement>
@@ -122,6 +123,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-aop</artifactId>
                 <version>${springboot2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
