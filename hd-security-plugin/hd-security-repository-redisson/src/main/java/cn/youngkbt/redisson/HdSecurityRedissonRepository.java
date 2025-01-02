@@ -4,14 +4,11 @@ import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepository;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryKV;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
-import org.redisson.api.RBucket;
-import org.redisson.api.RKeys;
-import org.redisson.api.RedissonClient;
+import org.redisson.api.*;
 
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Hd Security Redisson 持久层 API 实现类
@@ -49,9 +46,13 @@ public class HdSecurityRedissonRepository implements HdSecurityRepository {
         }
 
         if (expireTime == HdSecurityRepositoryKV.NEVER_EXPIRE) {
-            redissonClient.getBucket(key).setAsync(value);
+            redissonClient.getBucket(key).set(value);
         } else {
-            redissonClient.getBucket(key).setAsync(value, expireTime, TimeUnit.SECONDS);
+            RBatch batch = redissonClient.createBatch();
+            RBucketAsync<Object> bucket = batch.getBucket(key);
+            bucket.setAsync(value);
+            bucket.expireAsync(Duration.ofSeconds(expireTime));
+            batch.execute();
         }
     }
 
