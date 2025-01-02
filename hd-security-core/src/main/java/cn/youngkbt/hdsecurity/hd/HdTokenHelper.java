@@ -6,7 +6,7 @@ import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfigProvider;
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 import cn.youngkbt.hdsecurity.context.HdSecurityContext;
-import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
+import cn.youngkbt.hdsecurity.jwt.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityTokenException;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
 import cn.youngkbt.hdsecurity.model.cookie.HdCookie;

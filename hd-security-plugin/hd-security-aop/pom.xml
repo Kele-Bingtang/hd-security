@@ -5,17 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.youngkbt</groupId>
-        <artifactId>hd-security</artifactId>
-        <version>${revision}</version>
+        <artifactId>hd-security-plugin</artifactId>
+        <version>1.0.0</version>
     </parent>
 
-    <artifactId>hd-security-plugin</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>hd-security-repository-redis</module>
-        <module>hd-security-jwt</module>
-        <module>hd-security-aop</module>
-    </modules>
+    <artifactId>hd-security-aop</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -23,4 +17,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <!-- spring-boot-starter-aop -->
+        <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
+
+        <dependency>
+            <groupId>cn.youngkbt</groupId>
+            <artifactId>hd-security-core</artifactId>
+        </dependency>
+    </dependencies>
+    
 </project>

@@ -1,4 +1,4 @@
-package cn.youngkbt.hdsecurity;
+package cn.youngkbt.hdsecurity.jwt;
 
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 import cn.youngkbt.hdsecurity.error.HdSecurityJwtErrorCode;

@@ -1,7 +1,7 @@
 package cn.youngkbt.hdsecurity.hd;
 
 import cn.youngkbt.hdsecurity.HdSecurityManager;
-import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
+import cn.youngkbt.hdsecurity.jwt.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityHttpBasicAuthException;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 

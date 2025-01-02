@@ -2,7 +2,7 @@ package cn.youngkbt.hdsecurity.hd;
 
 import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
-import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
+import cn.youngkbt.hdsecurity.jwt.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityBanException;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;

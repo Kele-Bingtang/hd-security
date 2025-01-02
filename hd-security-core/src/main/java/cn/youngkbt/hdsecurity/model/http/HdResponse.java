@@ -1,7 +1,7 @@
 package cn.youngkbt.hdsecurity.model.http;
 
-import cn.youngkbt.hdsecurity.error.HdBaseErrorStatusEnum;
-import cn.youngkbt.hdsecurity.error.HdResponseErrorStatusEnum;
+import cn.youngkbt.hdsecurity.jwt.error.HdBaseErrorStatusEnum;
+import cn.youngkbt.hdsecurity.jwt.error.HdResponseErrorStatusEnum;
 
 import java.io.Serial;
 import java.io.Serializable;

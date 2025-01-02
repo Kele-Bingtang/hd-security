@@ -3,7 +3,7 @@ package cn.youngkbt.hdsecurity.hd;
 import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfigProvider;
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
-import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
+import cn.youngkbt.hdsecurity.jwt.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityLoginException;
 import cn.youngkbt.hdsecurity.exception.HdSecuritySecondAuthException;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;

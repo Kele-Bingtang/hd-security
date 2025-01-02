@@ -1,4 +1,4 @@
-package cn.youngkbt.hdsecurity;
+package cn.youngkbt.hdsecurity.jwt;
 
 /**
  * Jwt 配置文件

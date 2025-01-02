@@ -2,7 +2,7 @@ package cn.youngkbt.hdsecurity.listener;
 
 import cn.youngkbt.hdsecurity.annotation.handler.HdAnnotationHandler;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
-import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
+import cn.youngkbt.hdsecurity.jwt.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityEventException;
 import cn.youngkbt.hdsecurity.listener.impl.HdSecurityEventListenerForLog;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;

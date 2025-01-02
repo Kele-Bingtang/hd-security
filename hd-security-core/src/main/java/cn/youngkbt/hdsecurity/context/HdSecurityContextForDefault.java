@@ -3,7 +3,7 @@ package cn.youngkbt.hdsecurity.context;
 import cn.youngkbt.hdsecurity.context.model.HdSecurityRequest;
 import cn.youngkbt.hdsecurity.context.model.HdSecurityResponse;
 import cn.youngkbt.hdsecurity.context.model.HdSecurityStorage;
-import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
+import cn.youngkbt.hdsecurity.jwt.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityContextException;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 

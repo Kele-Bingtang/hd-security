@@ -1,6 +1,6 @@
 package cn.youngkbt.hdsecurity.utils;
 
-import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
+import cn.youngkbt.hdsecurity.jwt.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityConfigException;
 
 import java.io.IOException;
