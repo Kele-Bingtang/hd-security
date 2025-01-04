@@ -3,7 +3,7 @@ package cn.youngkbt.hdsecurity.hd;
 import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.authorize.AuthorizeType;
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
-import cn.youngkbt.hdsecurity.jwt.error.HdSecurityErrorCode;
+import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityAuthorizeException;
 import cn.youngkbt.hdsecurity.strategy.HdSecurityElementVagueMatchStrategy;
 import cn.youngkbt.hdsecurity.utils.HdCollectionUtil;
@@ -30,6 +30,10 @@ public class HdAuthorizeHelper {
 
     public HdAuthorizeHelper(String accountType) {
         this.accountType = accountType;
+    }
+
+    public String getAccountType() {
+        return accountType;
     }
 
     // ---------- 角色相关操作方法 ----------

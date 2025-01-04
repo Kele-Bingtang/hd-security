@@ -29,6 +29,9 @@ public class HdHelper {
     private static final Map<String, HdTokenHelper> TOKEN_HELPER_MAP = new ConcurrentHashMap<>();
     private static final Map<String, HdAuthorizeHelper> AUTHORIZE_HELPER_MAP = new ConcurrentHashMap<>();
     private static final Map<String, HdBanAccountHelper> BAN_ACCOUNT_HELPER_MAP = new ConcurrentHashMap<>();
+    private static HdAnnotationHelper hdAnnotationHelper;
+    private static HdBasicAuthHelper hdBasicAuthHelper;
+    private static HdSameOriginTokenHelper hdSameOriginTokenHelper;
     /**
      * 默认的 accountType
      */
@@ -50,7 +53,7 @@ public class HdHelper {
      * @return HdSessionHelper
      */
     public static HdLoginHelper loginHelper(String accountType) {
-        return LOGIN_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.createLoginHelper.apply(key));
+        return LOGIN_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.getCreateLoginHelper().apply(key));
     }
 
     /**
@@ -69,7 +72,7 @@ public class HdHelper {
      * @return HdSessionHelper
      */
     public static HdSessionHelper sessionHelper(String accountType) {
-        return SESSION_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.createSessionHelper.apply(key));
+        return SESSION_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.getCreateSessionHelper().apply(key));
     }
 
     /**
@@ -88,7 +91,7 @@ public class HdHelper {
      * @return HdTokenHelper
      */
     public static HdTokenHelper tokenHelper(String accountType) {
-        return TOKEN_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.createTokenHelper.apply(key));
+        return TOKEN_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.getCreateTokenHelper().apply(key));
     }
 
     /**
@@ -107,7 +110,7 @@ public class HdHelper {
      * @return HdBanAccountHelper
      */
     public static HdBanAccountHelper banAccountHelper(String accountType) {
-        return BAN_ACCOUNT_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.createBanAccountHelper.apply(key));
+        return BAN_ACCOUNT_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.getCreateBanAccountHelper().apply(key));
     }
 
     /**
@@ -126,19 +129,28 @@ public class HdHelper {
      * @return HdAuthorizeHelper
      */
     public static HdAuthorizeHelper authorizeHelper(String accountType) {
-        return AUTHORIZE_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.createAuthorizeHelper.apply(key));
+        return AUTHORIZE_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.getCreateAuthorizeHelper().apply(key));
     }
 
     public static HdAnnotationHelper annotationHelper() {
-        return new HdAnnotationHelper();
+        if (null == hdAnnotationHelper) {
+            hdAnnotationHelper = HdSecurityHelperCreateStrategy.instance.getCreateAnnotationHelper().get();
+        }
+        return hdAnnotationHelper;
     }
 
     public static HdBasicAuthHelper basicAuthHelper() {
-        return new HdBasicAuthHelper();
+        if (null == hdBasicAuthHelper) {
+            hdBasicAuthHelper = HdSecurityHelperCreateStrategy.instance.getCreateBasicAuthHelper().get();
+        }
+        return hdBasicAuthHelper;
     }
 
     public static HdSameOriginTokenHelper sameOriginTokenHelper() {
-        return new HdSameOriginTokenHelper();
+        if (null == hdSameOriginTokenHelper) {
+            hdSameOriginTokenHelper = HdSecurityHelperCreateStrategy.instance.getCreateSameOriginTokenHelper().get();
+        }
+        return hdSameOriginTokenHelper;
     }
 
     // ---------- 代理默认账号的常用方法，具体用法代理方法的注释 ----------

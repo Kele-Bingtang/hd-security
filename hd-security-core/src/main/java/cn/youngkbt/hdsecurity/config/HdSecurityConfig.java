@@ -51,7 +51,7 @@ public class HdSecurityConfig implements Serializable {
     private int maxLoginCount = 12;
 
     /**
-     * 在每次创建 token 时的最高循环次数，用于保证 token 唯一性（-1=不循环尝试，直接使用）
+     * 在每次创建 token 时的最高循环次数，用于保证 token 唯一性（-1 不循环尝试，直接使用）
      */
     private int maxTryTimes = 12;
 
@@ -116,6 +116,11 @@ public class HdSecurityConfig implements Serializable {
     private String logLevel = "trace";
 
     /**
+     * 日志等级 int 值（1=trace、2=debug、3=info、4=warn、5=error、6=fatal），此值与 logLevel 联动
+     */
+    private int logLevelInt = 1;
+
+    /**
      * http basic 认证的默认账号和密码，冒号隔开，格式样例(Hd:123456)
      */
     private String httpBasicAccount = "";
@@ -131,9 +136,9 @@ public class HdSecurityConfig implements Serializable {
     public HdCookieConfig cookie = new HdCookieConfig();
 
     /**
-     * 日志等级 int 值（1=trace、2=debug、3=info、4=warn、5=error、6=fatal），此值与 logLevel 联动
+     * JWT 密钥，使用 JWT 模块时生效
      */
-    private int logLevelInt = 1;
+    private String jwtSecretKey;
 
     public String getSecurityPrefixKey() {
         return securityPrefixKey;
@@ -342,6 +347,15 @@ public class HdSecurityConfig implements Serializable {
         return this;
     }
 
+    public String getJwtSecretKey() {
+        return jwtSecretKey;
+    }
+
+    public HdSecurityConfig setJwtSecretKey(String jwtSecretKey) {
+        this.jwtSecretKey = jwtSecretKey;
+        return this;
+    }
+
     public HdCookieConfig getCookie() {
         return cookie;
     }
@@ -374,7 +388,9 @@ public class HdSecurityConfig implements Serializable {
                 ", isPrint=" + isPrint +
                 ", isLog=" + isLog +
                 ", logLevel='" + logLevel + '\'' +
-                ", httpBasicAuth='" + httpBasicAccount + '\'' +
+                ", httpBasicAccount='" + httpBasicAccount + '\'' +
+                ", sameOriginTokenExpireTime=" + sameOriginTokenExpireTime +
+                ", secretKey='" + jwtSecretKey + '\'' +
                 ", cookie=" + cookie +
                 ", logLevelInt=" + logLevelInt +
                 '}';

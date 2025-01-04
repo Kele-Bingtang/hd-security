@@ -40,7 +40,7 @@ public class HdLoginModel {
     /**
      * 自定义 Token（自定义本次登录生成的 Token 值）
      */
-    public String token;
+    private String token;
 
     /**
      * 是否在登录后将 Token 写入到响应头
@@ -51,6 +51,11 @@ public class HdLoginModel {
      * 本次登录挂载到 HdDevice 的数据
      */
     private Map<String, Object> tokenDeviceData;
+
+    /**
+     * 扩展信息（引入 hd-security-jwt 依赖后生效）
+     */
+    private Map<String, Object> extraData;
 
     public Object getLoginId() {
         return loginId;
@@ -153,16 +158,28 @@ public class HdLoginModel {
         return Math.toIntExact(tokenExpireTime);
     }
 
+    public Map<String, Object> getExtraData() {
+        return extraData;
+    }
+
+    public HdLoginModel setExtraData(Map<String, Object> extraData) {
+        this.extraData = extraData;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "HdLoginModel{" +
-                "device='" + device + '\'' +
+                "loginId=" + loginId +
+                ", accountType='" + accountType + '\'' +
+                ", device='" + device + '\'' +
                 ", rememberMe=" + rememberMe +
                 ", tokenExpireTime=" + tokenExpireTime +
                 ", tokenActiveExpireTime=" + tokenActiveExpireTime +
                 ", token='" + token + '\'' +
                 ", isWriteHeader=" + isWriteHeader +
-                ", deviceData=" + tokenDeviceData +
+                ", tokenDeviceData=" + tokenDeviceData +
+                ", extraData=" + extraData +
                 '}';
     }
 }

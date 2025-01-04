@@ -1,4 +1,4 @@
-package cn.youngkbt.hdsecurity.error;
+package cn.youngkbt.hdsecurity.jwt.error;
 
 /**
  * @author Tianke
@@ -10,5 +10,8 @@ public interface HdSecurityJwtErrorCode {
      * JWT 签名无效
      */
     int JWT_SIGNATURE_INVALID = 30001;
+    /**
+     * JWT 已超期
+     */
     int JWT_EXPIRED = 30002;
 }

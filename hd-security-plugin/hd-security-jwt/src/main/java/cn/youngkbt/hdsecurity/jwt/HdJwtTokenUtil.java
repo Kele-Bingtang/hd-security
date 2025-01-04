@@ -1,9 +1,8 @@
 package cn.youngkbt.hdsecurity.jwt;
 
-import cn.youngkbt.hdsecurity.constants.DefaultConstant;
-import cn.youngkbt.hdsecurity.error.HdSecurityJwtErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityJwtException;
 import cn.youngkbt.hdsecurity.hd.HdTokenHelper;
+import cn.youngkbt.hdsecurity.jwt.error.HdSecurityJwtErrorCode;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryKV;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 import io.jsonwebtoken.*;
@@ -17,52 +16,20 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * JWT 令牌模块
+ * JWT 工具类，包含创建、解析、刷新、验证 JWT 方法
  *
  * @author Tianke
- * @date 2025/1/1 21:28:15
+ * @date 2025/1/3 23:22:35
  * @since 1.0.0
  */
-public class HdJwtTokenHelper {
-    private String accountType = DefaultConstant.DEFAULT_ACCOUNT_TYPE;
-    private String loginId = "loginId";
-    private String device = DefaultConstant.DEFAULT_LOGIN_DEVICE;
-    private String issuer = "hd-security";
+public class HdJwtTokenUtil {
 
-    public String getAccountType() {
-        return accountType;
-    }
+    public static String accountType = "accountType";
+    public static String loginId = "loginId";
+    public static String device = "device";
+    public static String issuer = "hd-security";
 
-    public HdJwtTokenHelper setAccountType(String accountType) {
-        this.accountType = accountType;
-        return this;
-    }
-
-    public String getLoginId() {
-        return loginId;
-    }
-
-    public HdJwtTokenHelper setLoginId(String loginId) {
-        this.loginId = loginId;
-        return this;
-    }
-
-    public String getDevice() {
-        return device;
-    }
-
-    public HdJwtTokenHelper setDevice(String device) {
-        this.device = device;
-        return this;
-    }
-
-    public String getIssuer() {
-        return issuer;
-    }
-
-    public HdJwtTokenHelper setIssuer(String issuer) {
-        this.issuer = issuer;
-        return this;
+    private HdJwtTokenUtil() {
     }
 
     /**
@@ -75,14 +42,14 @@ public class HdJwtTokenHelper {
      * @param extra      额外参数
      * @return 令牌
      */
-    public String createToken(Object loginId, String device, long expireTime, String secretKey, Map<String, Object> extra) {
+    public static String createToken(String accountType, Object loginId, String device, long expireTime, String secretKey, Map<String, Object> extra) {
         if (null == extra || extra.isEmpty()) {
             extra = new HashMap<>();
         }
 
-        extra.put(accountType, accountType);
-        extra.put(this.loginId, loginId);
-        extra.put(this.device, device);
+        extra.put(HdJwtTokenUtil.accountType, accountType);
+        extra.put(HdJwtTokenUtil.loginId, loginId);
+        extra.put(HdJwtTokenUtil.device, device);
 
         return createToken(extra, expireTime, secretKey);
     }
@@ -95,7 +62,7 @@ public class HdJwtTokenHelper {
      * @param secretKey  密钥
      * @return 令牌
      */
-    private String createToken(Map<String, Object> claim, long expireTime, String secretKey) {
+    private static String createToken(Map<String, Object> claim, long expireTime, String secretKey) {
         return Jwts.builder()
                 .header()
                 .add("type", "JWT")
@@ -119,7 +86,7 @@ public class HdJwtTokenHelper {
      * @param secretKey 密钥
      * @return 数据声明
      */
-    private Claims getClaims(String token, String secretKey) {
+    public static Claims getClaims(String token, String secretKey) {
         return parseToken(token, secretKey).getPayload();
     }
 
@@ -130,10 +97,9 @@ public class HdJwtTokenHelper {
      * @param secretKey 密钥
      * @return 数据声明
      */
-    private Jws<Claims> parseToken(String token, String secretKey) {
+    public static Jws<Claims> parseToken(String token, String secretKey) {
         return parseToken(token, secretKey, true);
     }
-
 
     /**
      * 解析 Token
@@ -143,7 +109,7 @@ public class HdJwtTokenHelper {
      * @param isCheckExpire 是否校验 Token 是否过期
      * @return 数据声明
      */
-    private Jws<Claims> parseToken(String token, String secretKey, boolean isCheckExpire) {
+    public static Jws<Claims> parseToken(String token, String secretKey, boolean isCheckExpire) {
         if (HdStringUtil.hasEmpty(token)) {
             throw new HdSecurityJwtException("Token 不能为空");
         }
@@ -174,42 +140,8 @@ public class HdJwtTokenHelper {
      *
      * @param secretKey 密钥
      */
-    public SecretKey generateKey(String secretKey) {
+    public static SecretKey generateKey(String secretKey) {
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-    }
-
-    /**
-     * 从令牌中获取数据头
-     *
-     * @param token     令牌
-     * @param secretKey 密钥
-     * @return 数据声明
-     */
-    public JwsHeader getHeader(String token, String secretKey) {
-        return parseToken(token, secretKey).getHeader();
-    }
-
-
-    /**
-     * 从令牌中获取登录 ID
-     *
-     * @param token     令牌
-     * @param secretKey 密钥
-     * @return 用户名
-     */
-    public Object getLoginId(String token, String secretKey) {
-        return getClaims(token, secretKey).get(loginId);
-    }
-
-    /**
-     * 从令牌中获取设备
-     *
-     * @param token     令牌
-     * @param secretKey 密钥
-     * @return 用户名
-     */
-    public String getDevice(String token, String secretKey) {
-        return String.valueOf(getClaims(token, secretKey).get(device));
     }
 
     /**
@@ -221,10 +153,10 @@ public class HdJwtTokenHelper {
      * @param secretKey 密钥
      * @return 令牌是否正确
      */
-    public boolean validateToken(String token, String loginId, String device, String secretKey) {
+    public static boolean validateToken(String token, String loginId, String device, String secretKey) {
         Claims claims = getClaims(token, secretKey);
-        Object validLoginId = claims.get(this.loginId);
-        Object validDevice = claims.get(this.device);
+        Object validLoginId = claims.get(HdJwtTokenUtil.loginId);
+        Object validDevice = claims.get(HdJwtTokenUtil.device);
 
         return (Objects.equals(validLoginId, loginId) && Objects.equals(validDevice, device) && !isExpire(token, secretKey));
     }
@@ -237,7 +169,7 @@ public class HdJwtTokenHelper {
      * @param secretKey  密钥
      * @return 新的令牌
      */
-    public String refreshToken(String token, Long expireTime, String secretKey) {
+    public static String refreshToken(String token, Long expireTime, String secretKey) {
         String refreshedToken;
         try {
             Claims claims = getClaims(token, secretKey);
@@ -249,14 +181,65 @@ public class HdJwtTokenHelper {
     }
 
     /**
+     * 从令牌中获取数据头
+     *
+     * @param token     令牌
+     * @param secretKey 密钥
+     * @return 数据声明
+     */
+    public static JwsHeader getHeader(String token, String secretKey) {
+        return parseToken(token, secretKey).getHeader();
+    }
+
+
+    /**
+     * 从令牌中获取登录 ID
+     *
+     * @param token     令牌
+     * @param secretKey 密钥
+     * @return 用户名
+     */
+    public static Object getLoginId(String token, String secretKey) {
+        return getClaims(token, secretKey).get(loginId);
+    }
+
+    /**
+     * 从令牌中获取设备
+     *
+     * @param token     令牌
+     * @param secretKey 密钥
+     * @return 用户名
+     */
+    public static String getDevice(String token, String secretKey) {
+        return String.valueOf(getClaims(token, secretKey).get(device));
+    }
+
+    /**
      * 获取 Token 有效期
      *
      * @param token     令牌
      * @param secretKey 密钥
      * @return Token 有效期
      */
-    public Date getExpireTime(String token, String secretKey) {
+    public static Date getExpireTime(String token, String secretKey) {
         return getClaims(token, secretKey).getExpiration();
+    }
+
+    /**
+     * 获取 Token 有效期，单位秒。如果为 null 代表永不过期
+     *
+     * @param token     令牌
+     * @param secretKey 密钥
+     * @return Token 有效期
+     */
+    public static Long getExpireTimeout(String token, String secretKey) {
+        Date expireTime = getExpireTime(token, secretKey);
+        // 如果没有设置过期时间，则默认为永久有效
+        if (null == expireTime) {
+            return null;
+        }
+
+        return expireTime.getTime() - System.currentTimeMillis() / 1000;
     }
 
     /**
@@ -266,7 +249,12 @@ public class HdJwtTokenHelper {
      * @param secretKey 密钥
      * @return 是否过期
      */
-    public boolean isExpire(String token, String secretKey) {
-        return getExpireTime(token, secretKey).before(new Date());
+    public static boolean isExpire(String token, String secretKey) {
+        Date expireTime = getExpireTime(token, secretKey);
+        // 如果没有设置过期时间，则默认为永久有效
+        if (null == expireTime) {
+            return false;
+        }
+        return expireTime.before(new Date());
     }
 }

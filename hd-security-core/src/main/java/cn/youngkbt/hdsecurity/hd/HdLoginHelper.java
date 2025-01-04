@@ -1,12 +1,15 @@
 package cn.youngkbt.hdsecurity.hd;
 
 import cn.youngkbt.hdsecurity.HdSecurityManager;
+import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfigProvider;
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
-import cn.youngkbt.hdsecurity.jwt.error.HdSecurityErrorCode;
+import cn.youngkbt.hdsecurity.context.model.HdSecurityStorage;
+import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityLoginException;
 import cn.youngkbt.hdsecurity.exception.HdSecuritySecondAuthException;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
+import cn.youngkbt.hdsecurity.model.cookie.HdCookieOperator;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModelOperator;
 import cn.youngkbt.hdsecurity.model.session.HdSession;
@@ -36,6 +39,10 @@ public class HdLoginHelper {
 
     public HdLoginHelper(String accountType) {
         this.accountType = accountType;
+    }
+
+    public String getAccountType() {
+        return accountType;
     }
 
     // ---------- 登录相关操作方法 ----------
@@ -281,6 +288,32 @@ public class HdLoginHelper {
 
     /**
      * 注销
+     */
+    public void logout() {
+        String webToken = HdHelper.tokenHelper(accountType).getWebToken();
+        if (HdStringUtil.hasEmpty(webToken)) {
+            return;
+        }
+
+        HdSecurityConfig config = HdSecurityManager.getConfig(accountType);
+        // 如果「尝试从 cookie 里读取 token」功能，则清除 Cookie
+        if (Boolean.TRUE.equals(config.getReadCookie())) {
+            HdCookieOperator.removeCookie(config.getSecurityPrefixKey(), config.getCookie());
+        }
+
+        // 从作用域里清除 Token，因为在登录成功后会往作用域里存入 Token，具体请看 HdTokenHelper#writeTokenToStorage() 方法
+        HdSecurityStorage storage = HdSecurityManager.getContext().getStorage();
+        if (null != storage) {
+            storage.remove(DefaultConstant.CREATED_TOKEN);
+            storage.remove(DefaultConstant.CREATED_TOKEN_PREFIX);
+        }
+
+        // 注销该 Token 的信息
+        logoutByToken(webToken);
+    }
+
+    /**
+     * 注销
      *
      * @param loginId 登录 ID
      */
@@ -465,7 +498,7 @@ public class HdLoginHelper {
      * @param accountSession    账号会话
      * @param exitExtraRunnable 退出登录的额外逻辑，给注销、踢人下线、顶人下线分别传入对应的逻辑
      */
-    private void exitLoginByToken(String token, HdSession accountSession, Runnable exitExtraRunnable) {
+    public void exitLoginByToken(String token, HdSession accountSession, Runnable exitExtraRunnable) {
         HdSessionHelper hdSessionHelper = HdHelper.sessionHelper(accountType);
         HdTokenHelper tokenHelper = HdHelper.tokenHelper(accountType);
 

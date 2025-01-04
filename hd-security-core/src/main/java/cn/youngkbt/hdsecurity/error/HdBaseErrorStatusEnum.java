@@ -1,4 +1,4 @@
-package cn.youngkbt.hdsecurity.jwt.error;
+package cn.youngkbt.hdsecurity.error;
 
 /**
  * 基础异常状态码枚举接口，通过实现该接口，自定义异常状态码

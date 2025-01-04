@@ -1,4 +1,4 @@
-package cn.youngkbt.hdsecurity.jwt.error;
+package cn.youngkbt.hdsecurity.error;
 
 /**
  * @author Tianke

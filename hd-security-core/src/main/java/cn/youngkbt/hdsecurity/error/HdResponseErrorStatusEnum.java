@@ -1,4 +1,4 @@
-package cn.youngkbt.hdsecurity.jwt.error;
+package cn.youngkbt.hdsecurity.error;
 
 /**
  * Hd Security 响应状态码

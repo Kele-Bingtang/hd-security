@@ -1,15 +1,15 @@
 package cn.youngkbt.hdsecurity.hd;
 
 import cn.youngkbt.hdsecurity.HdSecurityManager;
-import cn.youngkbt.hdsecurity.config.HdCookieConfig;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfigProvider;
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 import cn.youngkbt.hdsecurity.context.HdSecurityContext;
-import cn.youngkbt.hdsecurity.jwt.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityTokenException;
+import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
 import cn.youngkbt.hdsecurity.model.cookie.HdCookie;
+import cn.youngkbt.hdsecurity.model.cookie.HdCookieOperator;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModelOperator;
 import cn.youngkbt.hdsecurity.model.session.HdAccountSession;
@@ -20,9 +20,7 @@ import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryKV;
 import cn.youngkbt.hdsecurity.strategy.HdSecurityTokenGenerateStrategy;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Hd Security Token 模块
@@ -40,6 +38,10 @@ public class HdTokenHelper {
 
     public HdTokenHelper(String accountType) {
         this.accountType = accountType;
+    }
+
+    public String getAccountType() {
+        return accountType;
     }
 
     /**
@@ -112,7 +114,7 @@ public class HdTokenHelper {
      * @param loginModel 登录参数
      * @return Token
      */
-    public String createToken(HdLoginModel loginModel) {
+    public String createLoginToken(HdLoginModel loginModel) {
         // 如果存在自定义 token，则直接返回
         if (HdStringUtil.hasText(loginModel.getToken())) {
             return loginModel.getToken();
@@ -133,9 +135,9 @@ public class HdTokenHelper {
         return HdSecurityTokenGenerateStrategy.instance.generateUniqueElement.generate(
                 "Token",
                 // 最大尝试次数
-                config.getMaxTryTimes(),
+                getMaxTryTimes(),
                 // 创建 Token
-                () -> createToken(loginId),
+                () -> createToken(loginModel),
                 // 验证 Token 唯一性，这里从持久层获取根据创建的 Token 获取登录 ID，获取成功代表有用户在用，则不唯一
                 newToken -> getLoginIdByToken(newToken) == null,
                 // 捕获异常
@@ -148,11 +150,16 @@ public class HdTokenHelper {
     /**
      * 使用策略创建 Token
      *
-     * @param loginId 登录 ID
+     * @param loginModel 登录模型
      * @return Token
      */
-    public String createToken(Object loginId) {
-        return HdSecurityTokenGenerateStrategy.instance.createToken.create(loginId, accountType);
+    public String createToken(HdLoginModel loginModel) {
+        return HdSecurityTokenGenerateStrategy.instance.createToken.create(loginModel.getLoginId(), accountType);
+    }
+
+    public List<String> searchToken(String keyword) {
+        Set<String> keys = HdSecurityManager.getRepository().keys(keyword);
+        return new ArrayList<>(keys);
     }
 
     // ---------- Token 允许的活跃时间相关操作方法 ----------
@@ -650,17 +657,7 @@ public class HdTokenHelper {
         HdSecurityConfig config = HdSecurityManager.getConfig(accountType);
 
         if (Boolean.TRUE.equals(config.getReadCookie())) {
-            HdCookieConfig cookieConfig = config.getCookie();
-            HdCookie cookie = new HdCookie()
-                    .setName(config.getSecurityPrefixKey())
-                    .setValue(token)
-                    .setMaxAge(cookieExpireTime)
-                    .setDomain(cookieConfig.getDomain())
-                    .setPath(cookieConfig.getPath())
-                    .setHttpOnly(cookieConfig.getHttpOnly())
-                    .setSecure(cookieConfig.getSecure())
-                    .setSameSite(cookieConfig.getSameSite());
-
+            HdCookie cookie = HdCookieOperator.createCookie(config.getSecurityPrefixKey(), token, cookieExpireTime, config.getCookie());
             HdSecurityManager.getContext().getResponse().addCookie(cookie);
         }
     }
@@ -724,7 +721,6 @@ public class HdTokenHelper {
         // 如果没有设置前缀，则直接返回
         return token;
     }
-
 
     /**
      * 从 Web 获取 Token
@@ -843,9 +839,9 @@ public class HdTokenHelper {
         String tempToken = HdSecurityTokenGenerateStrategy.instance.generateUniqueElement.generate(
                 "Token",
                 // 最大尝试次数
-                HdSecurityManager.getConfig().getMaxTryTimes(),
+                getMaxTryTimes(),
                 // 创建 Token
-                () -> createToken(""),
+                () -> HdSecurityTokenGenerateStrategy.instance.createToken.create("", accountType),
                 // 验证 Token 唯一性，这里从持久层获取根据创建的 Token 获取登录 ID，获取成功代表有用户在用，则不唯一
                 newToken -> getLoginIdByToken(newToken) == null,
                 // 捕获异常
@@ -947,4 +943,53 @@ public class HdTokenHelper {
         return HdSecurityManager.getRepository().getExpireTime(RepositoryKeyHelper.getTempTokenKey(accountType, realm, tempToken));
     }
 
+    // ---------- 允许第三方插件拓展相关操作方法 ----------
+
+    /**
+     * 返回全局配置对象的 maxTryTimes
+     *
+     * @return 全局配置对象的 maxTryTimes
+     */
+    public int getMaxTryTimes() {
+        return HdSecurityManager.getConfig(accountType).getMaxTryTimes();
+    }
+
+    /**
+     * 获取当前 Token 的扩展信息（此函数只在 JWT 模式下生效，即引入 hd-security-jwt 依赖）
+     *
+     * @return 对应的扩展数据
+     */
+    public Map<String, Object> getExtraMap() {
+        return getExtraMap(getWebToken());
+    }
+
+    /**
+     * 获取当前 Token 的扩展信息（此函数只在 JWT 模式下生效，即引入 hd-security-jwt 依赖）
+     *
+     * @return 对应的扩展数据
+     */
+    public Map<String, Object> getExtraMap(String token) {
+        return Collections.emptyMap();
+    }
+
+    /**
+     * 获取当前 Token 的扩展信息（此函数只在 JWT 模式下生效，即引入 hd-security-jwt 依赖）
+     *
+     * @param key 键值
+     * @return 对应的扩展数据
+     */
+    public Object getExtra(String key) {
+        return getExtra(getWebToken(), key);
+    }
+
+    /**
+     * 获取指定 Token 的扩展信息（此函数只在 JWT 模式下生效，即引入 hd-security-jwt 依赖）
+     *
+     * @param token 指定的 Token 值
+     * @param key   键值
+     * @return 对应的扩展数据
+     */
+    public Object getExtra(String token, String key) {
+        return getExtraMap(token).get(key);
+    }
 }

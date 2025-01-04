@@ -4,7 +4,7 @@ import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfigProvider;
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
-import cn.youngkbt.hdsecurity.jwt.error.HdSecurityErrorCode;
+import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecuritySessionException;
 import cn.youngkbt.hdsecurity.exception.HdSecurityTokenException;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
@@ -23,7 +23,7 @@ import java.util.Optional;
 
 /**
  * Hd Security Session 模块
- * 
+ *
  * @author Tianke
  * @date 2024/11/28 01:26:59
  * @since 1.0.0
@@ -39,6 +39,10 @@ public class HdSessionHelper {
         this.accountType = accountType;
     }
 
+    public String getAccountType() {
+        return accountType;
+    }
+
     // ---------- Account Session 相关操作方法 ---------
 
     /**
@@ -48,13 +52,14 @@ public class HdSessionHelper {
      * @return token
      */
     public String createAccountSession(HdLoginModel hdLoginModel) {
+        // 检查登录模型
+        HdHelper.loginHelper(accountType).checkLoginModel(hdLoginModel);
+
+        // 初始化登录模型
         HdLoginModel loginModel = HdLoginModelOperator.mutate(hdLoginModel);
 
         Object loginId = loginModel.getLoginId();
         Long tokenExpireTime = loginModel.getTokenExpireTime();
-
-        // 检查登录模型
-        HdHelper.loginHelper(accountType).checkLoginModel(loginModel);
 
         HdSecurityConfig config = HdSecurityManager.getConfig(accountType);
         // 如果不允许一个账号多地同时登录，则需要先将这个账号的历史登录会话标记为 被顶下线
@@ -67,7 +72,7 @@ public class HdSessionHelper {
 
         // 创建 Token
         HdTokenHelper tokenHelper = HdHelper.tokenHelper(accountType);
-        String token = tokenHelper.createToken(loginModel);
+        String token = tokenHelper.createLoginToken(loginModel);
 
         // 创建设备，一个设备持有一个 Token
         HdTokenDevice tokenDevice = new HdTokenDevice(token, loginModel.getDevice(), loginModel.getTokenDeviceData());
@@ -89,7 +94,7 @@ public class HdSessionHelper {
 
         // 如果该 token 对应的 Token-Session 已经存在，则续期
         HdSession tokenSession = getTokenSessionByToken(token);
-        if(null != tokenSession) {
+        if (null != tokenSession) {
             tokenSession.updateExpireTimeWhenCondition(loginModel.getTokenExpireTime(), true);
         }
 
@@ -109,7 +114,7 @@ public class HdSessionHelper {
     public HdAccountSession getAccountSession() {
         return getAccountSessionByLoginId(HdHelper.loginHelper(accountType).getLoginId());
     }
-    
+
     /**
      * 获取账号会话，如果不存在账号会话，则创建一个
      *
@@ -195,9 +200,9 @@ public class HdSessionHelper {
         String token = HdSecurityTokenGenerateStrategy.instance.generateUniqueElement.generate(
                 "Token",
                 // 最大尝试次数
-                HdSecurityManager.getConfig(accountType).getMaxTryTimes(),
+                tokenHelper.getMaxTryTimes(),
                 // 创建 Token
-                () -> tokenHelper.createToken(""),
+                () -> tokenHelper.createLoginToken(HdLoginModelOperator.build()),
                 // 验证 Token 唯一性，这里从持久层获取根据创建的 Token 获取登录 ID，获取成功代表有用户在用，则不唯一
                 newToken -> tokenHelper.getLoginIdByToken(newToken) == null,
                 // 捕获异常
@@ -259,8 +264,13 @@ public class HdSessionHelper {
         if (null == tokenSession) {
             // 策略模式创建 Account Session
             tokenSession = HdSecuritySessionCreateStrategy.instance.createTokenSession.apply(String.valueOf(token), accountType);
-            // 默认 Token Session 的过期时间与 Token 和 LoginId 映射的过期时间一致
-            long expireTime = HdSecurityManager.getConfig(accountType).getTokenExpireTime();
+            // 默认 Token Session 的过期时间与 Token 和 LoginId 映射的过期时间一致，因此这里尝试获取 Token 和 LoginId 映射的过期时间，如果没有则使用全局的过期时间配置
+            long expireTime = HdHelper.tokenHelper(accountType).getTokenAndLoginIdExpireTime(token);
+            
+            if (expireTime == -2) {
+                expireTime = HdSecurityManager.getConfig(accountType).getTokenExpireTime();
+            }
+
             // 存储到持久层
             HdSecurityManager.getRepository().addSession(tokenSession, expireTime);
         }
