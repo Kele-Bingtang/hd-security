@@ -6,6 +6,8 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
+ * 日期格式
+ *
  * @author Tianke
  * @date 2024/11/25 01:21:46
  * @since 1.0.0
@@ -21,8 +23,6 @@ public class DatePattern {
      *     yyyy-MM-dd HH:mm
      *     yyyy-MM-dd
      * </pre>
-     *
-     * @since 5.3.6
      */
     public static final Pattern REGEX_NORM = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}(\\s\\d{1,2}:\\d{1,2}(:\\d{1,2})?(.\\d{1,6})?)?");
 
@@ -163,7 +163,6 @@ public class DatePattern {
      *
      * @param pattern 日期格式
      * @return {@link DateTimeFormatter}
-     * @since 5.7.5
      */
     public static DateTimeFormatter createFormatter(String pattern) {
         return DateTimeFormatter.ofPattern(pattern, Locale.getDefault())

@@ -7,6 +7,8 @@ import cn.youngkbt.hdsecurity.context.model.HdSecurityStorage;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
 
 /**
+ * Hd Security 上下文处理器提供者
+ *
  * @author Tianke
  * @date 2024/11/30 15:26:10
  * @since 1.0.0

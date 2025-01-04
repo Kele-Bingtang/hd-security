@@ -6,8 +6,10 @@ import java.util.function.BiFunction;
 
 /**
  * 函数式接口：创建 HdSession 的策略
- * 参数：Session ID
- * 返回：HdSession 对象
+ * <pre>
+ *     参数：Session ID
+ *     返回：HdSession 对象
+ * </pre>
  *
  * @author Tianke
  * @date 2024/11/30 18:10:13

@@ -10,6 +10,8 @@
     </parent>
 
     <artifactId>hd-security-repository-redis</artifactId>
+    
+    <description>Hd Security Redis 持久层模块，用 Redis 替换核心包自带的 Map 持久层实现</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

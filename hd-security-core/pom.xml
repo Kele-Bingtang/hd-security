@@ -10,6 +10,8 @@
     </parent>
 
     <artifactId>hd-security-core</artifactId>
+    
+    <description>Hd Security 核心包，包含认证、授权相关的模块</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

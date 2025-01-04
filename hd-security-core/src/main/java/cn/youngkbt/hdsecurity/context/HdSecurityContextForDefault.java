@@ -8,6 +8,8 @@ import cn.youngkbt.hdsecurity.exception.HdSecurityContextException;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 
 /**
+ * Hd Security 全局上下文默认实现类，默认不支持 Web 环境，抛出异常，需要引用 Hd Security Web 相关依赖
+ *
  * @author Tianke
  * @date 2024/12/2 23:03:21
  * @since 1.0.0

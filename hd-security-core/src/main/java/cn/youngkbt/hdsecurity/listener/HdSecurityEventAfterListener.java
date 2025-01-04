@@ -7,6 +7,8 @@ import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
 import java.lang.annotation.Annotation;
 
 /**
+ * Hd Security 后置事件监听器接口
+ *
  * @author Tianke
  * @date 2024/11/25 21:54:11
  * @since 1.0.0
@@ -60,7 +62,7 @@ public interface HdSecurityEventAfterListener {
      *
      * @param accountType 账号类别
      * @param loginId     账号 ID
-     * @param disableTime        封禁时长，单位：秒
+     * @param disableTime 封禁时长，单位：秒
      * @param realm       封禁类型
      * @param level       封禁级别
      */
@@ -101,10 +103,10 @@ public interface HdSecurityEventAfterListener {
     /**
      * 二次认证开启后触发
      *
-     * @param accountType 账号类别
-     * @param token    webToken 值
-     * @param realm       认证类型
-     * @param secondAuthTime    认证时间
+     * @param accountType    账号类别
+     * @param token          webToken 值
+     * @param realm          认证类型
+     * @param secondAuthTime 认证时间
      */
     void afterSecondAuthOpen(String accountType, String token, String realm, long secondAuthTime);
 
@@ -112,11 +114,11 @@ public interface HdSecurityEventAfterListener {
      * 二次认证关闭后触发
      *
      * @param accountType 账号类别
-     * @param token    webToken 值
+     * @param token       webToken 值
      * @param realm       认证类型
      */
     void afterSecondAuthClose(String accountType, String token, String realm);
-    
+
     /**
      * 全局组件注册后触发
      *

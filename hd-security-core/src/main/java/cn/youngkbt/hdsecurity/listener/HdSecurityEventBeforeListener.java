@@ -5,7 +5,7 @@ import cn.youngkbt.hdsecurity.annotation.handler.HdAnnotationHandler;
 import java.lang.annotation.Annotation;
 
 /**
- * Hd Security 事件监听器
+ * Hd Security 前置事件监听器
  *
  * @author Tianke
  * @date 2024/11/25 21:37:18

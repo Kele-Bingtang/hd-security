@@ -6,6 +6,8 @@ import cn.youngkbt.hdsecurity.context.model.HdSecurityStorage;
 import org.springframework.web.server.ServerWebExchange;
 
 /**
+ * Hd Security 上下文包装类
+ *
  * @author Tianke
  * @date 2025/1/1 17:10:57
  * @since 1.0.0

@@ -3,6 +3,8 @@ package cn.youngkbt.hdsecurity.context.model;
 import cn.youngkbt.hdsecurity.model.cookie.HdCookie;
 
 /**
+ * Hd Security Response 响应对象包装类
+ *
  * @author Tianke
  * @date 2024/11/30 15:24:56
  * @since 1.0.0

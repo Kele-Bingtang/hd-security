@@ -3,6 +3,8 @@ package cn.youngkbt.hdsecurity.exception;
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 
 /**
+ * Hd Security 认证操作异常，检查认证信息不合法时抛出
+ *
  * @author Tianke
  * @date 2024/12/12 23:35:09
  * @since 1.0.0

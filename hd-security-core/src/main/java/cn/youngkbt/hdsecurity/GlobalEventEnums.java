@@ -1,7 +1,7 @@
 package cn.youngkbt.hdsecurity;
 
 /**
- * 全局事件枚举类
+ * Hd Security 全局事件枚举类
  *
  * @author Tianke
  * @date 2024/11/26 00:51:51

@@ -1,6 +1,8 @@
 package cn.youngkbt.hdsecurity.exception;
 
 /**
+ * Hd Security 二次认证异常，检查二次认证不合法时抛出
+ *
  * @author Tianke
  * @date 2024/12/14 01:17:52
  * @since 1.0.0

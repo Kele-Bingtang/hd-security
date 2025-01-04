@@ -21,6 +21,9 @@ public class HdAnnotationHelper {
 
     private Map<Class<? extends Annotation>, HdAnnotationHandler<? extends Annotation>> annotationHandlerMap = new LinkedHashMap<>();
 
+    /**
+     * 初始化 Hd Security 内置注解
+     */
     public HdAnnotationHelper() {
         annotationHandlerMap.put(HdIgnore.class, new HdIgnoreHandler());
         annotationHandlerMap.put(HdCheckLogin.class, new HdCheckLoginHandler());

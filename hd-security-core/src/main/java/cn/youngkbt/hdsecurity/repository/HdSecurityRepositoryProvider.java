@@ -4,7 +4,7 @@ import cn.youngkbt.hdsecurity.GlobalEventEnums;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
 
 /**
- * 持久层实现类提供者
+ * Hd SSecurity 持久层实现类提供者
  *
  * @author Tianke
  * @date 2024/11/25 23:03:29

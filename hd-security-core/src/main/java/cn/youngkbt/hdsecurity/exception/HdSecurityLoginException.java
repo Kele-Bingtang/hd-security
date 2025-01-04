@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Hd Security 登录异常，检查登录信息、踢人下线、顶人下线时抛出
+ *
  * @author Tianke
  * @date 2024/11/27 23:21:29
  * @since 1.0.0

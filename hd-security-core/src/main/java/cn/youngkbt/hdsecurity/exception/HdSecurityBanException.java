@@ -1,6 +1,8 @@
 package cn.youngkbt.hdsecurity.exception;
 
 /**
+ * Hd Security 封禁操作异常，检查封禁不合法时抛出
+ *
  * @author Tianke
  * @date 2024/12/13 00:47:18
  * @since 1.0.0

@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * Hd Security SameOrigin Token 模块
  *
- * <p> 当两个服务之间调用需要认证时使用，比如服务 A 访问服务 B，则 A 的请求携带一个 Token，服务 B 先验证 Token 后再执行逻辑。场景如：微服务网关请求转发鉴权
+ * <p>当两个服务之间调用需要认证时使用，比如服务 A 访问服务 B，则 A 的请求携带一个 Token，服务 B 先验证 Token 后再执行逻辑。场景如：微服务网关请求转发鉴权</p>
  *
  * @author Tianke
  * @date 2024/12/23 21:12:44

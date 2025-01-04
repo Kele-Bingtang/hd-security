@@ -11,6 +11,8 @@
 
     <artifactId>hd-security-jwt</artifactId>
 
+    <description>Hd Security JWT 模块，将 JWT 替换掉核心包自带的 Token</description>
+
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>

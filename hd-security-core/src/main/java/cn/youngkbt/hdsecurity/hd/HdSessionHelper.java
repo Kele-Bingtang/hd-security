@@ -188,8 +188,8 @@ public class HdSessionHelper {
 
     /**
      * 创建 Token Session 会话
-     * 专门针对【不使用 LoginId 登录，使用随机 Token 登录】使用
-     * 如果已经登录则使用 HdSessionHelper#getTokenSessionOrCreate() 获取 Token Session 会话
+     * <p>专门针对【不使用 LoginId 登录，使用随机 Token 登录】使用</p>
+     * <p>如果已经登录则使用 HdSessionHelper#getTokenSessionOrCreate() 获取 Token Session 会话</p>
      *
      * @return Token Session 会话
      */

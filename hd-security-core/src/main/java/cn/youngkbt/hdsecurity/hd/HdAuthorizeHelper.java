@@ -21,7 +21,7 @@ import java.util.List;
  * @since 1.0.0
  */
 public class HdAuthorizeHelper {
-    
+
     private final String accountType;
 
     public HdAuthorizeHelper() {
@@ -210,7 +210,7 @@ public class HdAuthorizeHelper {
 
     /**
      * 判断：当前账号是否含有指定认证码
-     * 可指定多个认证码，必须全部拥有才返回 true
+     * <p>可指定多个认证码，必须全部拥有才返回 true</p>
      *
      * @param authorizeType 认证类型
      * @param authorizeList 认证码列表
@@ -227,7 +227,7 @@ public class HdAuthorizeHelper {
 
     /**
      * 校验当前账号是否含有指定认证码
-     * 可指定多个认证码，必须全部验证通过才返回 true
+     * <p>可指定多个认证码，必须全部验证通过才返回 true</p>
      *
      * @param authorizeType 认证类型
      * @param authorizes    认证码列表
@@ -250,7 +250,7 @@ public class HdAuthorizeHelper {
 
     /**
      * 判断当前账号是否含有指定认证码
-     * 可指定多个认证码，任意一个认证码符合就返回 true
+     * <p>可指定多个认证码，任意一个认证码符合就返回 true</p>
      *
      * @param authorizeType 认证类型
      * @param authorizes    认证码列表
@@ -267,7 +267,7 @@ public class HdAuthorizeHelper {
 
     /**
      * 检查当前账号是否含有指定认证码
-     * 可指定多个认证码，任意一个认证码验证通过就返回 true
+     * <p>可指定多个认证码，任意一个认证码验证通过就返回 true</p>
      *
      * @param authorizeType 认证类型
      * @param authorizes    认证码列表

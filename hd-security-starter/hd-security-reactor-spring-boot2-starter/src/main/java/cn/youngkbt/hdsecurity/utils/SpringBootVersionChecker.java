@@ -14,7 +14,7 @@ public class SpringBootVersionChecker {
 
     public SpringBootVersionChecker() {
         String version = SpringBootVersion.getVersion();
-        if (HdStringUtil.hasEmpty(version) || version.startsWith("3.")) {
+        if (HdStringUtil.hasEmpty(version) || version.startsWith("2.")) {
             return;
         }
         String str = "当前 SpringBoot 版本（" + version + "）与 Hd Security 依赖不兼容，" +

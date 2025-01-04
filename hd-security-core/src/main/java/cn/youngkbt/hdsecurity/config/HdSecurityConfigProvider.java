@@ -9,7 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * HdSecurity 配置信息提供者
+ * <p>
  * HdSecurity 配置信息不会在项目启动的时候初始化读取，而是显式调用 getHdSecurityConfig 方法后才去初始化读取配置信息。其中 HdLoginUtil.login(...) 方法内会调用 getHdSecurityConfig 方法
+ * </p>
  *
  * @author Tianke
  * @date 2024/11/25 23:59:24
@@ -17,9 +19,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class HdSecurityConfigProvider {
 
-    public static final Map<String, HdSecurityConfig> accountTypeConfigMap = new ConcurrentHashMap<>();
+    private static final Map<String, HdSecurityConfig> ACCOUNT_TYPE_CONFIG_MAP = new ConcurrentHashMap<>();
 
     private HdSecurityConfigProvider() {
+    }
+
+    public static Map<String, HdSecurityConfig> getAccountTypeConfigMap() {
+        return ACCOUNT_TYPE_CONFIG_MAP;
     }
 
     /**
@@ -33,7 +39,7 @@ public class HdSecurityConfigProvider {
     }
 
     public static HdSecurityConfig getHdSecurityConfig(String accountType) {
-        HdSecurityConfig hdSecurityConfig = accountTypeConfigMap.get(accountType);
+        HdSecurityConfig hdSecurityConfig = ACCOUNT_TYPE_CONFIG_MAP.get(accountType);
         // 如果 config 为空，则创建 config，并保存到 accountTypeConfigMap
         if (null == hdSecurityConfig) {
             synchronized (HdSecurityConfigProvider.class) {
@@ -66,7 +72,7 @@ public class HdSecurityConfigProvider {
      * @param hdSecurityConfig HdSecurity 配置信息对象
      */
     public static void setHdSecurityConfig(String accountType, HdSecurityConfig hdSecurityConfig) {
-        accountTypeConfigMap.put(accountType, hdSecurityConfig);
+        ACCOUNT_TYPE_CONFIG_MAP.put(accountType, hdSecurityConfig);
         // 发布事件
         HdSecurityEventCenter.publishAfterLoadConfig(accountType, hdSecurityConfig);
     }

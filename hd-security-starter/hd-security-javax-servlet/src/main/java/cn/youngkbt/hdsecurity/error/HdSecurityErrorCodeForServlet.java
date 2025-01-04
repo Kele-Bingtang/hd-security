@@ -1,6 +1,8 @@
 package cn.youngkbt.hdsecurity.error;
 
 /**
+ * Hd Security Javax Servlet 错误码
+ *
  * @author Tianke
  * @date 2024/12/24 01:03:27
  * @since 1.0.0

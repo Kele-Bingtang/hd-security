@@ -10,6 +10,8 @@
     </parent>
 
     <artifactId>hd-security-jakarta-servlet</artifactId>
+    
+    <description>Hd Security Web 组件 Jakarta 的 Request、Response 模块</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

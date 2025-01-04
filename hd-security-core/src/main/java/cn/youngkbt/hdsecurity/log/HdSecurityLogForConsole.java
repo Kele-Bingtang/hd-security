@@ -1,9 +1,9 @@
 package cn.youngkbt.hdsecurity.log;
 
-import cn.youngkbt.hdsecurity.utils.DateUtil;
+import cn.youngkbt.hdsecurity.utils.HdDateUtil;
 
 /**
- * 控制台日志打印
+ * Hd Security 日志输出实现类，使用控制台进行打印
  *
  * @author Tianke
  * @date 2024/11/25 21:28:05
@@ -84,6 +84,6 @@ public class HdSecurityLogForConsole implements HdSecurityLog {
      * @param args   参数列表
      */
     public void println(String str, int level, String prefix, String color, Object... args) {
-        System.out.println(color + prefix + DateUtil.now() + " " + StrFormatter.format(str, args) + DEFAULT_COLOR);
+        System.out.println(color + prefix + HdDateUtil.now() + " " + StrFormatter.format(str, args) + DEFAULT_COLOR);
     }
 }

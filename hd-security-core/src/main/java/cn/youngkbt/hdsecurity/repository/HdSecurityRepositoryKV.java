@@ -3,8 +3,8 @@ package cn.youngkbt.hdsecurity.repository;
 import java.util.Set;
 
 /**
- * Hd Security 持久层
- * 实现此接口可以拓展自己的持久层，将数据存储到自定义的位置，如数据库、Redis 缓存等
+ * <p>Hd Security 持久层</p>
+ * <p>实现此接口可以拓展自己的持久层，将数据存储到自定义的位置，如数据库、Redis 缓存等</p>
  *
  * @author Tianke
  * @date 2024/11/25 01:16:06

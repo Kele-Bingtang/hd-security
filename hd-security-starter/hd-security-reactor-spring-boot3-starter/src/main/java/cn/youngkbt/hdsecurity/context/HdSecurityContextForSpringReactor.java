@@ -7,12 +7,14 @@ import cn.youngkbt.hdsecurity.utils.HdSecurityReactorHolder;
 import cn.youngkbt.hdsecurity.utils.PathMatcherHolder;
 
 /**
+ * Hd Security 上下文实现类，基于 Reactor SpringBoot3 实现
+ *
  * @author Tianke
  * @date 2025/1/1 16:51:39
  * @since 1.0.0
  */
 public class HdSecurityContextForSpringReactor implements HdSecurityContext {
-    
+
     @Override
     public HdSecurityRequest getRequest() {
         return HdSecurityReactorHolder.getRequest();

@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Hd Security 路径无效时处理函数
+ *
  * @author Tianke
  * @date 2024/12/31 00:23:44
  * @since 1.0.0

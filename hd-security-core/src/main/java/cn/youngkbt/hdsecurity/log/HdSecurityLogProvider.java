@@ -4,7 +4,7 @@ import cn.youngkbt.hdsecurity.GlobalEventEnums;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
 
 /**
- * 日志实现类提供者
+ * Hd Security 日志实现类提供者
  *
  * @author Tianke
  * @date 2024/11/25 23:01:20
@@ -15,11 +15,7 @@ public class HdSecurityLogProvider {
     private HdSecurityLogProvider() {
     }
 
-    public static HdSecurityLog log = null;
-
-    static {
-        setLog(new HdSecurityLogForConsole());
-    }
+    public static HdSecurityLog log = new HdSecurityLogForConsole();
 
     /**
      * 获取日志实现类

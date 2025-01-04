@@ -5,7 +5,7 @@ import cn.youngkbt.hdsecurity.annotation.handler.HdAnnotationHandler;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventListener;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
-import cn.youngkbt.hdsecurity.utils.DateUtil;
+import cn.youngkbt.hdsecurity.utils.HdDateUtil;
 
 import java.lang.annotation.Annotation;
 import java.util.EnumMap;
@@ -14,6 +14,8 @@ import java.util.Map;
 import static cn.youngkbt.hdsecurity.log.HdSecurityLogProvider.log;
 
 /**
+ * Hd Security 前置和后置事件监听器日志打印实现类，使用 Log 打印事件
+ *
  * @author Tianke
  * @date 2024/11/25 21:55:18
  * @since 1.0.0
@@ -95,7 +97,7 @@ public class HdSecurityEventListenerForLog implements HdSecurityEventListener {
     public void afterBanAccount(String accountType, Object loginId, long disableTime, String realm, int level) {
         long currentTimeMillis = System.currentTimeMillis();
         startCostTimeMap.put(GlobalEventEnums.BAN, currentTimeMillis - startCostTimeMap.getOrDefault(GlobalEventEnums.BAN, currentTimeMillis));
-        log.info("账号 {} 在 {} 领域被封禁，账号类型 = {}, 封禁等级 = {}, 解封时间 = {}", loginId, accountType, realm, level, DateUtil.formatDateTime(disableTime * 1000));
+        log.info("账号 {} 在 {} 领域被封禁，账号类型 = {}, 封禁等级 = {}, 解封时间 = {}", loginId, accountType, realm, level, HdDateUtil.formatDateTime(disableTime * 1000));
     }
 
 

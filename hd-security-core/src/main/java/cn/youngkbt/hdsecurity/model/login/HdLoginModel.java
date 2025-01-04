@@ -6,6 +6,8 @@ import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 import java.util.Map;
 
 /**
+ * Hd Security 登录模型
+ *
  * @author Tianke
  * @date 2024/11/25 01:14:35
  * @since 1.0.0

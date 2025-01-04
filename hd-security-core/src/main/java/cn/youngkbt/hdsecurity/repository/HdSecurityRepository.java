@@ -3,6 +3,8 @@ package cn.youngkbt.hdsecurity.repository;
 import cn.youngkbt.hdsecurity.model.session.HdSession;
 
 /**
+ * Hd Security 持久层接口
+ *
  * @author Tianke
  * @date 2024/11/29 00:13:30
  * @since 1.0.0

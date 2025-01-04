@@ -19,7 +19,9 @@ import java.util.Properties;
  * @since 1.0.0
  */
 public class HdPropertiesUtil {
-    // 私有构造函数，防止实例化
+    /**
+     * 私有构造函数，防止实例化
+     */
     private HdPropertiesUtil() {
     }
 

@@ -16,7 +16,7 @@ import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryProvider;
 import java.util.List;
 
 /**
- * 管理所有全局组件，可通过此类快速获取、写入各种全局组件对象
+ * Hd Security 全局管理类，管理所有全局组件，可通过此类快速获取、写入各种全局组件对象
  *
  * @author Tianke
  * @date 2024/11/25 22:01:33

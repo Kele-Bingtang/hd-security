@@ -10,6 +10,8 @@
     </parent>
 
     <artifactId>hd-security-reactor-spring-boot2-starter</artifactId>
+    
+    <description>Hd Security Reactor SpringBoot2 Web 模块，实现核心包的上下文和过滤器等相关组件</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

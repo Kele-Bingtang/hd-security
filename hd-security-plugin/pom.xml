@@ -11,13 +11,16 @@
 
     <artifactId>hd-security-plugin</artifactId>
     <packaging>pom</packaging>
+    
+    <description>Hd Security 插件管理器</description>
+    
     <modules>
         <module>hd-security-repository-redis</module>
         <module>hd-security-jwt</module>
         <module>hd-security-aop</module>
         <module>hd-security-repository-redisson</module>
     </modules>
-
+    
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>

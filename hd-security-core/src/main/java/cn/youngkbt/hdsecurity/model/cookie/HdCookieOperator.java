@@ -4,6 +4,8 @@ import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.config.HdCookieConfig;
 
 /**
+ * Cookie 模型操作类
+ *
  * @author Tianke
  * @date 2025/1/4 01:41:36
  * @since 1.0.0

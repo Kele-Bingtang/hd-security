@@ -10,8 +10,9 @@ package cn.youngkbt.hdsecurity.config;
 public class HdCookieConfig {
     /**
      * 作用域
-     * 写入 Cookie 时显式指定的作用域, 常用于单点登录二级域名共享 Cookie 的场景
-     * 一般情况下你不需要设置此值，因为浏览器默认会把 Cookie 写到当前域名下
+     * <p>
+     * 写入 Cookie 时显式指定的作用域, 常用于单点登录二级域名共享 Cookie 的场景,一般情况下你不需要设置此值，因为浏览器默认会把 Cookie 写到当前域名下
+     * </p>
      */
     private String domain;
 

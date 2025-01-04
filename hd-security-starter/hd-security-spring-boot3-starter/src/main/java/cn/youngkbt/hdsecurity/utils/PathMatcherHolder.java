@@ -4,6 +4,8 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
 /**
+ * 路径匹配工具类
+ *
  * @author Tianke
  * @date 2024/12/24 00:42:55
  * @since 1.0.0

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.function.Consumer;
 
 /**
- * 权限路由拦截器，进行路由拦截鉴权
+ * Hd Security 权限路由拦截器，进行路由拦截鉴权
  *
  * @author Tianke
  * @date 2024/12/24 00:33:23

@@ -6,6 +6,8 @@ import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
 import java.util.Optional;
 
 /**
+ * Hd Security 登录模型操作类
+ *
  * @author Tianke
  * @date 2024/11/27 22:46:53
  * @since 1.0.0

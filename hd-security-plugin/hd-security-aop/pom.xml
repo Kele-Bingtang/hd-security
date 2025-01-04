@@ -11,6 +11,10 @@
 
     <artifactId>hd-security-aop</artifactId>
 
+    <description>Hd Security AOP 模块，支持将 Hd Security 的内置注解添加到非 Controller 层里，如可以添加到 Service
+        层去校验
+    </description>
+
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -20,14 +24,14 @@
     <dependencies>
         <!-- spring-boot-starter-aop -->
         <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-aop</artifactId>
-    </dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>cn.youngkbt</groupId>
             <artifactId>hd-security-core</artifactId>
         </dependency>
     </dependencies>
-    
+
 </project>

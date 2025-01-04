@@ -1,11 +1,16 @@
 package cn.youngkbt.hdsecurity.utils;
 
 /**
+ * Hd Security 对象工具类
+ *
  * @author Tianke
  * @date 2024/11/27 23:25:23
  * @since 1.0.0
  */
 public class HdObjectUtil {
+    private HdObjectUtil() {
+    }
+
     /**
      * 判断类型是否为 8 大包装类型
      *
@@ -26,5 +31,5 @@ public class HdObjectUtil {
     public static boolean isBasicType(Class<?> cs) {
         return cs.isPrimitive() || isWrapperType(cs) || cs == String.class;
     }
-    
+
 }

@@ -7,6 +7,7 @@
     <artifactId>hd-security-bom</artifactId>
     <version>${revision}</version>
 
+    <description>Hd Security 各个模块依赖管理器</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -14,9 +15,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <revision>1.0.0</revision>
     </properties>
-    
+
     <dependencyManagement>
         <dependencies>
+            <!-- hd-security-starter 依赖 -->
             <dependency>
                 <groupId>cn.youngkbt</groupId>
                 <artifactId>hd-security-core</artifactId>
@@ -30,6 +32,48 @@
             <dependency>
                 <groupId>cn.youngkbt</groupId>
                 <artifactId>hd-security-jakarta-servlet</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.youngkbt</groupId>
+                <artifactId>hd-security-spring-boot2-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.youngkbt</groupId>
+                <artifactId>hd-security-spring-boot3-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.youngkbt</groupId>
+                <artifactId>hd-security-reactor-spring-boot2-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.youngkbt</groupId>
+                <artifactId>hd-security-reactor-spring-boot3-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- hd-security-plugin 依赖 -->
+            <dependency>
+                <groupId>cn.youngkbt</groupId>
+                <artifactId>hd-security-repository-redis</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.youngkbt</groupId>
+                <artifactId>hd-security-repository-redisson</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.youngkbt</groupId>
+                <artifactId>hd-security-aop</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.youngkbt</groupId>
+                <artifactId>hd-security-jwt</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>

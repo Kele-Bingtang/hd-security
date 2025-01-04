@@ -20,6 +20,8 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 /**
+ * Hd Security 自动配置类
+ *
  * @author Tianke
  * @date 2025/1/1 16:09:25
  * @since 1.0.0

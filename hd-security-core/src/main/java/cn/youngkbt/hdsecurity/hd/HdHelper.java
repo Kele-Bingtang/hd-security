@@ -132,6 +132,11 @@ public class HdHelper {
         return AUTHORIZE_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.getCreateAuthorizeHelper().apply(key));
     }
 
+    /**
+     * 获取 HdAnnotationHelper，如果获取不到则创建
+     *
+     * @return HdAnnotationHelper
+     */
     public static HdAnnotationHelper annotationHelper() {
         if (null == hdAnnotationHelper) {
             hdAnnotationHelper = HdSecurityHelperCreateStrategy.instance.getCreateAnnotationHelper().get();
@@ -139,6 +144,11 @@ public class HdHelper {
         return hdAnnotationHelper;
     }
 
+    /**
+     * 获取 HdBasicAuthHelper，如果获取不到则创建
+     *
+     * @return HdBasicAuthHelper
+     */
     public static HdBasicAuthHelper basicAuthHelper() {
         if (null == hdBasicAuthHelper) {
             hdBasicAuthHelper = HdSecurityHelperCreateStrategy.instance.getCreateBasicAuthHelper().get();
@@ -146,6 +156,11 @@ public class HdHelper {
         return hdBasicAuthHelper;
     }
 
+    /**
+     * 获取 HdSameOriginTokenHelper，如果获取不到则创建
+     *
+     * @return HdSameOriginTokenHelper
+     */
     public static HdSameOriginTokenHelper sameOriginTokenHelper() {
         if (null == hdSameOriginTokenHelper) {
             hdSameOriginTokenHelper = HdSecurityHelperCreateStrategy.instance.getCreateSameOriginTokenHelper().get();

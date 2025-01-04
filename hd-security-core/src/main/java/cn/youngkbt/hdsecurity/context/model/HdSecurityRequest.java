@@ -5,6 +5,7 @@ import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 import java.util.Map;
 
 /**
+ * Hd Security Request 请求对象包装类
  * @author Tianke
  * @date 2024/11/30 15:24:45
  * @since 1.0.0

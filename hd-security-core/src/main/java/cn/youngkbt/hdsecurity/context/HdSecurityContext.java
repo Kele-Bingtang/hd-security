@@ -5,6 +5,8 @@ import cn.youngkbt.hdsecurity.context.model.HdSecurityResponse;
 import cn.youngkbt.hdsecurity.context.model.HdSecurityStorage;
 
 /**
+ * Hd Security 上下文接口，包装 Web 的 Request 和 Response 对象
+ *
  * @author Tianke
  * @date 2024/11/30 15:25:44
  * @since 1.0.0
@@ -12,18 +14,21 @@ import cn.youngkbt.hdsecurity.context.model.HdSecurityStorage;
 public interface HdSecurityContext {
     /**
      * 获取当前请求的 Request 包装对象
+     *
      * @return Request 包装对象
      */
     HdSecurityRequest getRequest();
 
     /**
      * 获取当前请求的 Response 包装对象
+     *
      * @return Response 包装对象
      */
     HdSecurityResponse getResponse();
 
     /**
      * 获取当前请求的 Storage 包装对象
+     *
      * @return Storage 包装对象
      */
     HdSecurityStorage getStorage();
@@ -36,8 +41,8 @@ public interface HdSecurityContext {
      *     	- matchPath("/user/*", "/article/edit")  返回: false
      * </pre>
      *
-     * @param pattern 路由匹配符 
-     * @param path 需要匹配的路径 
+     * @param pattern 路由匹配符
+     * @param path    需要匹配的路径
      * @return 是否匹配成功
      */
     boolean matchPath(String pattern, String path);

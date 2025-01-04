@@ -3,6 +3,8 @@ package cn.youngkbt.hdsecurity.model.session;
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 
 /**
+ * Hd Security Token Session 模型
+ *
  * @author Tianke
  * @date 2024/11/26 22:23:03
  * @since 1.0.0

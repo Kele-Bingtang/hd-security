@@ -11,6 +11,9 @@
 
     <artifactId>hd-security-starter</artifactId>
     <packaging>pom</packaging>
+    
+    <description>Hd Security Web 上下文 Starter 管理器</description>
+    
     <modules>
         <module>hd-security-spring-boot2-starter</module>
         <module>hd-security-javax-servlet</module>

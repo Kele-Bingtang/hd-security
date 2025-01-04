@@ -11,6 +11,8 @@
 
     <artifactId>hd-security-repository-redisson</artifactId>
 
+    <description>Hd Security Redisson 持久层模块，用 Redisson 替换核心包自带的 Map 持久层实现</description>
+    
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>

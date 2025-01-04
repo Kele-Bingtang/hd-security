@@ -3,13 +3,15 @@ package cn.youngkbt.hdsecurity.utils;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * 字符串工具类
+ * Hd Security 字符串工具类
  *
  * @author Tianke
  * @date 2024/11/25 01:26:36
  * @since 1.0.0
  */
 public class HdStringUtil {
+    private HdStringUtil() {
+    }
 
     public static boolean hasText(String str) {
         return str != null && !str.isBlank();
@@ -82,8 +84,8 @@ public class HdStringUtil {
     /**
      * 字符串模糊匹配
      * example:
-     *  user* user-add   --  true
-     *  user* art-add    --  false
+     * user* user-add   --  true
+     * user* art-add    --  false
      *
      * @param pattern 表达式
      * @param str     待匹配的字符串

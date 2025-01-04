@@ -11,7 +11,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
- * 权限注解拦截器，进行注解鉴权
+ * Hd Security 权限注解拦截器，进行注解鉴权
  *
  * @author Tianke
  * @date 2024/12/24 00:27:06

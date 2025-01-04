@@ -1,6 +1,8 @@
 package cn.youngkbt.hdsecurity.authorize;
 
 /**
+ * 认证模式枚举
+ *
  * @author Tianke
  * @date 2024/12/13 00:16:05
  * @since 1.0.0

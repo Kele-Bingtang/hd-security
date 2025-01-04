@@ -4,6 +4,8 @@ import java.util.*;
 import java.util.function.Function;
 
 /**
+ * Hd Security Collection 工具类
+ *
  * @author Tianke
  * @date 2024/11/25 21:19:59
  * @since 1.0.0

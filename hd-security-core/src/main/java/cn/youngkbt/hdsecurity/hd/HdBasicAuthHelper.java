@@ -23,6 +23,11 @@ public class HdBasicAuthHelper {
      */
     public static final String DEFAULT_REALM = "Hd Security";
 
+    /**
+     * 获取 Http Basic 认证的账号
+     *
+     * @return 账号
+     */
     public String getBasicAuthValue() {
         String authorization = HdSecurityManager.getContext().getRequest().getHeader("Authorization");
 
@@ -33,10 +38,21 @@ public class HdBasicAuthHelper {
         return Arrays.toString(Base64.getDecoder().decode(authorization.substring("Basic ".length())));
     }
 
+    /**
+     * Http Basic 认证校验是否成功
+     *
+     * @return Http Basic 认证校验是否成功
+     */
     public boolean isBasicAuth() {
         return isBasicAuth(HdSecurityManager.getConfig().getHttpBasicAccount());
     }
 
+    /**
+     * Http Basic 认证校验账号是否成功
+     *
+     * @param account 账号
+     * @return Http Basic 认证校验账号是否成功
+     */
     public boolean isBasicAuth(String account) {
         if (HdStringUtil.hasEmpty(account)) {
             account = HdSecurityManager.getConfig().getHttpBasicAccount();
@@ -46,14 +62,32 @@ public class HdBasicAuthHelper {
         return !HdStringUtil.hasEmpty(basicAuthValue) && Objects.equals(basicAuthValue, account);
     }
 
+    /**
+     * Http Basic 认证校验是否成功，校验失败则抛出 HdSecurityHttpBasicAuthException 异常
+     *
+     * @throws HdSecurityHttpBasicAuthException Http Basic 认证失败
+     */
     public void checkBasicAuth() {
         checkBasicAuth(HdSecurityManager.getConfig().getHttpBasicAccount());
     }
 
+    /**
+     * Http Basic 认证带有账号的校验是否成功，校验失败则抛出 HdSecurityHttpBasicAuthException 异常
+     *
+     * @param account 账号
+     * @throws HdSecurityHttpBasicAuthException Http Basic 认证失败
+     */
     public void checkBasicAuth(String account) {
         checkBasicAuth(DEFAULT_REALM, account);
     }
 
+    /**
+     * Http Basic 认证带有领域的校验是否成功，校验失败则抛出 HdSecurityHttpBasicAuthException 异常
+     *
+     * @param realm   领域名称
+     * @param account 账号
+     * @throws HdSecurityHttpBasicAuthException Http Basic 认证失败
+     */
     public void checkBasicAuth(String realm, String account) {
         boolean basicAuth = isBasicAuth(account);
         if (!basicAuth) {

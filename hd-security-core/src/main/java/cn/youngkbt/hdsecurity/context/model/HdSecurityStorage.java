@@ -1,6 +1,7 @@
 package cn.youngkbt.hdsecurity.context.model;
 
 /**
+ * Hd Security Storage 请求作用域对象包装类
  * @author Tianke
  * @date 2024/11/30 15:25:10
  * @since 1.0.0

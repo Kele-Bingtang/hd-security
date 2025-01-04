@@ -7,13 +7,15 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
+ * Hd Security 时间工具类
+ *
  * @author Tianke
  * @date 2024/11/26 01:26:49
  * @since 1.0.0
  */
-public class DateUtil {
-    
-    private DateUtil() {
+public class HdDateUtil {
+
+    private HdDateUtil() {
     }
 
     /**

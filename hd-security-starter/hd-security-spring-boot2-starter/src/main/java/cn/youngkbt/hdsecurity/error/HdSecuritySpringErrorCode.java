@@ -1,6 +1,8 @@
 package cn.youngkbt.hdsecurity.error;
 
 /**
+ * Hd Security Spring 错误码
+ *
  * @author Tianke
  * @date 2024/12/24 00:39:08
  * @since 1.0.0

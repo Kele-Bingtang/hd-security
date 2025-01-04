@@ -18,7 +18,7 @@ public class SpringBootVersionChecker {
             return;
         }
         String str = "当前 SpringBoot 版本（" + version + "）与 Hd Security 依赖不兼容，" +
-                "请将依赖 hd-security-reactor-spring-boot2-starter 修改为：hd-security-reactor-spring-boot3-starter";
+                "请将依赖 hd-security-reactor-spring-boot3-starter 修改为：hd-security-reactor-spring-boot2-starter";
         System.err.println(str);
         throw new HdSecurityException(str);
     }

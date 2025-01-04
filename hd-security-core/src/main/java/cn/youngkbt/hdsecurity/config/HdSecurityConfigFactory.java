@@ -6,7 +6,7 @@ import java.util.Optional;
 
 /**
  * Hd Security 配置类构建工厂
- * 扫描 resource 下的配置文件，并构建配置文件对象 HdSecurityConfig 对象。仅在非 IOC 环境下使用
+ * <p>扫描 resource 下的配置文件，并构建配置文件对象 HdSecurityConfig 对象。仅在非 IOC 环境下使用</p>
  *
  * @author Tianke
  * @date 2024/11/25 00:51:43

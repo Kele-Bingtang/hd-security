@@ -62,7 +62,7 @@ public class HdBanAccountHelper {
 
     /**
      * 获取封禁账号的封禁时间（单位：秒）
-     * 如果返回 -1 代表永久封禁，返回 -2 代表未被封禁
+     * <p>如果返回 -1 代表永久封禁，返回 -2 代表未被封禁</p>
      *
      * @param loginId 账号 ID
      * @return 封禁时间，如果返回 -1 代表永久封禁，返回 -2 代表未被封禁
@@ -73,7 +73,7 @@ public class HdBanAccountHelper {
 
     /**
      * 获取封禁账号指定领域的封禁时间（单位：秒）
-     * 如果返回 -1 代表永久封禁，返回 -2 代表未被封禁
+     * <p>如果返回 -1 代表永久封禁，返回 -2 代表未被封禁</p>
      *
      * @param loginId 账号 ID
      * @param realm   领域

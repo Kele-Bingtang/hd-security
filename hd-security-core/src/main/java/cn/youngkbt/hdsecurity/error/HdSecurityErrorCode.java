@@ -1,6 +1,8 @@
 package cn.youngkbt.hdsecurity.error;
 
 /**
+ * Hd Security 异常错误码
+ *
  * @author Tianke
  * @date 2024/11/25 22:29:42
  * @since 1.0.0
@@ -60,13 +62,13 @@ public interface HdSecurityErrorCode {
      * LoginId 为 Hd Security 关键词
      */
     int LOGIN_ID_IS_KEYWORD = 10108;
-    
+
     /**
      * 获取 Session 时提供的 SessionId 为空
      */
     int SESSION_ID_IS_NULL = 10201;
     /**
-     * 获取 Token-Session 时提供的 token 为空 
+     * 获取 Token-Session 时提供的 token 为空
      */
     int TOKEN_IS_NULL_WHEN_GET_TOKEN_SESSION = 10211;
 

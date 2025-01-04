@@ -3,6 +3,8 @@ package cn.youngkbt.hdsecurity.model.session;
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 
 /**
+ * Hd Security 账号 Session 模型
+ *
  * @author Tianke
  * @date 2024/11/26 22:22:53
  * @since 1.0.0

@@ -1,6 +1,8 @@
 package cn.youngkbt.hdsecurity.constants;
 
 /**
+ * Hd Security Web 常量
+ *
  * @author Tianke
  * @date 2025/1/1 17:30:19
  * @since 1.0.0

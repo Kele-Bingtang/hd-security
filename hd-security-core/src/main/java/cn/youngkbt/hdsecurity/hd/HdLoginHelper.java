@@ -23,7 +23,7 @@ import java.util.Objects;
 
 /**
  * Hd Security 登录模块
- * 包含：登录、注销、踢人下线、注销他人、获取登录信息
+ * <p>包含：登录、注销、踢人下线、注销他人、获取登录信息</p>
  *
  * @author Tianke
  * @date 2024/11/25 01:02:21
@@ -313,7 +313,7 @@ public class HdLoginHelper {
     }
 
     /**
-     * 注销
+     * 根据 Login ID 注销
      *
      * @param loginId 登录 ID
      */
@@ -322,7 +322,7 @@ public class HdLoginHelper {
     }
 
     /**
-     * 注销
+     * 根据 Login ID 和设备注销
      *
      * @param loginId 登录 ID
      * @param device  设备
@@ -492,7 +492,7 @@ public class HdLoginHelper {
 
     /**
      * 退出登录，如果账号会话为空，则根据 token 获取对应的账号会话
-     * 注销、踢人下线、顶人下线都用到该方法
+     * <p>注销、踢人下线、顶人下线都用到该方法</p>
      *
      * @param token             Token
      * @param accountSession    账号会话

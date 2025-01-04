@@ -8,6 +8,8 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 /**
+ * Cookie 模型
+ *
  * @author Tianke
  * @date 2024/11/26 23:45:57
  * @since 1.0.0
@@ -132,6 +134,7 @@ public class HdCookie {
 
     /**
      * 构建 cookie 字符串的方法
+     *
      * @return cookie
      */
     public String buildCookieStr() {

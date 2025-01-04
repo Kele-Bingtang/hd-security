@@ -10,6 +10,8 @@ import cn.youngkbt.hdsecurity.utils.PathMatcherHolder;
 import cn.youngkbt.hdsecurity.utils.SpringMVCHolder;
 
 /**
+ * Hd Security 上下文实现类，基于 SpringBoot3 实现
+ *
  * @author Tianke
  * @date 2024/12/24 00:40:54
  * @since 1.0.0

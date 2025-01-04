@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 /**
  * Token 生成方式枚举
+ *
  * @author Tianke
  * @date 2024/11/28 00:27:57
  * @since 1.0.0

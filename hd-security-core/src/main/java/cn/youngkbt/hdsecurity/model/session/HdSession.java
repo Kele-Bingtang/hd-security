@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 一个账号的一个
+ * Hd Security Session 模型
  *
  * @author Tianke
  * @date 2024/11/26 21:56:08
@@ -215,7 +215,7 @@ public class HdSession implements Serializable {
         HdSecurityEventCenter.publishBeforeLogoutSession(id);
 
         HdSecurityManager.getRepository().removeSession(this.id);
-        
+
         // 发布注销 Session 结束事件
         HdSecurityEventCenter.publishAfterCreateSession(id);
     }
@@ -231,8 +231,8 @@ public class HdSession implements Serializable {
     /**
      * 更新 Session 的存活时间。当 lessThan 为 true 时，如果当前 Session 的存活时间小于参数 time，则不更新，否则更新。
      *
-     * @param expireTime     新的存活时间
-     * @param lessThan 当前 Session 的存活时间是否小于参数 time
+     * @param expireTime 新的存活时间
+     * @param lessThan   当前 Session 的存活时间是否小于参数 time
      */
     public void updateExpireTimeWhenCondition(long expireTime, boolean lessThan) {
         long newExpireTime = trans(expireTime);

@@ -7,6 +7,8 @@ import cn.youngkbt.hdsecurity.function.HdSecurityPathInvalidHandleFunction;
 import cn.youngkbt.hdsecurity.utils.HdSecurityReactorHolder;
 
 /**
+ * Hd Security 路径检查策略
+ *
  * @author Tianke
  * @date 2024/12/31 00:14:25
  * @since 1.0.0
