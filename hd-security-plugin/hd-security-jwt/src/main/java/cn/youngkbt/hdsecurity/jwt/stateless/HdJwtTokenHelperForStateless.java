@@ -24,6 +24,11 @@ public class HdJwtTokenHelperForStateless extends HdTokenHelper {
         super(accountType);
     }
 
+    /**
+     * 获取 JWT 秘钥
+     *
+     * @return JWT 秘钥
+     */
     public String getSecretKey() {
         String jwtSecretKey = HdSecurityManager.getConfig(getAccountType()).getJwtSecretKey();
         if (null == jwtSecretKey || jwtSecretKey.isEmpty()) {
@@ -32,12 +37,23 @@ public class HdJwtTokenHelperForStateless extends HdTokenHelper {
         return jwtSecretKey;
     }
 
-
+    /**
+     * 使用策略创建 Token
+     *
+     * @param loginModel 登录模型
+     * @return Token
+     */
     @Override
     public String createToken(HdLoginModel loginModel) {
         return HdJwtTokenUtil.createToken(getAccountType(), loginModel.getLoginId(), loginModel.getDevice(), loginModel.getTokenExpireTime(), getSecretKey(), loginModel.getExtraData());
     }
 
+    /**
+     * 根据 Token 获取 LoginId
+     *
+     * @param token Token
+     * @return LoginId
+     */
     @Override
     public Object getLoginIdByToken(String token) {
         try {
@@ -47,6 +63,12 @@ public class HdJwtTokenHelperForStateless extends HdTokenHelper {
         }
     }
 
+    /**
+     * 获取 Token 对应的设备
+     *
+     * @param token Token
+     * @return 设备
+     */
     @Override
     public String getDeviceByToken(String token) {
         try {
@@ -56,6 +78,12 @@ public class HdJwtTokenHelperForStateless extends HdTokenHelper {
         }
     }
 
+    /**
+     * 通过 Token 获取 Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
+     *
+     * @param token Token
+     * @return Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
+     */
     @Override
     public long getTokenAndLoginIdExpireTime(String token) {
         try {
@@ -65,6 +93,12 @@ public class HdJwtTokenHelperForStateless extends HdTokenHelper {
         }
     }
 
+    /**
+     * 获取当前 Token 的扩展信息（此函数只在 JWT 模式下生效，即引入 hd-security-jwt 依赖）
+     *
+     * @param token 指定的 Token 值
+     * @return 对应的扩展数据
+     */
     @Override
     public Map<String, Object> getExtraMap(String token) {
         try {

@@ -24,12 +24,32 @@ import java.util.Objects;
  */
 public class HdJwtTokenUtil {
 
-    public static String accountType = "accountType";
-    public static String loginId = "loginId";
-    public static String device = "device";
-    public static String issuer = "hd-security";
+    public static String accountTypeKey = "accountType";
+    public static String loginIdKey = "loginId";
+    public static String deviceKey = "device";
+    public static String issuerValue = "hd-security";
+    public static String realmKey = "realm-";
 
     private HdJwtTokenUtil() {
+    }
+
+    /**
+     * 生成令牌，给临时 Token 创建使用
+     *
+     * @param realm      领域
+     * @param value      存储的值
+     * @param expireTime 过期时间
+     * @param secretKey  密钥
+     * @param extra      额外参数
+     * @return 令牌
+     */
+    public static String createToken(String realm, Object value, long expireTime, String secretKey, Map<String, Object> extra) {
+        if (null == extra || extra.isEmpty()) {
+            extra = new HashMap<>();
+        }
+
+        extra.put(realmKey + realm, value);
+        return createToken(extra, expireTime, secretKey);
     }
 
     /**
@@ -47,9 +67,9 @@ public class HdJwtTokenUtil {
             extra = new HashMap<>();
         }
 
-        extra.put(HdJwtTokenUtil.accountType, accountType);
-        extra.put(HdJwtTokenUtil.loginId, loginId);
-        extra.put(HdJwtTokenUtil.device, device);
+        extra.put(accountTypeKey, accountType);
+        extra.put(loginIdKey, loginId);
+        extra.put(deviceKey, device);
 
         return createToken(extra, expireTime, secretKey);
     }
@@ -72,7 +92,7 @@ public class HdJwtTokenUtil {
                 // 设置过期时间，如果为 -1 代表永不过期
                 .expiration(expireTime != HdSecurityRepositoryKV.NEVER_EXPIRE ? new Date(System.currentTimeMillis() + expireTime * 1000) : null)
                 .claims(claim)
-                .issuer(issuer)
+                .issuer(issuerValue)
                 .issuedAt(new Date())
                 .signWith(generateKey(secretKey), Jwts.SIG.HS256)
                 .compact();
@@ -155,8 +175,8 @@ public class HdJwtTokenUtil {
      */
     public static boolean validateToken(String token, String loginId, String device, String secretKey) {
         Claims claims = getClaims(token, secretKey);
-        Object validLoginId = claims.get(HdJwtTokenUtil.loginId);
-        Object validDevice = claims.get(HdJwtTokenUtil.device);
+        Object validLoginId = claims.get(loginIdKey);
+        Object validDevice = claims.get(deviceKey);
 
         return (Objects.equals(validLoginId, loginId) && Objects.equals(validDevice, device) && !isExpire(token, secretKey));
     }
@@ -191,6 +211,17 @@ public class HdJwtTokenUtil {
         return parseToken(token, secretKey).getHeader();
     }
 
+    /**
+     * 从令牌中获取值
+     *
+     * @param realm     域
+     * @param token     令牌
+     * @param secretKey 密钥
+     * @return Value
+     */
+    public static Object getRealmValue(String realm, String token, String secretKey) {
+        return getClaims(token, secretKey).get(realmKey + realm);
+    }
 
     /**
      * 从令牌中获取登录 ID
@@ -200,7 +231,7 @@ public class HdJwtTokenUtil {
      * @return 用户名
      */
     public static Object getLoginId(String token, String secretKey) {
-        return getClaims(token, secretKey).get(loginId);
+        return getClaims(token, secretKey).get(loginIdKey);
     }
 
     /**
@@ -211,7 +242,7 @@ public class HdJwtTokenUtil {
      * @return 用户名
      */
     public static String getDevice(String token, String secretKey) {
-        return String.valueOf(getClaims(token, secretKey).get(device));
+        return String.valueOf(getClaims(token, secretKey).get(deviceKey));
     }
 
     /**

@@ -105,13 +105,12 @@ public class RepositoryKeyHelper {
     /**
      * 获取临时 Token 的 Key
      *
-     * @param accountType 账号类型
-     * @param realm       域
-     * @param value       值
+     * @param realm 域
+     * @param value 值
      * @return 临时 Token 的 Key
      */
-    public static String getTempTokenKey(String accountType, String realm, Object value) {
-        return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":tempToken:" + realm + ":" + value;
+    public static String getTempTokenKey(String realm, Object value) {
+        return HdSecurityManager.getConfig().getSecurityPrefixKey() + ":" + ":tempToken:" + realm + ":" + value;
     }
 
     /**

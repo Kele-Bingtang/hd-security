@@ -22,6 +22,11 @@ public class HdJwtTokenHelperForReplace extends HdTokenHelper {
         super(accountType);
     }
 
+    /**
+     * 获取 JWT 秘钥
+     *
+     * @return JWT 秘钥
+     */
     public String getSecretKey() {
         String jwtSecretKey = HdSecurityManager.getConfig(getAccountType()).getJwtSecretKey();
         if (null == jwtSecretKey || jwtSecretKey.isEmpty()) {
@@ -30,11 +35,23 @@ public class HdJwtTokenHelperForReplace extends HdTokenHelper {
         return jwtSecretKey;
     }
 
+    /**
+     * 使用策略创建 Token
+     *
+     * @param loginModel 登录模型
+     * @return Token
+     */
     @Override
     public String createToken(HdLoginModel loginModel) {
         return HdJwtTokenUtil.createToken(getAccountType(), loginModel.getLoginId(), loginModel.getDevice(), loginModel.getTokenExpireTime(), getSecretKey(), loginModel.getExtraData());
     }
 
+    /**
+     * 获取当前 Token 的扩展信息（此函数只在 JWT 模式下生效，即引入 hd-security-jwt 依赖）
+     *
+     * @param token 指定的 Token 值
+     * @return 对应的扩展数据
+     */
     @Override
     public Map<String, Object> getExtraMap(String token) {
         try {
