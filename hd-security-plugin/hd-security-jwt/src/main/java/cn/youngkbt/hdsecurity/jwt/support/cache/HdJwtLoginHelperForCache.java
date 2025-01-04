@@ -1,4 +1,4 @@
-package cn.youngkbt.hdsecurity.jwt.stateless;
+package cn.youngkbt.hdsecurity.jwt.support.cache;
 
 import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
@@ -12,15 +12,15 @@ import cn.youngkbt.hdsecurity.model.session.HdSession;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 
 /**
- * JWT Stateless LoginHelper模块：无状态模式，JWT 不会缓存到持久层，一旦 JWT 丢失后将无法找回，并且该 JWT 无法注销，只能等待自身的过期时间到期
+ * JWT Cache LoginHelper 模块：缓存模式，JWT 存入持久层，仅用于判断是否过期。不会缓存与 LoginId 相关的信息，因此无法执行登出相关操作：注销、替人下线、顶人下线
  *
  * @author Tianke
- * @date 2025/1/4 01:59:48
+ * @date 2025/1/4 02:18:39
  * @since 1.0.0
  */
-public class HdJwtLoginHelperForStateless extends HdLoginHelper {
+public class HdJwtLoginHelperForCache extends HdLoginHelper {
 
-    public HdJwtLoginHelperForStateless(String accountType) {
+    public HdJwtLoginHelperForCache(String accountType) {
         super(accountType);
     }
 
@@ -58,6 +58,6 @@ public class HdJwtLoginHelperForStateless extends HdLoginHelper {
      */
     @Override
     public void exitLoginByToken(String token, HdSession accountSession, Runnable exitExtraRunnable) {
-        throw new HdSecurityJwtException("JWT Stateless（无状态）模式下禁用登出相关操作：注销、替人下线、顶人下线");
+        throw new HdSecurityJwtException("JWT Cache 模式下禁用登出相关操作：注销、替人下线、顶人下线");
     }
 }

@@ -22,6 +22,7 @@ public class HdSecurityHelperCreateStrategy {
     private HdAnnotationHelperCreateSupplier createAnnotationHelper = HdAnnotationHelper::new;
     private HdBasicAuthHelperCreateSupplier createBasicAuthHelper = HdBasicAuthHelper::new;
     private HdSameOriginTokenHelperCreateSupplier createSameOriginTokenHelper = HdSameOriginTokenHelper::new;
+    private HdTempTokenHelperCreateFunction createTempTokenHelper = HdTempTokenHelper::new;
 
     public HdLoginHelperCreateFunction getCreateLoginHelper() {
         return createLoginHelper;
@@ -92,6 +93,15 @@ public class HdSecurityHelperCreateStrategy {
 
     public HdSecurityHelperCreateStrategy setCreateSameOriginTokenHelper(HdSameOriginTokenHelperCreateSupplier createSameOriginTokenHelper) {
         this.createSameOriginTokenHelper = createSameOriginTokenHelper;
+        return this;
+    }
+
+    public HdTempTokenHelperCreateFunction getCreateTempTokenHelper() {
+        return createTempTokenHelper;
+    }
+
+    public HdSecurityHelperCreateStrategy setCreateTempTokenHelper(HdTempTokenHelperCreateFunction createTempTokenHelper) {
+        this.createTempTokenHelper = createTempTokenHelper;
         return this;
     }
 }

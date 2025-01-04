@@ -32,6 +32,7 @@ public class HdHelper {
     private static HdAnnotationHelper hdAnnotationHelper;
     private static HdBasicAuthHelper hdBasicAuthHelper;
     private static HdSameOriginTokenHelper hdSameOriginTokenHelper;
+    private static HdTempTokenHelper hdTempTokenHelper;
     /**
      * 默认的 accountType
      */
@@ -166,6 +167,18 @@ public class HdHelper {
             hdSameOriginTokenHelper = HdSecurityHelperCreateStrategy.instance.getCreateSameOriginTokenHelper().get();
         }
         return hdSameOriginTokenHelper;
+    }
+
+    /**
+     * 获取 HdTempTokenHelper，如果获取不到则创建
+     *
+     * @return HdTempTokenHelper
+     */
+    public static HdTempTokenHelper tempTokenHelper() {
+        if (null == hdTempTokenHelper) {
+            hdTempTokenHelper = HdSecurityHelperCreateStrategy.instance.getCreateTempTokenHelper().get();
+        }
+        return hdTempTokenHelper;
     }
 
     // ---------- 代理默认账号的常用方法，具体用法代理方法的注释 ----------

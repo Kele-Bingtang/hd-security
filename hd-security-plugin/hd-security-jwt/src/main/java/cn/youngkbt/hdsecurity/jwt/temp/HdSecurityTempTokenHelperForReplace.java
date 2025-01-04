@@ -4,13 +4,20 @@ import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.exception.HdSecurityJwtException;
 import cn.youngkbt.hdsecurity.hd.HdTempTokenHelper;
 import cn.youngkbt.hdsecurity.hd.RepositoryKeyHelper;
-import cn.youngkbt.hdsecurity.jwt.HdJwtTokenUtil;
+import cn.youngkbt.hdsecurity.jwt.utils.HdJwtTokenUtil;
 
 import java.util.Collections;
 import java.util.Map;
 
 /**
- * JWT Replace TempTokenHelper（临时令牌）模块：Token 替换模式，仅仅将核心模块自带的 Token 创建功能替换为 JWT 创建
+ * JWT Replace TempTokenHelper（临时令牌）模块：Token 替换模式，仅仅将核心包自带的临时 Token 创建功能替换为 JWT 创建
+ *
+ * <p>
+ * 如果使用该类替换核心包的自带的临时 Token 功能，一行代码解决：
+ * <pre>
+ *     HdSecurityHelperCreateStrategy.instance.setCreateTempTokenHelper(HdSecurityTempTokenHelperForReplace::new);
+ * </pre>
+ * </p>
  *
  * @author Tianke
  * @date 2025/1/4 14:30:14

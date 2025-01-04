@@ -1,4 +1,4 @@
-package cn.youngkbt.hdsecurity.jwt;
+package cn.youngkbt.hdsecurity.jwt.utils;
 
 import cn.youngkbt.hdsecurity.exception.HdSecurityJwtException;
 import cn.youngkbt.hdsecurity.hd.HdTokenHelper;
@@ -24,6 +24,9 @@ import java.util.Objects;
  */
 public class HdJwtTokenUtil {
 
+    /**
+     * 使用 public 修饰为了支持修改属性值
+     */
     public static String accountTypeKey = "accountType";
     public static String loginIdKey = "loginId";
     public static String deviceKey = "device";
@@ -97,7 +100,6 @@ public class HdJwtTokenUtil {
                 .signWith(generateKey(secretKey), Jwts.SIG.HS256)
                 .compact();
     }
-
 
     /**
      * 从令牌中获取数据声明

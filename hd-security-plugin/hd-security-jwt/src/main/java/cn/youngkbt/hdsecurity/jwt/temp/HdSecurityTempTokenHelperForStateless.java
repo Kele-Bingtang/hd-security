@@ -3,7 +3,7 @@ package cn.youngkbt.hdsecurity.jwt.temp;
 import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.exception.HdSecurityJwtException;
 import cn.youngkbt.hdsecurity.hd.HdTempTokenHelper;
-import cn.youngkbt.hdsecurity.jwt.HdJwtTokenUtil;
+import cn.youngkbt.hdsecurity.jwt.utils.HdJwtTokenUtil;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryKV;
 
 import java.util.Collections;
@@ -12,6 +12,13 @@ import java.util.Optional;
 
 /**
  * JWT Stateless TempTokenHelper（临时令牌）模块：无状态模式，JWT 不会缓存到持久层，一旦 JWT 丢失后将无法找回，并且该 JWT 无法注销，只能等待自身的过期时间到期
+ *
+ * <p>
+ * 如果使用该类替换核心包的自带的临时 Token 功能，一行代码解决：
+ * <pre>
+ *     HdSecurityHelperCreateStrategy.instance.setCreateTempTokenHelper(HdSecurityTempTokenHelperForStateless::new);
+ * </pre>
+ * </p>
  *
  * @author Tianke
  * @date 2025/1/5 02:30:01

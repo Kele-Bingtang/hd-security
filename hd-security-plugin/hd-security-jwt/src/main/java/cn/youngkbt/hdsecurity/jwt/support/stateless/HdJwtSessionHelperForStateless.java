@@ -1,4 +1,4 @@
-package cn.youngkbt.hdsecurity.jwt.stateless;
+package cn.youngkbt.hdsecurity.jwt.support.stateless;
 
 import cn.youngkbt.hdsecurity.hd.HdHelper;
 import cn.youngkbt.hdsecurity.hd.HdSessionHelper;
