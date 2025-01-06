@@ -1,6 +1,7 @@
 package cn.youngkbt.hdsecurity.hd;
 
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
+import cn.youngkbt.hdsecurity.model.HdTokenInfo;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
 import cn.youngkbt.hdsecurity.model.session.HdAccountSession;
 import cn.youngkbt.hdsecurity.model.session.HdTokenSession;
@@ -182,6 +183,10 @@ public class HdHelper {
     }
 
     // ---------- 代理默认账号的常用方法，具体用法代理方法的注释 ----------
+
+    public static HdTokenInfo getTokenInfo() {
+        return tokenHelper(ACCOUNT_TYPE).getTokenInfo();
+    }
 
     public static String login(Object loginId) {
         return loginHelper(ACCOUNT_TYPE).login(loginId);

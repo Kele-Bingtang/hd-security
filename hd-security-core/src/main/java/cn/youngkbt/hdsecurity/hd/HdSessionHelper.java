@@ -5,6 +5,7 @@ import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfigProvider;
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
+import cn.youngkbt.hdsecurity.exception.HdSecurityLoginException;
 import cn.youngkbt.hdsecurity.exception.HdSecuritySessionException;
 import cn.youngkbt.hdsecurity.exception.HdSecurityTokenException;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
@@ -118,7 +119,37 @@ public class HdSessionHelper {
     /**
      * 获取账号会话，如果不存在账号会话，则创建一个
      *
+     * @return 账号会话
+     */
+    public HdAccountSession getAccountSessionOrCreate() {
+        return getAccountSessionOrCreate(null);
+    }
+
+    /**
+     * 获取账号会话，如果不存在账号会话，则创建一个
+     *
+     * @param expireTime 过期时间
+     * @return 账号会话
+     */
+    public HdAccountSession getAccountSessionOrCreate(Long expireTime) {
+        return getAccountSessionByLoginIdOrCreate(HdHelper.loginHelper(accountType).getLoginId(), expireTime);
+    }
+
+    /**
+     * 获取账号会话，如果不存在账号会话，则创建一个
+     *
      * @param loginId 登录 ID
+     * @return 账号会话
+     */
+    public HdAccountSession getAccountSessionByLoginIdOrCreate(Object loginId) {
+        return getAccountSessionByLoginIdOrCreate(loginId, null);
+    }
+
+    /**
+     * 获取账号会话，如果不存在账号会话，则创建一个
+     *
+     * @param loginId    登录 ID
+     * @param expireTime 过期时间
      * @return 账号会话
      */
     public HdAccountSession getAccountSessionByLoginIdOrCreate(Object loginId, Long expireTime) {
@@ -266,7 +297,7 @@ public class HdSessionHelper {
             tokenSession = HdSecuritySessionCreateStrategy.instance.createTokenSession.apply(String.valueOf(token), accountType);
             // 默认 Token Session 的过期时间与 Token 和 LoginId 映射的过期时间一致，因此这里尝试获取 Token 和 LoginId 映射的过期时间，如果没有则使用全局的过期时间配置
             long expireTime = HdHelper.tokenHelper(accountType).getTokenAndLoginIdExpireTime(token);
-            
+
             if (expireTime == -2) {
                 expireTime = HdSecurityManager.getConfig(accountType).getTokenExpireTime();
             }
@@ -323,10 +354,23 @@ public class HdSessionHelper {
 
     // --------- TokenDevice 相关操作方法 ---------
 
+    /**
+     * 根据登录 Id 获取账号会话中的 TokenDevice 列表
+     *
+     * @param loginId 登录 ID
+     * @return Token 列表
+     */
     public List<HdTokenDevice> getTokenDeviceList(Object loginId) {
         return getTokenDeviceList(loginId, null);
     }
 
+    /**
+     * 根据登录 Id 和指定设备获取账号会话中的 TokenDevice 列表
+     *
+     * @param loginId 登录 ID
+     * @param device  设备
+     * @return Token 列表
+     */
     public List<HdTokenDevice> getTokenDeviceList(Object loginId, String device) {
         HdSession session = getAccountSessionByLoginId(loginId);
         if (session == null) {
@@ -334,6 +378,49 @@ public class HdSessionHelper {
         }
 
         return session.getTokenDeviceListByDevice(device);
+    }
+
+    /**
+     * 获取账号会话中的 TokenDevice
+     *
+     * @return TokenDevice
+     */
+    public HdTokenDevice getTokenDeviceByToken() {
+        return getTokenDeviceByToken(HdHelper.tokenHelper().getWebToken());
+    }
+
+    /**
+     * 根据 Token 获取账号会话中的 TokenDevice
+     *
+     * @param token Token
+     * @return TokenDevice
+     */
+    public HdTokenDevice getTokenDeviceByToken(String token) {
+        // 如果 token 为 null，直接提前返回
+        if (HdStringUtil.hasEmpty(token)) {
+            return null;
+        }
+
+        // 根据 Token 获取登录 ID，如果获取不到或者登录 ID 是框架使用的关键词，则返回 null
+        Object loginId = HdHelper.loginHelper(accountType).getLoginIdByToken(token);
+        if (HdStringUtil.hasEmpty(loginId) || HdSecurityLoginException.KEYWORD_LIST.contains(String.valueOf(loginId))) {
+            return null;
+        }
+
+        if (null == HdHelper.tokenHelper(accountType).getTokenActiveTime(token)) {
+            return null;
+        }
+
+        // 获取这个账号的 Account Session
+        HdAccountSession accountSession = getAccountSessionByLoginId(loginId);
+
+        // 为 null 说明尚未登录，当然也就不存在什么设备类型，直接返回 null
+        if (null == accountSession) {
+            return null;
+        }
+
+        // 从 Account Session 获取 TokenDevice
+        return accountSession.getTokenDeviceByToken(token);
     }
 
     /**

@@ -6,7 +6,7 @@ const description = ['Hd Security 使用文档', '认证框架'].toString();
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   base: '/',
-  title: 'hd-security-docs',
+  title: 'Hd Security',
   description: description,
   cleanUrls: true,
   lastUpdated: true,

@@ -1,12 +1,14 @@
-## 简介
+# 简介
 
-Hd Security 是一个轻量级 Java 权限认证框架，它学习自 [Sa-Token](https://sa-token.cc/)，换而言之，是作者在阅读 Sa-Token 的源码时，通过敲代码的方式一步一步学习的，因此 Hd Security 有的功能 Sa-Token 都有。Sa-Token 的社区更加活跃，所以作者建议您使用 Sa-Token 框架，而本框架更适合学习原理，阅读本框架，你将学习到很多的框架设计理念和权限设计理念。
+Hd Security 是一个轻量级 Java 权限认证框架，它学习自 [sa-token](https://sa-token.cc/)，换而言之，是作者在阅读 sa-token 的源码时，通过敲代码的方式一步一步学习的，因此 Hd Security 有的功能 sa-token 都有。
+
+sa-token 的社区更加活跃，所以作者建议您使用 sa-token 框架，而本框架更适合学习原理，阅读本框架，你将学习到很多的框架设计理念和权限设计理念。
 
 Hd Security 主要解决登录认证、权限认证、分布式 Session 会话、微服务网关鉴权等一系列权限相关问题。
 
-Hd Security 文档基本也是按照 Sa-Token 官方文档进行编写，只是 API 相对不一样。因为在学习的过程中，加入了一些自己的见解，设计上略微不同。
+Hd Security 使用文档基本也是按照 sa-token 的使用文档进行编写，只是 API 相对不一样。因为在学习的过程中，加入了一些自己的见解，设计上略微不同。
 
-因此建议读者去阅读 [设计](/design/index) 部分，作者建设文档的目的主要是书写 Hd Security 框架的设计思路，而不是 API 使用，这也是 Sa-Token 文档没有体现的内容。
+因此建议读者去阅读 [设计](/design/index) 部分，作者建设文档的目的主要是书写 Hd Security 框架的设计思路，而不是 API 使用，这也是 hd-security 文档没有体现的内容。
 
 ## Hd Security 功能特性
 
@@ -95,5 +97,31 @@ registry.addInterceptor(new HdSecurityFunctionInterceptor(handler -> {
     HdRouter.match("/admin/**", r -> HdHelper.authorizeHelper().checkPermission("admin"));
     // 更多模块... 
 })).addPathPatterns("/**");
+```
+
+
+
+## Hd Security 目录
+
+```markdown
+── hd-security
+	├──	hd-security-bom								// [依赖] hd-security 模块依赖
+    ├── hd-security-core                         	// [核心] hd-security 核心模块
+    ├── hd-security-dependencies                 	// [依赖] hd-security 依赖版本信息
+    ├── hd-security-starter                      	// [整合] hd-security 与其它框架整合
+        ├── hd-security-javax-servlet               // [整合] hd-security 整合 Javax-Servlet 容器实现类包
+        ├── hd-security-jakarta-servlet              // [整合] hd-security 整合 Jakarta-Servlet 容器实现类包
+        ├── hd-security-spring-boot2-starter          // [整合] hd-security 整合 Spring Boot2 快速集成 
+        ├── hd-security-spring-boot3-starter         // [整合] hd-security 整合 Spring Boot3 快速集成 
+        ├── hd-security-reactor-spring-boot2-starter  // [整合] hd-security 整合 Spring Boot2 Reactor 响应式编程 快速集成 
+        ├── hd-security-reactor-spring-boot3-starter // [整合] hd-security 整合 Spring Boot3 Reactor 响应式编程 快速集成
+    ├── hd-security-plugin                       	// [插件] hd-security 插件合集
+        ├── hd-security-repository-redis            // [插件] hd-security 整合 Redis (支持 jdk、jackson、fastjson、fastjson2 序列化方式，支持权限缓存与业务缓存分离)
+        ├── hd-security-repository-redisson         // [插件] hd-security 整合 Redisson
+        ├── hd-security-spring-aop                   // [插件] hd-security 整合 SpringAOP 注解鉴权
+        ├── hd-security-jwt                          // [插件] hd-security 整合 jwt 登录认证
+    ├── hd-security-demo                         	// [示例] hd-security 示例合集
+    ├── hd-security-docs                          	// [文档] hd-security 开发文档 
+    ├──pom.xml                               		 // [依赖] 顶级pom文件 
 ```
 

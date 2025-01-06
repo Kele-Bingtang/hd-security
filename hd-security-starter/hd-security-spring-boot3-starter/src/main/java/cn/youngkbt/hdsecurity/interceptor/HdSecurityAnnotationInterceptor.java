@@ -1,6 +1,6 @@
 package cn.youngkbt.hdsecurity.interceptor;
 
-import cn.youngkbt.hdsecurity.exception.HdSecurityContinueMatchException;
+import cn.youngkbt.hdsecurity.exception.HdSecurityBreakMatchException;
 import cn.youngkbt.hdsecurity.exception.HdSecurityStopException;
 import cn.youngkbt.hdsecurity.hd.HdAnnotationHelper;
 import cn.youngkbt.hdsecurity.hd.HdHelper;
@@ -36,7 +36,7 @@ public class HdSecurityAnnotationInterceptor implements HandlerInterceptor {
         } catch (HdSecurityStopException e) {
             // HdSecurityStopException 异常代表：停止匹配，进入 Controller
 
-        } catch (HdSecurityContinueMatchException e) {
+        } catch (HdSecurityBreakMatchException e) {
             SpringMVCHolder.responseWrite(response, e.getMessage());
             return false;
         }

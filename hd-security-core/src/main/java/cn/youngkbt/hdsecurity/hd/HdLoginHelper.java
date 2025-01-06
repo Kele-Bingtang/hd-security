@@ -146,6 +146,17 @@ public class HdLoginHelper {
     }
 
     /**
+     * 获取当前会话的 LoginId
+     *
+     * @return LoginId
+     */
+    public Object getLoginId(Object defaultValue) {
+        // 根据 Token 获取 LoginId
+        Object loginIdByToken = getLoginIdByToken(HdHelper.tokenHelper(accountType).getWebToken());
+        return null == loginIdByToken ? defaultValue : loginIdByToken;
+    }
+
+    /**
      * 根据 Token 获取 LoginId
      *
      * @param token Token

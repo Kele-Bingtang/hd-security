@@ -5,6 +5,7 @@ import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 import cn.youngkbt.hdsecurity.hd.RepositoryKeyHelper;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryKV;
+import cn.youngkbt.hdsecurity.utils.HdObjectUtil;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 
 import java.io.Serial;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 /**
  * Hd Security Session 模型
@@ -42,7 +44,7 @@ public class HdSession implements Serializable {
     /**
      * HdSession 存储的数据
      */
-    private Map<String, Object> attribute = new ConcurrentHashMap<>();
+    private Map<String, Object> attributes = new ConcurrentHashMap<>();
     /**
      * HdSession 创建时间
      */
@@ -104,15 +106,14 @@ public class HdSession implements Serializable {
         return this;
     }
 
-    public Map<String, Object> getAttribute() {
-        return attribute;
+    public Map<String, Object> getAttributes() {
+        return attributes;
     }
 
-    public HdSession setAttribute(Map<String, Object> attribute) {
-        this.attribute = attribute;
+    public HdSession setAttributes(Map<String, Object> attributes) {
+        this.attributes = attributes;
         return this;
     }
-
 
     public LocalDateTime getCreateTime() {
         return createTime;
@@ -260,34 +261,89 @@ public class HdSession implements Serializable {
     }
 
     // ---------- attribute 操作相关方法 ---------
+
     public Object getAttribute(String key) {
-        return attribute.get(key);
+        return attributes.get(key);
+    }
+
+    public <T> T getAttribute(String key, T defaultValue) {
+        return parseValue(attributes.get(key), defaultValue);
+    }
+
+    public Object getAttribute(String key, Supplier<Object> supplier) {
+        Object object = attributes.get(key);
+        return null == object ? supplier.get() : object;
     }
 
     public void setAttribute(String key, Object value) {
-        attribute.put(key, value);
+        attributes.put(key, value);
         updateToRepository();
     }
 
     public void setAttributeIfPresent(String key, Object value) {
         if (null != value) {
-            attribute.put(key, value);
+            attributes.put(key, value);
             updateToRepository();
         }
     }
 
     public void removeAttribute(String key) {
-        attribute.remove(key);
+        attributes.remove(key);
         updateToRepository();
     }
 
     public void clearAttributes() {
-        attribute.clear();
+        attributes.clear();
         updateToRepository();
     }
 
     public Set<String> getAttributeKeys() {
-        return attribute.keySet();
+        return attributes.keySet();
+    }
+
+    // ---------- attribute 获取后类型转换操作相关方法 ---------
+
+    public String getAttributeAsString(String key) {
+        return String.valueOf(getAttribute(key));
+    }
+
+    public int getAttributeAsInt(String key) {
+        return getModel(key, 0);
+    }
+
+    public long getAttributeAsLong(String key) {
+        return getModel(key, 0L);
+    }
+
+    public float getAttributeAsFloat(String key) {
+        return getModel(key, 0F);
+    }
+
+    public double getAttributeAsDouble(String key) {
+        return getModel(key, 0D);
+    }
+
+    public <T> T getModel(String key, T defaultValue) {
+        return parseValue(getAttribute(key), defaultValue);
+    }
+
+    public <T> T getModel(String key, Class<T> cs) {
+        return HdObjectUtil.convertObject(getAttribute(key), cs);
+    }
+
+    public <T> T parseValue(Object value, T defaultValue) {
+        // 如果 value 为 null，则直接返回默认值 
+        if (HdStringUtil.hasEmpty(value)) {
+            return defaultValue;
+        }
+
+        // 开始转换类型
+        Class<T> cs = (Class<T>) defaultValue.getClass();
+        return HdObjectUtil.convertObject(value, cs);
+    }
+
+    public boolean hasAttribute(String key) {
+        return HdStringUtil.hasText(getAttribute(key));
     }
 
 }

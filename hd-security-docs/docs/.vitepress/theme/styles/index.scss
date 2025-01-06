@@ -10,17 +10,18 @@ $primaryColor: #395ae3;
   --vp-c-green-darker: #0362d7;
   --vp-layout-max-width: 90%;
   --vp-sidebar-bg-color: #fff;
-  --vp-sidebar-width: 240px;
+  --vp-sidebar-width: 235px;
   --prism-block-padding-y: 1.2em;
 
   --vp-c-indigo-1: #{$primaryColor};
   --vp-c-indigo-3: #{$primaryColor};
-  --vp-c-bg-alt: var(--el-fill-color-light);
+  --vp-c-bg-alt: #f5f7fa;
   --vp-c-brand-2: #2a87f8;
 }
 
 .dark {
   --vp-sidebar-bg-color: #161618;
+  --vp-c-bg-alt: #262727;
 }
 
 .VPContent .VPDoc.has-aside .content-container {

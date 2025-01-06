@@ -81,12 +81,12 @@ public class HdSecurityConfig implements Serializable {
     private String tokenStyle = "uuid";
 
     /**
-     * 默认 SaTokenDao 实现类中，每次清理过期数据间隔的时间（单位: 秒），默认值30秒，设置为 -1 代表不启动定时清理
+     * 默认 HdSecurityRepository 实现类中，每次清理过期数据间隔的时间（单位: 秒），默认值30秒，设置为 -1 代表不启动定时清理
      */
     private int dataRefreshPeriod = 30;
 
     /**
-     * 获取 Token-Session 时是否必须登录（如果配置为true，会在每次获取 getTokenSession() 时校验当前是否登录）
+     * 获取 Token Session 时是否必须登录（如果配置为true，会在每次获取 getTokenSession() 时校验当前是否登录）
      */
     private Boolean tokenSessionCheckLogin = true;
 

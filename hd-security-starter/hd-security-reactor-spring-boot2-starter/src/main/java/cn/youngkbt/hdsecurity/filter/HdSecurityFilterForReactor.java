@@ -1,7 +1,7 @@
 package cn.youngkbt.hdsecurity.filter;
 
 import cn.youngkbt.hdsecurity.error.HdSecuritySpringReactorErrorCode;
-import cn.youngkbt.hdsecurity.exception.HdSecurityContinueMatchException;
+import cn.youngkbt.hdsecurity.exception.HdSecurityBreakMatchException;
 import cn.youngkbt.hdsecurity.exception.HdSecurityException;
 import cn.youngkbt.hdsecurity.exception.HdSecurityStopException;
 import cn.youngkbt.hdsecurity.router.HdRouter;
@@ -110,7 +110,7 @@ public class HdSecurityFilterForReactor implements WebFilter, HdSecurityFilter {
             // HdSecurityStopException 异常代表：停止匹配，进入 Controller
         } catch (Exception e) {
             Object message;
-            if (e instanceof HdSecurityContinueMatchException) {
+            if (e instanceof HdSecurityBreakMatchException) {
                 message = e.getMessage();
             } else {
                 message = error.apply(e);

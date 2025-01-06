@@ -5,9 +5,10 @@ import cn.youngkbt.hdsecurity.config.HdSecurityConfig;
 import cn.youngkbt.hdsecurity.config.HdSecurityConfigProvider;
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
 import cn.youngkbt.hdsecurity.context.HdSecurityContext;
-import cn.youngkbt.hdsecurity.exception.HdSecurityTokenException;
 import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
+import cn.youngkbt.hdsecurity.exception.HdSecurityTokenException;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
+import cn.youngkbt.hdsecurity.model.HdTokenInfo;
 import cn.youngkbt.hdsecurity.model.cookie.HdCookie;
 import cn.youngkbt.hdsecurity.model.cookie.HdCookieOperator;
 import cn.youngkbt.hdsecurity.model.login.HdLoginModel;
@@ -106,6 +107,36 @@ public class HdTokenHelper {
      */
     public static String createRandomToken(int length) {
         return HdStringUtil.getRandomString(length);
+    }
+
+    /**
+     * 获取当前会话的 token 参数信息
+     *
+     * @return token 参数信息
+     */
+    public HdTokenInfo getTokenInfo() {
+        String token = getWebToken();
+
+        HdLoginHelper loginHelper = HdHelper.loginHelper(accountType);
+        Object loginId = loginHelper.getLoginId();
+
+        HdSessionHelper sessionHelper = HdHelper.sessionHelper(accountType);
+        HdTokenDevice tokenDevice = sessionHelper.getTokenDeviceByToken(token);
+
+        HdTokenInfo tokenInfo = new HdTokenInfo();
+
+        tokenInfo.tokenName = HdSecurityManager.getConfig().getSecurityPrefixKey();
+        tokenInfo.tokenValue = token;
+        tokenInfo.isLogin = loginHelper.isLogin(loginId);
+        tokenInfo.loginId = loginId;
+        tokenInfo.accountType = accountType;
+        tokenInfo.tokenExpireTime = getTokenAndLoginIdExpireTime(token);
+        tokenInfo.accountSessionExpireTime = sessionHelper.getAccountSessionExpireTime(loginId);
+        tokenInfo.tokenSessionExpireTime = sessionHelper.getTokenSessionExpireTime(token);
+        tokenInfo.tokenActiveExpireTime = getTokenActiveTime(token);
+        tokenInfo.loginDevice = null == tokenDevice ? null : tokenDevice.getDevice();
+
+        return tokenInfo;
     }
 
     /**

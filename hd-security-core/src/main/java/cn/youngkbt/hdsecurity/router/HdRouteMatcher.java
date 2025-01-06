@@ -1,7 +1,7 @@
 package cn.youngkbt.hdsecurity.router;
 
 import cn.youngkbt.hdsecurity.constants.DefaultConstant;
-import cn.youngkbt.hdsecurity.exception.HdSecurityContinueMatchException;
+import cn.youngkbt.hdsecurity.exception.HdSecurityBreakMatchException;
 import cn.youngkbt.hdsecurity.exception.HdSecurityStopException;
 import cn.youngkbt.hdsecurity.hd.HdHelper;
 
@@ -286,9 +286,9 @@ public class HdRouteMatcher {
     /**
      * 停止匹配，结束匹配链
      */
-    public void continueMatch() {
+    public void breakMatch() {
         if (useHit) {
-            throw new HdSecurityContinueMatchException("");
+            throw new HdSecurityBreakMatchException("");
         }
     }
 
@@ -297,9 +297,9 @@ public class HdRouteMatcher {
      *
      * @param result 结果
      */
-    public void continueMatch(String result) {
+    public void breakMatch(String result) {
         if (useHit) {
-            throw new HdSecurityContinueMatchException(result);
+            throw new HdSecurityBreakMatchException(result);
         }
     }
 }
