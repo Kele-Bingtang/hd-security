@@ -1,0 +1,110 @@
+# 自定义 Token
+
+## 自定义 Token 风格
+
+本篇介绍 token 生成的各种风格，以及自定义 token 生成策略。
+
+### 内置风格
+
+Hd Security 默认的 token 生成策略是 uuid 风格，其模样类似于：`623368f0-ae5e-4475-a53f-93e4225f16ae`。
+
+如果你对这种风格不太感冒，还可以将 token 生成设置为其他风格。
+
+怎么设置呢？只需要在 yml 配置文件里设置 `hd-security.token-style=风格类型` 即可，其有多种取值：
+
+```java
+// token-style=uuid - uuid 风格 (默认风格)
+"623368f0-ae5e-4475-a53f-93e4225f16ae"
+
+// token-style=simple-uuid - 去掉了中划线的 uuid 风格
+"6fd4221395024b5f87edd34bc3258ee8"
+
+// token-style=random-32 - 随机32位字符串
+"qEjyPsEA1Bkc9dr8YP6okFr5umCZNR6W"
+
+// token-style=random-64 - 随机 64 位字符串
+"v4ueNLEpPwMtmOPMBtOOeIQsvP8z9gkMgIVibTUVjkrNrlfra5CGwQkViDjO8jcc"
+
+// token-style=random-128 - 随机 128 位字符串
+"nojYPmcEtrFEaN0Otpssa8I8jpk8FO53UcMZkCP9qyoHaDbKS6dxoRPky9c6QlftQ0pdzxRGXsKZmUSrPeZBOD6kJFfmfgiRyUmYWcj4WU4SSP2ilakWN1HYnIuX0Olj"
+
+// token-style=tik - tik 风格
+"gr_SwoIN0MC1ewxHX_vfCW3BothWDZMMtx__"
+```
+
+### 自定义 Token 生成策略
+
+如果你觉着以上风格都不是你喜欢的类型，那么你还可以 **自定义 token 生成策略**，来定制化 token 生成风格。
+
+怎么做呢？只需要重写 `SaStrategy` 策略类的 `createToken` 算法即可：
+
+### 参考步骤如下
+
+在 `HdSecurityConfiguration` 配置类中添加代码：
+
+```java
+@Configuration
+public class HdSecurityConfiguration {
+    /**
+     * 重写 Hd Security 框架内部算法策略 
+     */
+    @PostConstruct
+    public void rewriteSaStrategy() {
+        // 重写 Token 生成策略
+        HdSecurityTokenGenerateStrategy.instance.createToken = (loginId, accountType) -> {
+            return HdTokenHelper.createRandomToken(60); // 随机 60 位长度字符串
+        };
+    }
+}
+```
+
+2、再次调用 `HdHelper.login(10001)` 方法进行登录，观察其生成的 token 样式:
+
+```java
+gfuPSwZsnUhwgz08GTCH4wOgasWtc3odP4HLwXJ7NDGOximTvT4OlW19zeLH
+```
+
+## 自定义 Token 前缀
+
+### 需求场景
+
+在某些系统中，前端提交 token 时会在前面加个固定的前缀，例如：
+
+```js
+{
+    "hd-security": "Bearer xxxx-xxxx-xxxx-xxxx"
+}
+```
+
+此时后端如果不做任何特殊处理，框架将会把 `Bearer ` 视为 token 的一部分，无法正常读取 token 信息，导致鉴权失败。
+
+为此，我们需要在 yml 中添加如下配置：
+
+::: code-group
+
+```yaml [yaml 风格]
+hd-security: 
+    # token 前缀
+    token-prefix: Bearer
+```
+
+
+
+```properties [properties 风格]
+# token前缀
+hd-security.token-prefix=Bearer
+```
+
+:::
+
+此时 Hd Security 便可在读取 Token 时裁剪掉 `Bearer`，成功获取 `xxxx-xxxx-xxxx-xxxx`。
+
+
+
+::: warning 注意点
+
+1. Token 前缀与 Token 值之间必须有一个空格
+2. 一旦配置了 Token 前缀，则前端提交 `Token` 时，必须带有前缀，否则会导致框架无法读取 Token
+3. 由于 `Cookie` 中无法存储空格字符，所以配置 Token 前缀后，Cookie 模式将会失效，此时只能将 Token 提交到 `header` 里进行传输
+
+:::

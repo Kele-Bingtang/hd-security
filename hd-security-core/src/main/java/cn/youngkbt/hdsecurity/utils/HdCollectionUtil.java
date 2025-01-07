@@ -77,6 +77,67 @@ public class HdCollectionUtil {
     }
 
     /**
+     * 从集合里查询数据
+     *
+     * @param dataList 数据集合
+     * @param prefix   前缀
+     * @param keyword  关键字
+     * @param start    起始位置 (-1 代表查询所有)
+     * @param size     获取条数
+     * @param sortType 排序类型（true 正序，false 反序）
+     * @return 符合条件的新数据集合
+     */
+    public static List<String> searchList(Collection<String> dataList, String prefix, String keyword, int start, int size, boolean sortType) {
+        if (prefix == null) {
+            prefix = "";
+        }
+        if (keyword == null) {
+            keyword = "";
+        }
+        // 挑选出所有符合条件的
+        List<String> list = new ArrayList<>();
+        for (String key : dataList) {
+            if (key.startsWith(prefix) && key.contains(keyword)) {
+                list.add(key);
+            }
+        }
+        // 取指定段数据
+        return substrList(list, start, size, sortType);
+    }
+
+    /**
+     * 从集合里查询数据
+     *
+     * @param list     数据集合
+     * @param start    起始位置
+     * @param size     获取条数 (-1 代表从 start 处一直取到末尾)
+     * @param sortType 排序类型（true 正序，false 反序）
+     * @return 符合条件的新数据集合
+     */
+    public static List<String> substrList(List<String> list, int start, int size, boolean sortType) {
+        // 如果是反序的话
+        if (!sortType) {
+            Collections.reverse(list);
+        }
+        // start 至少为 0
+        if (start < 0) {
+            start = 0;
+        }
+        // size 为 -1 时，代表一直取到末尾，否则取到 start + size
+        int end = size == -1 ? list.size() : start + size;
+        // 取出的数据放到新集合中
+        List<String> list2 = new ArrayList<>();
+        for (int i = start; i < end; i++) {
+            // 如果已经取到 list 的末尾，则直接退出
+            if (i >= list.size()) {
+                return list2;
+            }
+            list2.add(list.get(i));
+        }
+        return list2;
+    }
+
+    /**
      * 判断集合中是否包含指定元素（模糊匹配，支持 * 匹配）
      *
      * @param strList 集合

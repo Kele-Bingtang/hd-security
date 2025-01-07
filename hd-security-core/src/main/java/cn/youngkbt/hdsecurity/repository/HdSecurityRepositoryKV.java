@@ -1,6 +1,6 @@
 package cn.youngkbt.hdsecurity.repository;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * <p>Hd Security 持久层</p>
@@ -75,12 +75,16 @@ public interface HdSecurityRepositoryKV<K, V> {
     void updateExpireTime(K key, long expireTime);
 
     /**
-     * 获取所有以 keyword 模糊匹配的 key 列表
+     * 获取指定 prefix 且包含 keyword 的 Key 列表
      *
-     * @param keyword 关键词
-     * @return 所有以 keyword 模糊匹配的 key 列表
+     * @param prefix   前缀
+     * @param keyword  关键词，在 Key 列表里进行模糊匹配
+     * @param start    开始处索引
+     * @param size     获取数量  (-1 代表从 start 处一直取到末尾)
+     * @param sortType 排序类型（true 正序，false 反序）
+     * @return Key 列表
      */
-    Set<K> keys(String keyword);
+    List<String> searchKeyList(String prefix, String keyword, int start, int size, boolean sortType);
 
     /**
      * 当仓库实例被装载时触发

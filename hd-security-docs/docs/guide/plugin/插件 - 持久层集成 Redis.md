@@ -1,0 +1,149 @@
+# 持久层集成 Redis
+
+## 简介
+
+Hd Security 默认将数据保存在内存中，此模式读写速度最快，且避免了序列化与反序列化带来的性能消耗，但是此模式也有一些缺点，比如：
+
+1. 重启后数据会丢失
+2. 无法在分布式环境中共享数据
+
+为此，Hd Security 提供了扩展接口，你可以轻松将会话数据存储在一些专业的缓存中间件上（比如 Redis）， 做到重启数据不丢失，而且保证分布式环境下多节点的会话一致性。
+
+## 集成 Redis
+
+在 `pom.xml` 里添加如下依赖：
+
+::: code-group
+
+```xml [Maven 方式]
+<!-- Hd Security 整合 Redis -->
+<dependency>
+    <groupId>cn.youngkbt</groupId>
+    <artifactId>hd-security-repository-redis</artifactId>
+    <version>最新版</version>
+</dependency>
+```
+
+
+
+```groovy [Gradle 方式]
+// Hd Security 整合 SpringAOP 实现注解鉴权
+implementation 'cn.youngkbt:hd-security-repository-redis:最新版'
+```
+
+:::
+
+
+
+集成 Redis 后，默认使用 JDK 序列化方式，并且 Hd Security 集成了 jackson、fastjson 序列化方式，只需要在 application 文件进行切换：
+
+::: code-group
+
+```yaml [yaml 风格]
+hd-security: 
+    reids: 
+        serializer: jackson # 可选：jdk（默认）、jackson、fastjson、fastjson2
+```
+
+
+
+```properties [properties 风格]
+# 可选：jdk（默认）、jackson、fastjson、fastjson2
+hd-security.reids.serializer=jackson
+```
+
+:::
+
+## 独立 Redis
+
+Hd Security 默认使用项目连接的 Redis 存储自身的权限数据，如果你希望彻底分离开权限数据和业务数据，可以单独给 Hd Security 配置 Redis 的连接信息。
+
+::: info 业务场景
+
+搭建两个 Redis 服务器，一个专门用来做业务缓存，另一台专门存放 Hd Security 权限数据
+
+:::
+
+
+
+在 application 文件中增加配置
+
+::: code-group
+
+```yaml [yaml 风格]
+# Hd Security 配置
+hd-security: 
+    # Token 名称
+    security-prefix-key: satoken
+    # Token 有效期
+    token-expire-time: 2592000
+    # Token 风格
+    token-style: uuid
+    
+    # 配置 Hd Security 单独使用的 Redis 连接 
+    redis: 
+        # Redis 数据库索引（默认为 0）
+        database: 2
+        # Redis 服务器地址
+        host: 127.0.0.1
+        # Redis 服务器连接端口
+        port: 6379
+        # Redis 服务器连接密码（默认为空）
+        password: 
+        # 连接超时时间
+        timeout: 10s
+
+spring: 
+    # 配置业务使用的 Redis 连接 
+    redis: 
+        # Redis 数据库索引（默认为0）
+        database: 0
+        # Redis 服务器地址
+        host: 127.0.0.1
+        # Redis 服务器连接端口
+        port: 6379
+        # Redis 服务器连接密码（默认为空）
+        password: 
+        # 连接超时时间
+        timeout: 10s
+```
+
+
+
+```properties [properties 风格]
+############## Hd Security 配置 ############## 
+# Token 名称
+hd-security.security-prefix-key=satoken
+# Token 有效期
+hd-security.token-expire-time=2592000
+# Token 风格
+hd-securityn.token-style=uuid
+
+############## 配置 Hd Security 单独使用的 Redis 连接  ############## 
+# Redis 数据库索引（默认为 0）
+hd-securityn.redis.database=2
+# Redis 服务器地址
+hd-securityn.redis.host=127.0.0.1
+# Redis 服务器连接端口
+hd-securityn.redis.port=6379
+# Redis 服务器连接密码（默认为空）
+hd-securityn.redis.password=
+# 连接超时时间
+hd-securityn.redis.timeout=10s
+
+############## 配置业务使用的 Redis 连接 ############## 
+# Redis 数据库索引（默认为 0）
+spring.redis.database=0
+# Redis 服务器地址
+spring.redis.host=127.0.0.1
+# Redis 服务器连接端口
+spring.redis.port=6379
+# Redis 服务器连接密码（默认为空）
+spring.redis.password=
+# 连接超时时间
+spring.redis.timeout=10s
+```
+
+:::
+
+集群配置说明: Hd Security 同样可以配置集群（cluster 模式和 sentinel 模式），且基础配置参数和 Spring Redis 集群配置别无二致。

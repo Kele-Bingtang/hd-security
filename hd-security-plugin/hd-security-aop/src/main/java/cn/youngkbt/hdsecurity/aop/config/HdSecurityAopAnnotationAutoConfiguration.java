@@ -29,10 +29,8 @@ public class HdSecurityAopAnnotationAutoConfiguration {
     }
 
     @Bean
-    public DefaultPointcutAdvisor hdSecurityAopAnnotationAdvisor(List<HdAnnotationHandler<? extends Annotation>> annotationHandlerList) {
+    public DefaultPointcutAdvisor hdSecurityAopAnnotationAdvisor(List<HdAnnotationHandler<? extends Annotation>> annotationHandlerList, HdSecurityAopDynamicProxyHelper proxyHelper) {
         String packagePath = registerHdSecurityAnnotationAndGetExpression(annotationHandlerList);
-
-        HdSecurityAopDynamicProxyHelper proxyHelper = hdSecurityAopDynamicProxyHelper();
 
         return proxyHelper.getAdvisor(packagePath, new HdSecurityAopAnnotationMethodInterceptor());
     }

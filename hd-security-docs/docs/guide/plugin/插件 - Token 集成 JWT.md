@@ -1,0 +1,185 @@
+# Token 集成 JWT
+
+## 引入依赖
+
+首先在项目已经引入 Hd Security 的基础上，继续添加：
+
+::: code-group
+
+```xml [Maven 方式]
+<!-- Hd Security 整合 jwt -->
+<dependency>
+    <groupId>cn.youngkbt</groupId>
+    <artifactId>hd-security-jwt</artifactId>
+    <version>最新版</version>
+</dependency>
+```
+
+
+
+```groovy [Gradle 方式]
+// Hd Security 整合 jwt
+implementation 'cn.youngkbt:hd-security-jwt:最新版'
+```
+
+:::
+
+## 配置秘钥
+
+在 `application` 配置文件中配置 jwt 生成秘钥：
+
+::: code-group
+
+```yaml [yaml 风格]
+hd-security:
+    # jwt秘钥 
+    jwt-secret-key: asdasdasifhueuiwyurfewbfjsdafjk
+```
+
+
+
+```properties [properties 风格]
+# jwt秘钥 
+hd-security.jwt-secret-key: asdasdasifhueuiwyurfewbfjsdafjk
+```
+
+:::
+
+注：为了安全起见请不要直接复制官网示例这个字符串（随便按几个字符就好了）
+
+## 注入 jwt 实现
+
+根据不同的整合规则，插件提供了三种不同的模式，你需要 **选择其中一种** 注入到你的项目中
+
+```java
+@Configuration
+public class HdSecurityConfiguration {
+    @PostConstruct
+    public void useJwt() {
+        return HdJwtProvider.use(JwtSupportType.REPLACE);
+    }
+}
+```
+
+JwtSupportType 有如下选择：
+
+```java
+public enum JwtSupportType {
+    /**
+     * 替换模式：生成 Token 的方式改为 JWT，其他功能不变
+     */
+    REPLACE,
+    /**
+     * 缓存模式：生成 Token 的方式改为 JWT，且仅仅缓存 JWT，但是不支持踢人下线、顶人下线和部分会话查询，认证信息完全从 JWT 解析出来
+     */
+    CACHE,
+    /**
+     * 无状态模式：生成 Token 的方式改为 JWT，但是不缓存 JWT，也就是关闭缓存功能，认证信息完全从 JWT 解析出来
+     */
+    STATELESS,
+
+    ;
+}
+```
+
+## 开始使用
+
+然后我们就可以像之前一样使用 Hd Security 了
+
+```java
+@RestController
+@RequestMapping("/login/")
+public class LoginController {
+
+    // 测试登录
+    @RequestMapping("login")
+    public HdResponse<String> login() {
+        HdHelper.login(10001);
+        return HdResponse.ok("登录成功");
+    }
+
+    // 查询登录状态
+    @RequestMapping("isLogin")
+    public HdResponse<String> isLogin() {
+        return HdResponse.ok("是否登录：" + HdHelper.isLogin());
+    }
+
+    // 测试注销
+    @RequestMapping("logout")
+    public HdResponse<String> logout() {
+        HdHelper.logout();
+        return HdResponse.ok();
+    }
+}
+```
+
+访问上述接口，观察 Token 生成的样式
+
+```java
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpbklkIjoiMTAwMDEiLCJybiI6IjZYYzgySzBHVWV3Uk5NTTl1dFdjbnpFZFZHTVNYd3JOIn0.F_7fbHsFsDZmckHlGDaBuwDotZwAjZ0HB14DRujQfOQ
+```
+
+## 不同模式策略对比
+
+注入不同模式会让框架具有不同的行为策略，以下是三种模式的差异点（为方便叙述，以下比较以同时引入 jwt 与 Redis 作为前提）：
+
+| 功能点                    | Replace 替换模式 | Cahce 缓存模式        | Stateless 无状态模式     |
+| ------------------------- | ---------------- | --------------------- | ------------------------ |
+| Token风格                 | JWT 风格         | JWT 风格              | JWT 风格                 |
+| 登录数据存储              | Redis 中存储     | Token 中存储          | Token 中存储             |
+| Session存储               | Redis 中存储     | Redis 中存储          | 无 Session               |
+| 注销下线                  | 前后端双清数据   | 前后端双清数据        | 前端清除数据             |
+| 踢人下线 API              | 支持             | 不支持                | 不支持                   |
+| 顶人下线 API              | 支持             | 不支持                | 不支持                   |
+| 登录认证                  | 支持             | 支持                  | 支持                     |
+| 角色认证                  | 支持             | 支持                  | 支持                     |
+| 权限认证                  | 支持             | 支持                  | 支持                     |
+| Token 有效期              | 支持             | 支持                  | 支持                     |
+| Token 活跃有效期          | 支持             | 支持                  | 不支持                   |
+| LoginId 与 Token 映射 API | 支持             | 支持                  | 不支持                   |
+| 会话管理                  | 支持             | 部分支持              | 不支持                   |
+| 注解鉴权                  | 支持             | 支持                  | 支持                     |
+| 路由拦截鉴权              | 支持             | 支持                  | 支持                     |
+| 账号封禁                  | 支持             | 支持                  | 不支持                   |
+| 身份切换                  | 支持             | 支持                  | 支持                     |
+| 二级认证                  | 支持             | 支持                  | 支持                     |
+| 模式总结                  | Token 风格替换   | JWT 与 Redis 逻辑混合 | 完全舍弃 Redis，只用 JWT |
+
+## 扩展参数
+
+你可以通过以下方式在登录时注入扩展参数：
+
+```java
+// 登录 10001 账号，并为生成的 Token 追加扩展参数 name
+HdHelper.loginHelper().login(10001, HdLoginModel.setExtra("name", "zhangsan"));
+
+// 连缀写法追加多个
+HdHelper.loginHelper().login(10001, HdLoginModel
+                .setExtra("name", "zhangsan")
+                .setExtra("age", 18)
+                .setExtra("role", "超级管理员"));
+
+// 获取扩展参数 
+String name = HdHelper.tokenHelper().getExtra("name");
+
+// 获取任意 Token 的扩展参数 
+String name = HdHelper.tokenHelper().getExtra("token", "name");
+```
+
+## 在多账户体系中集成 JWT
+
+hd-security-jwt 插件默认重写了 HdHelper 相关的类，因此天然支持多账号体系。
+
+## 注意点
+
+> 使用 `jwt-replace` 模式后，`is-share=false` **建议设置** 为 false
+
+`is-share=true` 的意思是每次登录都产生一样的 token，这种策略和 [为每个 token 单独设定 setExtra 数据] 不兼容的，为保证正确设定 Extra 数据，当使用 `jwt-simple` 模式后，建议将 `is-share` 配置项改为 `false`。（框架默认为 false）
+
+> 使用 `jwt-cache` 模式后，`is-concurrent` **建议设置** 为 true
+
+`is-concurrent=false` 代表每次登录都把旧登录顶下线，但是 jwt-cache 模式登录的 token 并不会记录在持久库数据中， 技术上来讲无法将其踢下线，所以此时顶人下线和踢人下线等 API 都属于不可用状态，所以此时 `is-concurrent` 配置项建议设置为 `true`。（框架默认为 true）
+
+> 使用 `jwt-cache` 模式后，`max-try-times` **强制** 等于 -1
+
+为防止框架错误判断 token 唯一性，当使用 jwt-mixin 模式后，`max-try-times` 恒等于 -1。（框架已经固定等于 -1，无法更改）

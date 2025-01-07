@@ -1,0 +1,80 @@
+# Http Basic 认证
+
+## 简介
+
+ttp Basic 是 http 协议中最基础的认证方式，其有两个特点：
+
+- 简单、易集成
+- 功能支持度低
+
+在 Hd Security 中使用 Http Basic 认证非常简单，只需调用几个简单的方法
+
+## 启用 Http Basic 认证
+
+首先我们在一个接口中，调用 Http Basic 校验：
+
+```java
+@RequestMapping("test")
+public Response<Void> test() {
+    HdHelper.basicAuthHelper().checkBasicAuth("hd-security:123456");
+    // ... 其它代码
+    return Response.ok();
+}
+```
+
+全局异常处理：
+
+```java
+@RestControllerAdvice
+@ResponseBody
+@Slf4j
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+@ConditionalOnClass({Servlet.class, DispatcherServlet.class})
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class SecurityExceptionHandler {
+    
+    @ExceptionHandler(HdSecurityHttpBasicAuthException.class)
+    public HdResponse<Object> handleError(HdSecurityHttpBasicAuthException e) {
+        log.error("Http Basic 认证异常: {}", e.getMessage());
+        return HdResponse.error(e.getMessage());
+    }
+}
+```
+
+然后我们访问这个接口时，浏览器会强制弹出一个 alert 表单，让你输入用户名和密码。
+
+## 其它启用方式
+
+```java
+// 对当前会话进行 Http Basic 校验，账号密码为 yml 配置的值（例如：hd-security-token.http-basic=hd-security:123456）
+HdHelper.basicAuthHelper().checkBasicAuth();
+
+// 对当前会话进行 Http Basic 校验，账号密码为：`hd-security / 123456`
+HdHelper.basicAuthHelper().checkBasicAuth("hd-security:123456");
+
+// 以注解方式启用 Http Basic 校验
+@HdCheckHttpBasic(account = "hd-security:123456")
+@RequestMapping("test")
+public HdResponse<Object> test3() {
+    return HdResponse.ok();
+}
+
+// 在全局拦截器或过滤器中启用 Basic 认证 
+@Bean
+public HdSecurityFilterForServlet getSaServletFilter() {
+    return new HdSecurityFilterForServlet()
+            .addInclude("/**").addExclude("/favicon.ico")
+            .setAuth(obj -> {
+                HdRouter.match("/test/**", () -> HdHelper.basicAuthHelper().checkBasicAuth("hd-security:123456"));
+            });
+}
+```
+
+## URL 认证
+
+除了访问后再输入账号密码外，我们还可以在 URL 中直接拼接账号密码通过 Basic 认证，例如：
+
+```java
+http://hd-security:123456@127.0.0.1:8081/test
+```
+

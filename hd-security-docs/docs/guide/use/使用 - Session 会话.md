@@ -1,0 +1,146 @@
+# Session 会话
+
+
+
+## Session 是什么？
+
+Session 是会话中专业的数据缓存组件，通过 Session 我们可以很方便的缓存一些高频读写数据，提高程序性能，例如：
+
+```java
+// 在登录时缓存 user 对象 
+HdHelper.sessionHelper().getAccountSession().set("user", user);
+
+// 然后我们就可以在任意处使用这个 user 对象
+SysUser user = (SysUser) HdHelper.sessionHelper().getAccountSession().get("user");
+```
+
+在 Sa-Token 中，Session 分为两种，分别是：
+
+- `Account Session`: 指的是框架为每个 账号id 分配的 Session
+- `Token Session`: 指的是框架为每个 token 分配的 Session
+
+## Account Session
+
+有关 Account Session 的 API 如下：
+
+```java
+// 获取当前账号 id 的 Account Session (必须是登录后才能调用)
+HdHelper.sessionHelper().getAccountSession();
+
+// 获取当前账号 id 的 Account Session, 并决定在 Session 尚未创建时，是否新建并返回
+HdHelper.sessionHelper().getAccountSessionOrCreate();
+HdHelper.sessionHelper().getAccountSessionOrCreate(60 * 60 * 24 * 30); // 指定 30 天过期
+
+// 获取账号 id 为 10001 的 Account Session
+HdHelper.sessionHelper().getAccountSessionByLoginId(10001);
+
+// 获取账号 id 为 10001 的 Account-Session, 并决定在 Session 尚未创建时，是否新建并返回
+HdHelper.sessionHelper().getAccountSessionByLoginIdOrCreate(10001);
+HdHelper.sessionHelper().getAccountSessionByLoginIdOrCreate(10001, 60 * 60 * 24 * 30); // 指定 30 天过期
+```
+
+## Token Session
+
+有关 Token Session 的 API 如下：
+
+```java
+// 获取当前 Token 的 Token-Session 对象
+HdHelper.sessionHelper().getTokenSession();
+
+// 获取指定 Token 的 Token-Session 对象
+HdHelper.sessionHelper().getTokenSessionByToken(token);
+```
+
+## 在 Session 上存取值
+
+无论是 Account Session 还是 Token Session，都集成了 HdSession 的功能，因此 API 是通用的：
+
+```java
+// 写值 
+session.setAttribute("name", "zhang"); 
+
+// 写值 (只有在此 key 原本无值的时候才会写入)
+session.setAttributeIfPresent("name", "zhang");
+
+// 取值
+session.get("name");
+
+// 取值 (指定默认值)
+session.getAttribute("name", "<defaultValue>"); 
+
+// 取值 (若无值则执行参数方法, 之后将结果保存到此键名下,并返回此结果   若有值则直接返回, 无需执行参数方法)
+session.getAttribute("name", () -> {
+            return ...;
+        });
+
+// ---------- 数据类型转换： ----------
+session.getAttributeAsInt("age");         // 取值 (转 int 类型)
+session.getAttributeAsLong("age");        // 取值 (转 long 类型)
+session.getAttributeAsString("name");     // 取值 (转 String 类型)
+session.getAttributeAsFloat("result");    // 取值 (转 float 类型)
+session.getAttributeAsDouble("result");   // 取值 (转 double 类型)
+
+session.getModel("key", new User());  // 取值（指定默认值），上面 getAttributeAsXX 底层调用该方法
+session.getModel("key", User.class);     // 取值（指定转换类型）
+
+// 是否含有某个 key (返回 true 或 false)
+session.hasAttribute("key"); 
+
+// 删值 
+session.removeAttribute('name');          
+
+// 清空所有值 
+session.clearAttributes();                 
+
+// 获取此 Session 的所有 key (返回 Set<String>)
+session.getAttributeKeys();
+```
+
+## 其它操作
+
+```java
+// 返回此 Session 的 id 
+session.getId();                          
+
+// 返回此 Session 的创建时间 (LocalDateTime) 
+session.getCreateTime();       
+
+// 返回此 Session 的创建时间 (LocalDateTime) 
+session.getLastUpdateTime();   
+
+// 返回此 Session 会话上的底层数据对象（如果更新 map 里的值，请调用 session.updateToRepository() 方法避免产生脏数据）
+session.getAttributes();                     
+
+// 将这个 Session 从持久库更新一下
+session.updateToRepository();                         
+
+// 注销此 Session 会话 (从持久库删除此 Session)
+session.removeFromRepository();
+```
+
+## 避免与 HttpSession 混淆使用
+
+1. `HdSession` 与 `HttpSession` 没有任何关系，在`HttpSession`上写入的值，在 `HdSession` 中无法取出
+2. `HttpSession` 并未被框架接管，在使用 Hd Security 时，请在任何情况下均使用 `HdSession`，不要使用 `HttpSession`
+
+## 未登录场景下获取 Token-Session
+
+默认场景下，只有登录后才能通过 `HdHelper.sessionHelper().getTokenSession()` 获取 `Token-Session`。
+
+如果想要在未登录场景下获取 Token Session ，有两种方法：
+
+- 方法一：将全局配置项 `tokenSessionCheckLogin` 改为 false，详见 [框架设置](/guide/use/使用 - 框架配置#核心包所有可配置项)
+- 方法二：调用如下 API
+
+```java
+// 创建一个新的 Token Session（可在未登录情况下使用的 Token-Session）
+HdHelper.sessionHelper().createTokenSession();
+```
+
+调用了 `createTokenSession()` 后，内部将产生一个新的 Token，并写入到 Web 上下文里。可以通过如下 API 获取：
+
+```java
+// 获取 Web 上下文的 Token（前端传来的 Token）
+HdHelper.tokenHelper().getWebToken();
+```
+

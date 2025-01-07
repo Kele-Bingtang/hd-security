@@ -82,6 +82,6 @@ public class HdSecurityApplication {
      * @return 键集合
      */
     public Set<String> keys() {
-        return HdSecurityManager.getRepository().keys(RepositoryKeyHelper.getApplicationKey(""));
+        return HdSecurityManager.getRepository().searchData(RepositoryKeyHelper.getApplicationKey(""));
     }
 }

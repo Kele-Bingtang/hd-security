@@ -1,0 +1,49 @@
+# 临时 Token 认证
+
+## 简介
+
+在部分业务场景，我们需要一种临时授权的能力，即：一个 token 的有效期并不需要像登录有效期那样需要 [七天、三十天]，而是仅仅需要 [五分钟、半小时]
+
+举个比较明显的例子：超链接邀请机制
+
+比如说你在一个游戏中创建一个公会 `(id=10014)`，现在你想邀请你的好朋友加入这个公会，在你点击 **`[邀请]`** 按钮时，系统为你生成一个连接:
+
+```xml
+http://xxx.com/apply?id=10014
+```
+
+接着，你的好朋友点击这个链接，加入了你的工会
+
+那么，系统是如何识别这个链接对应的工会是 10014 呢？很明显，我们可以观察出，这个链接的尾部有个id参数值为10014，这便是系统识别的关键
+
+此时你可能眉头一紧，就这么简单？那我如果手动更改一下尾部的参数改成 10015，然后我再一点，岂不是就可以偷偷加入别人的工会了？
+
+你想的没错，如果这个游戏的架构设计者采用上述方案完成功能的话，这个邀请机制就轻松的被你攻破了
+
+但是很明显，正常的商业项目一般不会拉跨到这种地步，比较常见的方案是，对这个公会 id 做一个 token 映射，最终你看到链接一般是这样的：
+
+```xml
+http://xxx.com/apply?token=oEwQBnglXDoGraSJdGaLooPZnGrk
+```
+
+后面那一串字母是乱打出来的，目的是为了突出它的随机性，即：使用一个随机的 token 来代替明文显示真正的数据
+
+在用户点击这个链接之后，服务器便可根据这个 token 解析出真正公会 id (10014) ，至于伪造？全是随机的你怎么伪造？你又不知道 10015 会随机出一个什么样的 Token。
+
+而且为了安全性，这个 token 的有效期一般不会太长，预留五分钟、半小时的时间足够点击
+
+## 相关 API
+
+```java
+// 根据 value 创建一个 token 
+String token = HdHelper.tempTokenHelper().createToken("10014", 200);
+
+// 解析 token 获取 value，并转换为指定类型 
+String value = HdHelper.tempTokenHelper().parseToken(token, String.class);
+
+// 获取指定 token 的剩余有效期，单位：秒 
+HdHelper.tempTokenHelper().getTokenExpireTime(token);
+
+// 删除指定 token
+HdHelper.tempTokenHelper().removeToken(token);
+```

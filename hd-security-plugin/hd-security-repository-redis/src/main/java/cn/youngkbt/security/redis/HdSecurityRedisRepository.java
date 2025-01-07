@@ -3,11 +3,13 @@ package cn.youngkbt.security.redis;
 import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepository;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryKV;
-import cn.youngkbt.hdsecurity.utils.HdStringUtil;
+import cn.youngkbt.hdsecurity.utils.HdCollectionUtil;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -20,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * @since 1.0.0
  */
 public abstract class HdSecurityRedisRepository implements HdSecurityRepository {
-    
+
     private final RedisTemplate<String, Object> redisTemplate;
 
     private boolean isInit = false;
@@ -76,7 +78,7 @@ public abstract class HdSecurityRedisRepository implements HdSecurityRepository 
 
     @Override
     public void clear() {
-        redisTemplate.delete(keys(HdSecurityManager.getConfig().getSecurityPrefixKey() + "*"));
+        redisTemplate.delete(searchKeyList(HdSecurityManager.getConfig().getSecurityPrefixKey(), "*", 0, -1, true));
     }
 
     @Override
@@ -99,11 +101,14 @@ public abstract class HdSecurityRedisRepository implements HdSecurityRepository 
     }
 
     @Override
-    public Set<String> keys(String keyword) {
-        if (HdStringUtil.hasEmpty(keyword)) {
-            return redisTemplate.keys("*");
+    public List<String> searchKeyList(String prefix, String keyword, int start, int size, boolean sortType) {
+        Set<String> keys = redisTemplate.keys(prefix + "*" + keyword + "*");
+
+        if (HdCollectionUtil.isEmpty(keys)) {
+            return new ArrayList<>();
         }
 
-        return redisTemplate.keys(keyword);
+        List<String> list = new ArrayList<>(keys);
+        return HdCollectionUtil.substrList(list, start, size, sortType);
     }
 }

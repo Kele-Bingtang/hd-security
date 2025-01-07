@@ -98,17 +98,6 @@ public class HdSecurityEventCenter {
     }
 
     /**
-     * 发布事件
-     *
-     * @param listenerConsumer 事件处理器
-     */
-    public static void publishEvent(Consumer<HdSecurityEventListener> listenerConsumer) {
-        for (HdSecurityEventListener listener : listenerList) {
-            listenerConsumer.accept(listener);
-        }
-    }
-
-    /**
      * 移除指定类型的所有侦听器
      *
      * @param listenerClass 侦听器类型
@@ -122,6 +111,17 @@ public class HdSecurityEventCenter {
      */
     public static void clearListener() {
         listenerList.clear();
+    }
+
+    /**
+     * 发布事件
+     *
+     * @param listenerConsumer 事件处理器
+     */
+    public static void publishEvent(Consumer<HdSecurityEventListener> listenerConsumer) {
+        for (HdSecurityEventListener listener : listenerList) {
+            listenerConsumer.accept(listener);
+        }
     }
 
     /**

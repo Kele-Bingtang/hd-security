@@ -188,9 +188,17 @@ public class HdTokenHelper {
         return HdSecurityTokenGenerateStrategy.instance.createToken.create(loginModel.getLoginId(), accountType);
     }
 
-    public List<String> searchToken(String keyword) {
-        Set<String> keys = HdSecurityManager.getRepository().keys(keyword);
-        return new ArrayList<>(keys);
+    /**
+     * 搜索 Token 列表
+     *
+     * @param keyword  关键词
+     * @param start    开始位置
+     * @param size     要获取的数据条数 （值为 -1 代表一直获取到末尾）
+     * @param sortType 是否排序
+     * @return Token 列表
+     */
+    public List<String> searchTokenList(String keyword, int start, int size, boolean sortType) {
+        return HdSecurityManager.getRepository().searchKeyList(RepositoryKeyHelper.getTokenLoginIdMappingKey(accountType, ""), keyword, start, size, sortType);
     }
 
     // ---------- Token 允许的活跃时间相关操作方法 ----------
@@ -232,7 +240,7 @@ public class HdTokenHelper {
         }
 
         // 获取活跃时间配置
-        String activeTime = (String) HdSecurityManager.getRepository().query(RepositoryKeyHelper.getLastActiveKey(token, accountType));
+        String activeTime = (String) HdSecurityManager.getRepository().query(RepositoryKeyHelper.getLastActiveKey(accountType, token));
         if (HdStringUtil.hasEmpty(activeTime)) {
             return null;
         }
@@ -253,7 +261,7 @@ public class HdTokenHelper {
             tokenExpireTime = config.getTokenExpireTime();
         }
 
-        String key = RepositoryKeyHelper.getLastActiveKey(token, accountType);
+        String key = RepositoryKeyHelper.getLastActiveKey(accountType, token);
         String value = System.currentTimeMillis() + "," + (Boolean.TRUE.equals(config.getDynamicActiveExpireTime()) && null != activeExpireTime ? activeExpireTime : "");
 
         HdSecurityManager.getRepository().add(key, value, tokenExpireTime);
@@ -265,7 +273,7 @@ public class HdTokenHelper {
      * @param token Token
      */
     public void removeTokenActiveTime(String token) {
-        HdSecurityManager.getRepository().remove(RepositoryKeyHelper.getLastActiveKey(token, accountType));
+        HdSecurityManager.getRepository().remove(RepositoryKeyHelper.getLastActiveKey(accountType, token));
     }
 
     // ---------- Token 最后活跃时间相关操作方法 ----------
@@ -291,7 +299,7 @@ public class HdTokenHelper {
         }
 
         // 获取最活跃时间
-        String activeTime = (String) HdSecurityManager.getRepository().query(RepositoryKeyHelper.getLastActiveKey(token, accountType));
+        String activeTime = (String) HdSecurityManager.getRepository().query(RepositoryKeyHelper.getLastActiveKey(accountType, token));
         if (HdStringUtil.hasEmpty(activeTime)) {
             return null;
         }
@@ -312,7 +320,7 @@ public class HdTokenHelper {
      * @param token Token
      */
     public void updateTokenLastActiveTimeToNow(String token) {
-        String key = RepositoryKeyHelper.getLastActiveKey(token, accountType);
+        String key = RepositoryKeyHelper.getLastActiveKey(accountType, token);
         String value = System.currentTimeMillis() + "," + getTokenActiveTime(token);
         HdSecurityManager.getRepository().edit(key, value);
     }
@@ -541,7 +549,7 @@ public class HdTokenHelper {
         if (HdStringUtil.hasEmpty(token)) {
             return null;
         }
-        return HdSecurityManager.getRepository().query(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType));
+        return HdSecurityManager.getRepository().query(RepositoryKeyHelper.getTokenLoginIdMappingKey(accountType, token));
     }
 
     /**
@@ -552,7 +560,7 @@ public class HdTokenHelper {
      * @param tokenExpireTime Token 过期时间
      */
     public void addTokenAndLoginIdMapping(String token, Object loginId, Long tokenExpireTime) {
-        HdSecurityManager.getRepository().add(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType), loginId, tokenExpireTime);
+        HdSecurityManager.getRepository().add(RepositoryKeyHelper.getTokenLoginIdMappingKey(accountType, token), loginId, tokenExpireTime);
     }
 
     /**
@@ -562,7 +570,7 @@ public class HdTokenHelper {
      * @param loginId 登录 ID
      */
     public void editTokenAndLoginIdMapping(String token, Object loginId) {
-        HdSecurityManager.getRepository().edit(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType), loginId);
+        HdSecurityManager.getRepository().edit(RepositoryKeyHelper.getTokenLoginIdMappingKey(accountType, token), loginId);
     }
 
     /**
@@ -571,7 +579,7 @@ public class HdTokenHelper {
      * @param token Token
      */
     public void removeTokenAndLoginIdMapping(String token) {
-        HdSecurityManager.getRepository().remove(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType));
+        HdSecurityManager.getRepository().remove(RepositoryKeyHelper.getTokenLoginIdMappingKey(accountType, token));
     }
 
     // ---------- Token 和 LoginId 的映射关系的 ExpireTime 获取操作方法 ---------
@@ -592,7 +600,7 @@ public class HdTokenHelper {
      * @return Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
      */
     public long getTokenAndLoginIdExpireTime(String token) {
-        return HdSecurityManager.getRepository().getExpireTime(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType));
+        return HdSecurityManager.getRepository().getExpireTime(RepositoryKeyHelper.getTokenLoginIdMappingKey(accountType, token));
     }
 
     /**
@@ -816,10 +824,10 @@ public class HdTokenHelper {
 
         HdSecurityRepository repository = HdSecurityManager.getRepository();
         // Token 和 LoginId 的映射关系续期
-        repository.updateExpireTime(RepositoryKeyHelper.getTokenLoginIdMappingKey(token, accountType), expireTime);
+        repository.updateExpireTime(RepositoryKeyHelper.getTokenLoginIdMappingKey(accountType, token), expireTime);
 
         // Token Session 续期
-        repository.updateSessionTimeout(RepositoryKeyHelper.getTokenSessionKey(token, accountType), expireTime);
+        repository.updateSessionTimeout(RepositoryKeyHelper.getTokenSessionKey(accountType, token), expireTime);
 
         // Token 对应的 Account Session 续期
         HdAccountSession accountSession = HdHelper.sessionHelper(accountType).getAccountSessionByLoginId(loginId);
@@ -829,7 +837,7 @@ public class HdTokenHelper {
 
         // Token 最后活跃时间续期
         if (HdSecurityConfigProvider.isUseActiveExpireTime()) {
-            repository.updateExpireTime(RepositoryKeyHelper.getLastActiveKey(token, accountType), expireTime);
+            repository.updateExpireTime(RepositoryKeyHelper.getLastActiveKey(accountType, token), expireTime);
         }
 
         // 发布续期后置事件：某某 token 被续期了

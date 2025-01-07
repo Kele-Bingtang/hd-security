@@ -22,6 +22,13 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class HdSecurityAopDynamicProxyHelper {
 
+    /**
+     * 获取 Advisor（比如拦截器 MethodInterceptor）
+     *
+     * @param expression AOP 表达式，如 @annotation(xxx)
+     * @param advice     自定义 Advice 实现类
+     * @return Advisor
+     */
     public DefaultPointcutAdvisor getAdvisor(String expression, Advice advice) {
         AspectJExpressionPointcut aspectJExpressionPointcut = new AspectJExpressionPointcut();
         aspectJExpressionPointcut.setExpression(expression);

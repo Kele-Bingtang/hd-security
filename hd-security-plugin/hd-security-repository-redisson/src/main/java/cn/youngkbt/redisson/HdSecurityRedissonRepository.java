@@ -3,12 +3,11 @@ package cn.youngkbt.redisson;
 import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepository;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryKV;
-import cn.youngkbt.hdsecurity.utils.HdStringUtil;
+import cn.youngkbt.hdsecurity.utils.HdCollectionUtil;
 import org.redisson.api.*;
 
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Hd Security Redisson 持久层 API 实现类
@@ -98,18 +97,11 @@ public class HdSecurityRedissonRepository implements HdSecurityRepository {
     }
 
     @Override
-    public Set<String> keys(String keyword) {
-        RKeys keys = redissonClient.getKeys();
-        if (HdStringUtil.hasEmpty(keyword)) {
-            keyword = "*";
-        }
+    public List<String> searchKeyList(String prefix, String keyword, int start, int size, boolean sortType) {
+        List<String> keyList = redissonClient.getKeys()
+                .getKeysStreamByPattern(prefix + "*" + keyword + "*")
+                .toList();
 
-        Iterable<String> keySet = keys.getKeysByPattern(keyword);
-        Set<String> set = new HashSet<>();
-        for (String k : keySet) {
-            set.add(k);
-        }
-
-        return set;
+        return HdCollectionUtil.substrList(keyList, start, size, sortType);
     }
 }

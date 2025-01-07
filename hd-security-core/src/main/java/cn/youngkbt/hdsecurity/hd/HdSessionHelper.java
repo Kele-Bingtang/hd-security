@@ -180,7 +180,20 @@ public class HdSessionHelper {
             throw new HdSecuritySessionException("Account-Session 获取失败：loginId 不能为空").setCode(HdSecurityErrorCode.LOGIN_ID_IS_NULL);
         }
 
-        return (HdAccountSession) HdSecurityManager.getRepository().querySession(RepositoryKeyHelper.getAccountSessionKey(loginId, accountType));
+        return (HdAccountSession) HdSecurityManager.getRepository().querySession(RepositoryKeyHelper.getAccountSessionKey(accountType, loginId));
+    }
+
+    /**
+     * 搜索 Account SessionId 列表
+     *
+     * @param keyword  关键词
+     * @param start    开始位置
+     * @param size     要获取的数据条数 （值为 -1 代表一直获取到末尾）
+     * @param sortType 是否排序
+     * @return Token 列表
+     */
+    public List<String> searchAccountSessionIdList(String keyword, int start, int size, boolean sortType) {
+        return HdSecurityManager.getRepository().searchKeyList(RepositoryKeyHelper.getAccountSessionKey(accountType, ""), keyword, start, size, sortType);
     }
 
     // ---------- Account Session ExpireTime 获取操作方法 ---------
@@ -201,7 +214,7 @@ public class HdSessionHelper {
      * @return 账号会话过期时间
      */
     public long getAccountSessionExpireTime(Object loginId) {
-        return HdSecurityManager.getRepository().getSessionTimeout(RepositoryKeyHelper.getAccountSessionKey(loginId, accountType));
+        return HdSecurityManager.getRepository().getSessionTimeout(RepositoryKeyHelper.getAccountSessionKey(accountType, loginId));
     }
 
     /**
@@ -319,7 +332,7 @@ public class HdSessionHelper {
             throw new HdSecurityTokenException("Token-Session 获取失败：token 不能为空").setCode(HdSecurityErrorCode.TOKEN_IS_NULL);
         }
 
-        return (HdTokenSession) HdSecurityManager.getRepository().querySession(RepositoryKeyHelper.getTokenSessionKey(token, accountType));
+        return (HdTokenSession) HdSecurityManager.getRepository().querySession(RepositoryKeyHelper.getTokenSessionKey(accountType, token));
     }
 
     /**
@@ -328,7 +341,20 @@ public class HdSessionHelper {
      * @param token Token
      */
     public void removeTokenSession(String token) {
-        HdSecurityManager.getRepository().removeSession(RepositoryKeyHelper.getTokenSessionKey(token, accountType));
+        HdSecurityManager.getRepository().removeSession(RepositoryKeyHelper.getTokenSessionKey(accountType, token));
+    }
+
+    /**
+     * 搜索 Token SessionId 列表
+     *
+     * @param keyword  关键词
+     * @param start    开始位置
+     * @param size     要获取的数据条数 （值为 -1 代表一直获取到末尾）
+     * @param sortType 是否排序
+     * @return Token 列表
+     */
+    public List<String> searchTokenSessionIdList(String keyword, int start, int size, boolean sortType) {
+        return HdSecurityManager.getRepository().searchKeyList(RepositoryKeyHelper.getTokenSessionKey(accountType, ""), keyword, start, size, sortType);
     }
 
     // ---------- Token Session ExpireTime 获取操作方法 ---------
@@ -349,7 +375,7 @@ public class HdSessionHelper {
      * @return 过期时间
      */
     public long getTokenSessionExpireTime(String token) {
-        return HdSecurityManager.getRepository().getSessionTimeout(RepositoryKeyHelper.getTokenSessionKey(token, accountType));
+        return HdSecurityManager.getRepository().getSessionTimeout(RepositoryKeyHelper.getTokenSessionKey(accountType, token));
     }
 
     // --------- TokenDevice 相关操作方法 ---------

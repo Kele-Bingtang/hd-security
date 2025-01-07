@@ -1,11 +1,10 @@
 package cn.youngkbt.hdsecurity.repository;
 
 import cn.youngkbt.hdsecurity.HdSecurityManager;
-import cn.youngkbt.hdsecurity.utils.HdStringUtil;
+import cn.youngkbt.hdsecurity.utils.HdCollectionUtil;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -101,12 +100,8 @@ public class HdSecurityRepositoryForMap implements HdSecurityRepository {
     }
 
     @Override
-    public Set<String> keys(String keyword) {
-        if (HdStringUtil.hasEmpty(keyword)) {
-            return expireMap.keySet();
-        }
-        List<String> list = dataMap.keySet().stream().filter(key -> key.contains(keyword)).toList();
-        return list.isEmpty() ? Set.of() : Set.copyOf(list);
+    public List<String> searchKeyList(String prefix, String keyword, int start, int size, boolean sortType) {
+        return HdCollectionUtil.searchList(expireMap.keySet(), prefix, keyword, start, size, sortType);
     }
 
     /**

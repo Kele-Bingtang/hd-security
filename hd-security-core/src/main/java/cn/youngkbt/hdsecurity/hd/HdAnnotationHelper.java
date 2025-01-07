@@ -5,9 +5,11 @@ import cn.youngkbt.hdsecurity.annotation.handler.*;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 /**
@@ -103,20 +105,25 @@ public class HdAnnotationHelper {
     }
 
     /**
+     * 从元素上获取注解
+     */
+    public BiFunction<AnnotatedElement, Class<? extends Annotation>, Annotation> getAnnotation = AnnotatedElement::getAnnotation;
+
+    /**
      * 注解处理器校验。对方法上或者方法所在类的 Hd Security 注解进行校验
      */
-    public Consumer<Method> handle = method -> annotationHandlerMap.forEach((key, value) -> {
+    public Consumer<Method> handle = method -> annotationHandlerMap.forEach((annotation, annotationHandler) -> {
 
-        // 再从方法所在类上获取注解判断
-        Annotation classHdAnnotation = method.getDeclaringClass().getAnnotation(key);
+        // 先从方法所在类上获取注解判断
+        Annotation classHdAnnotation = getAnnotation.apply(method.getDeclaringClass(), annotation);
         if (null != classHdAnnotation) {
-            value.handleAnnotation(classHdAnnotation, method);
+            annotationHandler.handleAnnotation(classHdAnnotation, method);
         }
 
-        // 先从方法上获取注解判断
-        Annotation methodHdAnnotation = method.getAnnotation(key);
+        // 再从方法上获取注解判断
+        Annotation methodHdAnnotation = getAnnotation.apply(method, annotation);
         if (null != methodHdAnnotation) {
-            value.handleAnnotation(methodHdAnnotation, method);
+            annotationHandler.handleAnnotation(methodHdAnnotation, method);
         }
     });
 

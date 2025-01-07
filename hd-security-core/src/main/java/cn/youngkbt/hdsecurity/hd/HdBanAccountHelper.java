@@ -162,7 +162,7 @@ public class HdBanAccountHelper {
         for (String realm : realms) {
             // 发布解封账号前置事件
             HdSecurityEventCenter.publishBeforeUnBanAccount(accountType, loginId, realm);
-            
+
             // 解除账号封禁
             HdSecurityManager.getRepository().remove(getDisableAccountKey(accountType, loginId, realm));
 
@@ -193,6 +193,17 @@ public class HdBanAccountHelper {
     }
 
     /**
+     * 判断账号是否被封禁，并且是否在指定的封禁级别内
+     *
+     * @param loginId 账号 ID
+     * @param level   封禁级别
+     * @return 是否被封禁
+     */
+    public boolean isDisable(Object loginId, int level) {
+        return isDisable(loginId, DefaultConstant.DEFAULT_BAN_REALM, level);
+    }
+
+    /**
      * 判断账号是否在指定领域被封禁，并且是否在指定的封禁级别内
      *
      * @param loginId 账号 ID
@@ -202,7 +213,7 @@ public class HdBanAccountHelper {
      */
     public boolean isDisable(Object loginId, String realm, int level) {
         int disableLevel = getDisableLevel(loginId, realm);
-        
+
         if (disableLevel == DefaultConstant.NOT_BAN_TAG) {
             return false;
         }
@@ -227,6 +238,16 @@ public class HdBanAccountHelper {
      */
     public void checkDisable(Object loginId, String realm) {
         checkDisable(loginId, realm, DefaultConstant.DEFAULT_BAN_LEVEL);
+    }
+
+    /**
+     * 检查账号是否在指定领域被封禁
+     *
+     * @param loginId 账号 ID
+     * @param level   封禁级别
+     */
+    public void checkDisable(Object loginId, int level) {
+        checkDisable(loginId, DefaultConstant.DEFAULT_BAN_REALM, level);
     }
 
     /**

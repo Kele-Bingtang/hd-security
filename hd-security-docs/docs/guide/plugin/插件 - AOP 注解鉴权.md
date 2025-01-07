@@ -1,0 +1,32 @@
+# AOP 注解鉴权
+
+## 简介
+
+在 [注解鉴权](/guide/use/使用 - 注解鉴权) 章节，我们非常轻松的实现了注解鉴权， 但是默认的拦截器模式却有一个缺点，那就是无法在 `Controller层` 以外的代码使用进行校验。
+
+因此 Hd Security 提供 AOP 插件，你只需在 `pom.xml` 里添加如下依赖，便可以在任意层级使用注解鉴权。
+
+::: code-group
+
+```xml [Maven 方式]
+<!-- Hd Security 整合 SpringAOP 实现注解鉴权 -->
+<dependency>
+    <groupId>cn.youngkbt</groupId>
+    <artifactId>hd-security-aop</artifactId>
+    <version>最新版</version>
+</dependency>
+```
+
+
+
+```groovy [Gradle 方式]
+// Hd Security 整合 SpringAOP 实现注解鉴权
+implementation 'cn.youngkbt:hd-security-spring-aop:最新版'
+```
+
+:::
+
+## 注意点
+
+- 使用拦截器模式，只能把注解写在 `Controller层`，使用 AOP 模式，可以将注解写在任意层级
+- **拦截器模式和 AOP 模式不可同时集成**，否则会在 `Controller 层` 发生一个注解校验两次的 Bug

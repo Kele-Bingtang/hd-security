@@ -66,7 +66,7 @@ public class HdSession implements Serializable {
         // 发布创建 Session 开始事件
         HdSecurityEventCenter.publishBeforeCreateSession(id);
 
-        this.id = RepositoryKeyHelper.getAccountSessionKey(id, accountType);
+        this.id = RepositoryKeyHelper.getAccountSessionKey(accountType, id);
         this.accountType = HdStringUtil.hasEmpty(accountType) ? DefaultConstant.DEFAULT_ACCOUNT_TYPE : accountType;
         this.createTime = LocalDateTime.now();
         this.lastUpdateTime = LocalDateTime.now();

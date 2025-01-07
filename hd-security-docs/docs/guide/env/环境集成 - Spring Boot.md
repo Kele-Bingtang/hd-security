@@ -1,0 +1,135 @@
+# 集成 Spring Boot 环境
+
+## 创建项目
+
+在 IDE 里创建一个 Spring Boot 项目或者打开已有的 Spring Boot 项目
+
+## 添加依赖
+
+Maven 方式
+
+::: code-group
+
+```xml [Spring Boot2]
+<dependency>
+    <groupId>cn.youngkbt</groupId>
+    <artifactId>hd-security-spring-boot2-starter</artifactId>
+    <version>最新版</version>
+</dependency>
+```
+
+```xml [Spring Boot3]
+<dependency>
+    <groupId>cn.youngkbt</groupId>
+    <artifactId>hd-security-spring-boot3-starter</artifactId>
+    <version>最新版</version>
+</dependency>
+```
+
+:::
+
+Gradle 方式
+
+:::code-group
+
+```groovy [Spring Boot2]
+implementation 'cn.youngkbt:hd-security-spring-boot2-starter:最新版'
+```
+
+```groovy [Spring Boot3]
+implementation 'cn.youngkbt:hd-security-spring-boot3-starter:最新版'
+```
+
+:::
+
+## 设置配置文件
+
+你可以 **零配置启动项目** ，但同时你也可以在 `application.yml` 中增加如下配置，定制性使用框架：
+
+::: code-group
+
+```yaml [application.yml]
+server:
+    # 端口
+    port: 8088
+hd-security: 
+    # token 名称（同时也是 cookie 名称）
+    security-prefix-key: hd-security
+    # token 有效期（单位：秒） 默认 30 天，-1 代表永久有效
+    token-expire-time: 2592000
+    # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认 -1 代表不限制，永不冻结
+    token-active-expire-time: -1
+    # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+    is-concurrent: true
+    # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
+    is-share: true
+    # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+    token-style: uuid
+    # 是否输出操作日志 
+    is-log: true
+```
+
+
+
+```properties [application.properties]
+# 端口
+server.port=8088
+
+# token 名称（同时也是 cookie 名称）
+hd-security.security-prefix-key=hd-security
+# token 有效期（单位：秒） 默认30天，-1 代表永久有效
+hd-security.token-expire-time=2592000
+# token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
+hd-security.token-active-expire-time=-1
+# 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+hd-security.is-concurrent=true
+# 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
+hd-security.is-share=true
+# token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+hd-security.token-style=uuid
+# 是否输出操作日志 
+hd-security.is-log=true
+```
+
+:::
+
+## 创建启动类
+
+创建 Spring Boot 的启动类
+
+```java
+@SpringBootApplication
+public class HdSecurityDemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(HdSecurityDemoApplication.class, args);
+        System.out.println("启动成功，Hd Security 配置如下：" + HdSecurityManager.getConfig());
+    }
+}
+```
+
+## 创建测试 Controller
+
+```java
+@RestController
+@RequestMapping("/user")
+public class UserController {
+
+    // 测试登录，浏览器访问： http://localhost:8081/user/doLogin?username=zhang&password=123456
+    @RequestMapping("doLogin")
+    public String doLogin(String username, String password) {
+        // 此处仅作模拟示例，真实项目需要从数据库中查询数据进行比对 
+        if("tianke".equals(username) && "123456".equals(password)) {
+            HdUtil.login(10001);
+            return "登录成功";
+        }
+        return "登录失败";
+    }
+
+    // 查询登录状态，浏览器访问： http://localhost:8081/user/isLogin
+    @RequestMapping("isLogin")
+    public String isLogin() {
+        return "当前会话是否登录：" + HdUtil.isLogin();
+    }
+}
+```
+

@@ -17,44 +17,44 @@ public class RepositoryKeyHelper {
     /**
      * 获取 AccountSession 的 Key
      *
-     * @param loginId     登录ID
      * @param accountType 账号类型
+     * @param loginId     登录ID
      * @return 账号SessionKey
      */
-    public static String getAccountSessionKey(Object loginId, String accountType) {
+    public static String getAccountSessionKey(String accountType, Object loginId) {
         return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":accountSession:" + loginId;
     }
 
     /**
      * 获取 TokenSession 的 Key
      *
-     * @param token       Token
      * @param accountType 账号类型
+     * @param token       Token
      * @return TokenSessionKey
      */
-    public static String getTokenSessionKey(String token, String accountType) {
+    public static String getTokenSessionKey(String accountType, String token) {
         return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":tokenSession:" + token;
     }
 
     /**
      * 获取 Token 登录 ID 映射的 Key
      *
-     * @param token       Token
      * @param accountType 账号类型
+     * @param token       Token
      * @return Token 登录ID映射的 Key
      */
-    public static String getTokenLoginIdMappingKey(String token, String accountType) {
+    public static String getTokenLoginIdMappingKey(String accountType, String token) {
         return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":tokenLoginMapping:" + token;
     }
 
     /**
      * 获取 Token 最后活跃时间的 Key
      *
-     * @param token       Token
      * @param accountType 账号类型
+     * @param token       Token
      * @return Token 最后活跃时间
      */
-    public static String getLastActiveKey(String token, String accountType) {
+    public static String getLastActiveKey(String accountType, String token) {
         return HdSecurityManager.getConfig(accountType).getSecurityPrefixKey() + ":" + accountType + ":lastActive:" + token;
     }
 
