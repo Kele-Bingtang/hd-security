@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HdSecurityRepositoryForMap implements HdSecurityRepository {
 
     /**
-     * <p>Session 集合</p>
+     * <p>数据集合</p>
      * <p>如果为 Account Session，则 Key 为 loginId 生成的唯一 Key，Value 为 HdAccountSession 对象</p>
      * <p>如果为 Token Session，则 Key 为 token 生成的唯一 Key，Value 为 HdTokenSession 对象</p>
      */

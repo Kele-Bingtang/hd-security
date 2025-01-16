@@ -45,6 +45,9 @@ export default defineConfig({
       detailsLabel: '详细信息',
     },
   },
+  rewrites: {
+    'guide/use/使用 - 登出下线.md': 'aaa/aa.md',
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: '/logo.svg',
