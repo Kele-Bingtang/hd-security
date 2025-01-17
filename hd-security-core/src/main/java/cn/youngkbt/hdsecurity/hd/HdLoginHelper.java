@@ -656,7 +656,7 @@ public class HdLoginHelper {
 
         // 发布二级认证开启前置事件
         HdSecurityEventCenter.publishBeforeSecondAuthOpen(accountType, webToken, realm, secondAuthTime);
-        // 添加二级认证表示到持久IC
+        // 添加二级认证表示到持久层
         HdSecurityManager.getRepository().add(getSecondAuthKey(webToken, realm), DefaultConstant.SECOND_AUTH_OPEN_TAG, secondAuthTime);
 
         // 发布二级认证开启后置事件
@@ -744,15 +744,25 @@ public class HdLoginHelper {
     public void closeSecondAuth(String realm) {
         // 获取 Web 传来的 Token
         String webToken = HdHelper.tokenHelper(accountType).getWebToken();
-        if (HdStringUtil.hasEmpty(webToken)) {
+        closeSecondAuth(webToken, realm);
+    }
+
+    /**
+     * 关闭指定领域的二级认证
+     *
+     * @param token token
+     * @param realm 领域
+     */
+    public void closeSecondAuth(String token, String realm) {
+        if (HdStringUtil.hasEmpty(token)) {
             return;
         }
         // 发布二级认证关闭前置事件
-        HdSecurityEventCenter.publishBeforeSecondAuthClose(accountType, webToken, realm);
+        HdSecurityEventCenter.publishBeforeSecondAuthClose(accountType, token, realm);
         // 删除 Token 对应的二级认证标识
-        HdSecurityManager.getRepository().remove(getSecondAuthKey(webToken, realm));
+        HdSecurityManager.getRepository().remove(getSecondAuthKey(token, realm));
         // 发布二级认证关闭后置事件
-        HdSecurityEventCenter.publishAfterSecondAuthClose(accountType, webToken, realm);
+        HdSecurityEventCenter.publishAfterSecondAuthClose(accountType, token, realm);
     }
 
     /**

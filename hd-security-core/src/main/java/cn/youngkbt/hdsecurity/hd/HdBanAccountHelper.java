@@ -51,7 +51,7 @@ public class HdBanAccountHelper {
      */
     public Integer getDisableLevel(Object loginId, String realm) {
         Object level = HdSecurityManager.getRepository().query(getDisableAccountKey(accountType, loginId, realm));
-        // 判断是否被封禁了，如果尚未被封禁，返回 -2
+        // 判断是否被封禁了，如果尚未被封禁，返回 null
         if (HdStringUtil.hasEmpty(level)) {
             return null;
         }

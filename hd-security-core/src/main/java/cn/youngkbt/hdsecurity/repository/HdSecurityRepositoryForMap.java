@@ -21,11 +21,29 @@ public class HdSecurityRepositoryForMap implements HdSecurityRepository {
      * <p>如果为 Account Session，则 Key 为 loginId 生成的唯一 Key，Value 为 HdAccountSession 对象</p>
      * <p>如果为 Token Session，则 Key 为 token 生成的唯一 Key，Value 为 HdTokenSession 对象</p>
      */
-    public Map<String, Object> dataMap = new ConcurrentHashMap<>();
+    private Map<String, Object> dataMap = new ConcurrentHashMap<>();
     /**
      * 存储数据过期时间的集合（单位: 毫秒）, 记录所有 key 的到期时间 （注意存储的是到期时间，不是剩余存活时间）
      */
-    public Map<String, Long> expireMap = new ConcurrentHashMap<>();
+    private Map<String, Long> expireMap = new ConcurrentHashMap<>();
+
+    public Map<String, Object> getDataMap() {
+        return dataMap;
+    }
+
+    public HdSecurityRepositoryForMap setDataMap(Map<String, Object> dataMap) {
+        this.dataMap = dataMap;
+        return this;
+    }
+
+    public Map<String, Long> getExpireMap() {
+        return expireMap;
+    }
+
+    public HdSecurityRepositoryForMap setExpireMap(Map<String, Long> expireMap) {
+        this.expireMap = expireMap;
+        return this;
+    }
 
     @Override
     public Object query(String key) {
@@ -152,6 +170,24 @@ public class HdSecurityRepositoryForMap implements HdSecurityRepository {
      * 是否继续执行数据清理的线程标记
      */
     public volatile boolean refreshFlag;
+
+    public Thread getRefreshThread() {
+        return refreshThread;
+    }
+
+    public HdSecurityRepositoryForMap setRefreshThread(Thread refreshThread) {
+        this.refreshThread = refreshThread;
+        return this;
+    }
+
+    public boolean isRefreshFlag() {
+        return refreshFlag;
+    }
+
+    public HdSecurityRepositoryForMap setRefreshFlag(boolean refreshFlag) {
+        this.refreshFlag = refreshFlag;
+        return this;
+    }
 
     /**
      * 初始化定时任务，定时清理过期数据
