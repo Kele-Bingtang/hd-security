@@ -243,5 +243,4 @@ public class HdHelper {
     public static void updateLastActiveToNow() {
         tokenHelper(ACCOUNT_TYPE).updateTokenLastActiveTimeToNow();
     }
-
 }

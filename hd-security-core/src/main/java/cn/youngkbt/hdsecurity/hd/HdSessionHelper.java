@@ -246,7 +246,7 @@ public class HdSessionHelper {
                 // 最大尝试次数
                 tokenHelper.getMaxTryTimes(),
                 // 创建 Token
-                () -> tokenHelper.createLoginToken(HdLoginModelOperator.build()),
+                () -> tokenHelper.createToken(null),
                 // 验证 Token 唯一性，这里从持久层获取根据创建的 Token 获取登录 ID，获取成功代表有用户在用，则不唯一
                 newToken -> tokenHelper.getLoginIdByToken(newToken) == null,
                 // 捕获异常

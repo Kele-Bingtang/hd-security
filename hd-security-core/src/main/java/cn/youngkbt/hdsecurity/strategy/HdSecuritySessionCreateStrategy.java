@@ -14,9 +14,9 @@ import cn.youngkbt.hdsecurity.model.session.HdTokenSession;
 public class HdSecuritySessionCreateStrategy {
 
     public static HdSecuritySessionCreateStrategy instance = new HdSecuritySessionCreateStrategy();
-
+    // 创建 Account Session 的函数
     public HdCreateSessionFunction<HdAccountSession> createAccountSession = HdAccountSession::new;
-    
+    // 创建 Token Session 的函数
     public HdCreateSessionFunction<HdTokenSession> createTokenSession = HdTokenSession::new;
     
     public HdSecuritySessionCreateStrategy setCreateAccountSession(HdCreateSessionFunction createAccountSession) {

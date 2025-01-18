@@ -4,7 +4,8 @@ import cn.youngkbt.hdsecurity.HdSecurityManager;
 import cn.youngkbt.hdsecurity.hd.RepositoryKeyHelper;
 import cn.youngkbt.hdsecurity.repository.HdSecurityRepositoryKV;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Hd Security 全局应用域，可以利用这个类来存储一些全局信息。应用重启后数据会丢失。
@@ -68,7 +69,6 @@ public class HdSecurityApplication {
     /**
      * 清空全局应用域信息
      *
-     * @return 对象本身
      */
     public void clear() {
         for (String key : keys()) {
@@ -81,7 +81,20 @@ public class HdSecurityApplication {
      *
      * @return 键集合
      */
-    public Set<String> keys() {
-        return HdSecurityManager.getRepository().searchData(RepositoryKeyHelper.getApplicationKey(""));
+    public List<String> keys() {
+        String applicationKey = RepositoryKeyHelper.getApplicationKey("");
+        List<String> keyList = HdSecurityManager.getRepository().searchKeyList(applicationKey, "", 0, -1, true);
+
+        // 裁减掉固定前缀，保留 key 名称，塞入新集合
+        int prefixLength = applicationKey.length();
+        List<String> finalKeyList = new ArrayList<>();
+        if(null != keyList) {
+            for (String key : keyList) {
+                finalKeyList.add(key.substring(prefixLength));
+            }
+        }
+
+        // 返回 
+        return finalKeyList;
     }
 }

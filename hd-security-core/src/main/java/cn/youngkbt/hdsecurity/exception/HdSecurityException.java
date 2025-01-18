@@ -16,9 +16,17 @@ public class HdSecurityException extends RuntimeException {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
+    /**
+     * 状态码
+     */
     private Integer code = HdResponseErrorStatusEnum.FAIL.getCode();
+    /**
+     * 状态描述
+     */
     private String status = HdResponseErrorStatusEnum.FAIL.getStatus();
+    /**
+     * 错误信息
+     */
     private String message = HdResponseErrorStatusEnum.FAIL.getMessage();
 
     public HdSecurityException() {

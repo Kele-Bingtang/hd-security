@@ -10,25 +10,21 @@ package cn.youngkbt.hdsecurity.error;
 public interface HdSecurityErrorCode {
     // --------- 全局组件异常码 ---------
     /**
-     * 指定的配置文件加载失败
-     */
-    int CONFIG_LOAD_FAIL = 10001;
-    /**
      * 配置文件属性无法正常读取
      */
-    int CONFIG_PROPERTY_READ_FAIL = 10002;
+    int CONFIG_PROPERTY_READ_FAIL = 10001;
     /**
      * 未能获取有效的上下文处理器
      */
-    int CONTEXT_GET_NULL = 10003;
+    int CONTEXT_GET_NULL = 10002;
     /**
      * 注册的侦听器集合为空
      */
-    int LISTENERS_IS_NULL = 10011;
+    int LISTENERS_IS_NULL = 10003;
     /**
      * 注册的侦听器集合为空
      */
-    int LISTENER_IS_NULL = 10012;
+    int LISTENER_IS_NULL = 10004;
 
     /**
      * 登录时的账号 id 值为空

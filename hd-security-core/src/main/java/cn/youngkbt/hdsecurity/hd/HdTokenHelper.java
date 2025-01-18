@@ -185,7 +185,11 @@ public class HdTokenHelper {
      * @return Token
      */
     public String createToken(HdLoginModel loginModel) {
-        return HdSecurityTokenGenerateStrategy.instance.createToken.create(loginModel.getLoginId(), accountType);
+        Object loginId = null;
+        if (null != loginModel) {
+            loginId = loginModel.getLoginId();
+        }
+        return HdSecurityTokenGenerateStrategy.instance.createToken.create(loginId, accountType);
     }
 
     /**

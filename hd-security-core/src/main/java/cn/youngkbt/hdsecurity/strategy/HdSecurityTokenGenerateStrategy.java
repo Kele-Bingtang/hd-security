@@ -17,6 +17,9 @@ public class HdSecurityTokenGenerateStrategy {
 
     public static HdSecurityTokenGenerateStrategy instance = new HdSecurityTokenGenerateStrategy();
 
+    /**
+     * 生成唯一元素的函数
+     */
     public HdGenerateUniqueElementFunction generateUniqueElement = ((elementName, maxTryTimes, createElementFunction, checkUniquePredicate, exceptionConsumer) -> {
         // 循环生成
         for (int i = 1; ; i++) {
@@ -40,6 +43,9 @@ public class HdSecurityTokenGenerateStrategy {
         }
     });
 
+    /**
+     * 生成 token 的函数
+     */
     public HdCreateTokenFunction createToken = ((loginId, accountType) -> {
         String tokenStyle = HdSecurityManager.getConfig(accountType).getTokenStyle();
 
