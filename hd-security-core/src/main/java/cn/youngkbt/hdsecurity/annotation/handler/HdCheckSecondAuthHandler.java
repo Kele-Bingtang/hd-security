@@ -20,6 +20,6 @@ public class HdCheckSecondAuthHandler implements HdAnnotationHandler<HdCheckSeco
 
     @Override
     public void handle(HdCheckSecondAuth annotation, Method method) {
-        HdHelper.loginHelper(annotation.accountType()).checkSecondAuth(annotation.realm());
+        HdHelper.secondAuthHelper(annotation.accountType()).checkSecondAuth(annotation.realm());
     }
 }

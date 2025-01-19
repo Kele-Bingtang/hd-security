@@ -7,10 +7,8 @@ import cn.youngkbt.hdsecurity.error.HdSecurityErrorCode;
 import cn.youngkbt.hdsecurity.exception.HdSecurityAuthorizeException;
 import cn.youngkbt.hdsecurity.strategy.HdSecurityElementVagueMatchStrategy;
 import cn.youngkbt.hdsecurity.utils.HdCollectionUtil;
-import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 
 import java.util.Collections;
-
 import java.util.List;
 
 /**
@@ -39,52 +37,52 @@ public class HdAuthorizeHelper {
     // ---------- 角色相关操作方法 ----------
 
     public List<String> getRoleList() {
-        return getAuthorizeList(AuthorizeType.ROLE.getType());
+        return getAuthorizeList(AuthorizeType.ROLE);
     }
 
     public List<String> getRoleList(Object loginId) {
-        return getAuthorizeList(AuthorizeType.ROLE.getType(), loginId);
+        return getAuthorizeList(AuthorizeType.ROLE, loginId);
     }
 
     public boolean hasRole(String role) {
-        return hasAuthorize(AuthorizeType.ROLE.getType(), role);
+        return hasAuthorize(AuthorizeType.ROLE, role);
     }
 
     public boolean hasRole(Object loginId, String role) {
-        return hasAuthorize(AuthorizeType.ROLE.getType(), loginId, role);
+        return hasAuthorize(AuthorizeType.ROLE, loginId, role);
     }
 
     public boolean hasRole(List<String> roleList, String role) {
-        return hasAuthorize(AuthorizeType.ROLE.getType(), roleList, role);
+        return hasAuthorize(AuthorizeType.ROLE, roleList, role);
     }
 
     public void checkRole(String role) {
-        checkAuthorize(AuthorizeType.ROLE.getType(), role);
+        checkAuthorize(AuthorizeType.ROLE, role);
     }
 
     public boolean hasRoleAnd(String... role) {
-        return hasAuthorizeAnd(AuthorizeType.ROLE.getType(), role);
+        return hasAuthorizeAnd(AuthorizeType.ROLE, role);
     }
 
     public void checkRoleAnd(String... permissions) {
-        checkAuthorizeAnd(AuthorizeType.ROLE.getType(), permissions);
+        checkAuthorizeAnd(AuthorizeType.ROLE, permissions);
     }
 
     public boolean hasRoleOr(String... permissions) {
-        return hasAuthorizeOr(AuthorizeType.ROLE.getType(), permissions);
+        return hasAuthorizeOr(AuthorizeType.ROLE, permissions);
     }
 
     public void checkRoleOr(String... permissions) {
-        checkAuthorizeOr(AuthorizeType.ROLE.getType(), permissions);
+        checkAuthorizeOr(AuthorizeType.ROLE, permissions);
     }
 
     // ---------- 权限相关操作方法 ----------
     public List<String> getPermissionList() {
-        return getAuthorizeList(AuthorizeType.PERMISSION.getType());
+        return getAuthorizeList(AuthorizeType.PERMISSION);
     }
 
     public List<String> getPermissionList(Object loginId) {
-        return getAuthorizeList(AuthorizeType.PERMISSION.getType(), loginId);
+        return getAuthorizeList(AuthorizeType.PERMISSION, loginId);
     }
 
     public boolean hasPermission(String permission) {
@@ -92,31 +90,31 @@ public class HdAuthorizeHelper {
     }
 
     public boolean hasPermission(Object loginId, String permission) {
-        return hasAuthorize(AuthorizeType.PERMISSION.getType(), loginId, permission);
+        return hasAuthorize(AuthorizeType.PERMISSION, loginId, permission);
     }
 
     public boolean hasPermission(List<String> permissionList, String permission) {
-        return hasAuthorize(AuthorizeType.PERMISSION.getType(), permissionList, permission);
+        return hasAuthorize(AuthorizeType.PERMISSION, permissionList, permission);
     }
 
     public void checkPermission(String permission) {
-        checkAuthorize(AuthorizeType.PERMISSION.getType(), permission);
+        checkAuthorize(AuthorizeType.PERMISSION, permission);
     }
 
     public boolean hasPermissionAnd(String... permissions) {
-        return hasAuthorizeAnd(AuthorizeType.PERMISSION.getType(), permissions);
+        return hasAuthorizeAnd(AuthorizeType.PERMISSION, permissions);
     }
 
     public void checkPermissionAnd(String... permissions) {
-        checkAuthorizeAnd(AuthorizeType.PERMISSION.getType(), permissions);
+        checkAuthorizeAnd(AuthorizeType.PERMISSION, permissions);
     }
 
     public boolean hasPermissionOr(String... permissions) {
-        return hasAuthorizeOr(AuthorizeType.PERMISSION.getType(), permissions);
+        return hasAuthorizeOr(AuthorizeType.PERMISSION, permissions);
     }
 
     public void checkPermissionOr(String... permissions) {
-        checkAuthorizeOr(AuthorizeType.PERMISSION.getType(), permissions);
+        checkAuthorizeOr(AuthorizeType.PERMISSION, permissions);
     }
 
     // ---------- 认证相关操作方法  ----------
@@ -127,7 +125,7 @@ public class HdAuthorizeHelper {
      * @param authorizeType 认证类型
      * @return 认证码列表
      */
-    public List<String> getAuthorizeList(String authorizeType) {
+    public List<String> getAuthorizeList(AuthorizeType authorizeType) {
         return getAuthorizeList(authorizeType, HdHelper.loginHelper(accountType).getLoginId());
     }
 
@@ -138,16 +136,16 @@ public class HdAuthorizeHelper {
      * @param loginId       账号ID
      * @return 认证码列表
      */
-    public List<String> getAuthorizeList(String authorizeType, Object loginId) {
-        if (HdStringUtil.hasEmpty(authorizeType)) {
+    public List<String> getAuthorizeList(AuthorizeType authorizeType, Object loginId) {
+        if (null == authorizeType) {
             return Collections.emptyList();
         }
 
-        if (authorizeType.equalsIgnoreCase(AuthorizeType.ROLE.getType())) {
+        if (authorizeType.equals(AuthorizeType.ROLE)) {
             return HdSecurityManager.getAuthorize().getRoleList(loginId, accountType);
         }
 
-        if (authorizeType.equalsIgnoreCase(AuthorizeType.PERMISSION.getType())) {
+        if (authorizeType.equals(AuthorizeType.PERMISSION)) {
             return HdSecurityManager.getAuthorize().getPermissionList(loginId, accountType);
         }
 
@@ -161,7 +159,7 @@ public class HdAuthorizeHelper {
      * @param authorize     认证码
      * @return 是否含有指定权限
      */
-    public boolean hasAuthorize(String authorizeType, String authorize) {
+    public boolean hasAuthorize(AuthorizeType authorizeType, String authorize) {
         return hasAuthorize(authorizeType, HdHelper.loginHelper(accountType).getLoginId(), authorize);
     }
 
@@ -173,8 +171,8 @@ public class HdAuthorizeHelper {
      * @param authorize     认证码
      * @return 是否含有指定权限
      */
-    public boolean hasAuthorize(String authorizeType, Object loginId, String authorize) {
-        if (HdStringUtil.hasEmpty(authorizeType)) {
+    public boolean hasAuthorize(AuthorizeType authorizeType, Object loginId, String authorize) {
+        if (null == authorizeType) {
             return false;
         }
 
@@ -199,8 +197,8 @@ public class HdAuthorizeHelper {
      * @param authorizeType 认证类型
      * @param authorize     认证码
      */
-    public void checkAuthorize(String authorizeType, String authorize) {
-        if (HdStringUtil.hasEmpty(authorizeType)) {
+    public void checkAuthorize(AuthorizeType authorizeType, String authorize) {
+        if (null == authorizeType) {
             return;
         }
         if (!hasAuthorize(authorizeType, authorize)) {
@@ -209,14 +207,14 @@ public class HdAuthorizeHelper {
     }
 
     /**
-     * 判断：当前账号是否含有指定认证码
+     * 判断当前账号是否含有指定认证码
      * <p>可指定多个认证码，必须全部拥有才返回 true</p>
      *
      * @param authorizeType 认证类型
      * @param authorizeList 认证码列表
      * @return 是否含有指定权限
      */
-    public boolean hasAuthorizeAnd(String authorizeType, String... authorizeList) {
+    public boolean hasAuthorizeAnd(AuthorizeType authorizeType, String... authorizeList) {
         try {
             checkAuthorizeAnd(authorizeType, authorizeList);
             return true;
@@ -227,13 +225,13 @@ public class HdAuthorizeHelper {
 
     /**
      * 校验当前账号是否含有指定认证码
-     * <p>可指定多个认证码，必须全部验证通过才返回 true</p>
+     * <p>可指定多个认证码，全部验证通过则通过，否则则抛出异常</p>
      *
      * @param authorizeType 认证类型
      * @param authorizes    认证码列表
      */
-    public void checkAuthorizeAnd(String authorizeType, String... authorizes) {
-        if (HdStringUtil.hasEmpty(authorizeType) || HdCollectionUtil.isEmpty(authorizes)) {
+    public void checkAuthorizeAnd(AuthorizeType authorizeType, String... authorizes) {
+        if (null == authorizeType || HdCollectionUtil.isEmpty(authorizes)) {
             return;
         }
 
@@ -256,7 +254,7 @@ public class HdAuthorizeHelper {
      * @param authorizes    认证码列表
      * @return 是否含有指定权限
      */
-    public boolean hasAuthorizeOr(String authorizeType, String... authorizes) {
+    public boolean hasAuthorizeOr(AuthorizeType authorizeType, String... authorizes) {
         try {
             checkAuthorizeOr(authorizeType, authorizes);
             return true;
@@ -267,13 +265,13 @@ public class HdAuthorizeHelper {
 
     /**
      * 检查当前账号是否含有指定认证码
-     * <p>可指定多个认证码，任意一个认证码验证通过就返回 true</p>
+     * <p>可指定多个认证码，只要有一个验证通过则通过，否则抛出异常</p>
      *
      * @param authorizeType 认证类型
      * @param authorizes    认证码列表
      */
-    public void checkAuthorizeOr(String authorizeType, String... authorizes) {
-        if (HdStringUtil.hasEmpty(authorizeType) || HdCollectionUtil.isEmpty(authorizes)) {
+    public void checkAuthorizeOr(AuthorizeType authorizeType, String... authorizes) {
+        if (null == authorizeType || HdCollectionUtil.isEmpty(authorizes)) {
             return;
         }
 
@@ -295,12 +293,12 @@ public class HdAuthorizeHelper {
      * @param authorizeType 认证类型
      * @param authorize     认证码
      */
-    public void throwAuthorizeException(String authorizeType, String authorize) {
-        if (authorizeType.equalsIgnoreCase(AuthorizeType.ROLE.getType())) {
+    public void throwAuthorizeException(AuthorizeType authorizeType, String authorize) {
+        if (authorizeType.equals(AuthorizeType.ROLE)) {
             throw new HdSecurityAuthorizeException(authorize, "角色", accountType).setCode(HdSecurityErrorCode.AUTHORIZE_ROLE_INVALID);
         }
 
-        if (authorizeType.equalsIgnoreCase(AuthorizeType.PERMISSION.getType())) {
+        if (authorizeType.equals(AuthorizeType.PERMISSION)) {
             throw new HdSecurityAuthorizeException(authorize, "权限", accountType).setCode(HdSecurityErrorCode.AUTHORIZE_PERMISSION_INVALID);
         }
     }

@@ -30,6 +30,7 @@ public class HdHelper {
     private static final Map<String, HdTokenHelper> TOKEN_HELPER_MAP = new ConcurrentHashMap<>();
     private static final Map<String, HdAuthorizeHelper> AUTHORIZE_HELPER_MAP = new ConcurrentHashMap<>();
     private static final Map<String, HdBanAccountHelper> BAN_ACCOUNT_HELPER_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, HdSecondAuthHelper> SECOND_AUTH_HELPER_MAP = new ConcurrentHashMap<>();
     private static HdAnnotationHelper hdAnnotationHelper;
     private static HdBasicAuthHelper hdBasicAuthHelper;
     private static HdSameOriginTokenHelper hdSameOriginTokenHelper;
@@ -113,6 +114,25 @@ public class HdHelper {
      */
     public static HdBanAccountHelper banAccountHelper(String accountType) {
         return BAN_ACCOUNT_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.getCreateBanAccountHelper().apply(key));
+    }
+    
+    /**
+     * 获取 HdSecondAuthHelper，如果获取不到则根据 accountType 创建
+     *
+     * @return HdSecondAuthHelper
+     */
+    public static HdSecondAuthHelper secondAuthHelper() {
+        return secondAuthHelper(ACCOUNT_TYPE);
+    }
+    
+    /**
+     * 根据 accountType 获取 HdSecondAuthHelper，如果获取不到则根据 accountType 创建
+     *
+     * @param accountType 账号类型
+     * @return HdSecondAuthHelper
+     */
+    public static HdSecondAuthHelper secondAuthHelper(String accountType) {
+        return SECOND_AUTH_HELPER_MAP.computeIfAbsent(accountType, key -> HdSecurityHelperCreateStrategy.instance.getCreateSecondAuthHelper().apply(key));
     }
 
     /**

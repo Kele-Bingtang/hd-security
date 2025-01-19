@@ -685,8 +685,7 @@ public class HdTokenHelper {
         HdSecurityConfig config = HdSecurityManager.getConfig(accountType);
 
         if (Boolean.TRUE.equals(config.getWriteHeader())) {
-            String securityPrefixKey = config.getSecurityPrefixKey();
-            HdSecurityManager.getContext().getResponse().addHeader(securityPrefixKey, token);
+            HdSecurityManager.getContext().getResponse().addHeader(config.getSecurityPrefixKey(), token);
         }
     }
 

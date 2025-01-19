@@ -47,6 +47,14 @@ public class HdSameOriginTokenHelper {
     }
 
     /**
+     * 校验请求头是否带有 SameOrigin Token，如果校验失败则抛出异常
+     */
+    public void checkToken() {
+        String token = HdSecurityManager.getContext().getRequest().getHeader(DefaultConstant.SAME_ORIGIN_TOKEN_TAG);
+        checkToken(token);
+    }
+
+    /**
      * 校验 SameOrigin Token，如果校验失败则抛出异常
      *
      * @param token SameOrigin Token
@@ -55,14 +63,6 @@ public class HdSameOriginTokenHelper {
         if (!validToken(token)) {
             throw new HdSecuritySameOriginTokenException("无效 SameOrigin Token：" + Optional.ofNullable(token).orElse("")).setCode(HdSecurityErrorCode.SAME_ORIGIN_TOKEN_INVALID);
         }
-    }
-
-    /**
-     * 校验请求头是否带有 SameOrigin Token，如果校验失败则抛出异常
-     */
-    public void checkToken() {
-        String token = HdSecurityManager.getContext().getRequest().getHeader(DefaultConstant.SAME_ORIGIN_TOKEN_TAG);
-        checkToken(token);
     }
 
     /**

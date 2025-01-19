@@ -179,6 +179,7 @@ public class HdSession implements Serializable {
     }
 
     public void addDevice(HdTokenDevice tokenDevice) {
+        // 尝试获取设备信息
         HdTokenDevice oldDevice = getTokenDeviceByToken(tokenDevice.getToken());
         if (null == oldDevice) {
             tokenDeviceList.add(tokenDevice);

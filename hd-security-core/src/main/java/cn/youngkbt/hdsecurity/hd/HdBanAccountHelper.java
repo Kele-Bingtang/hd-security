@@ -7,8 +7,6 @@ import cn.youngkbt.hdsecurity.exception.HdSecurityBanException;
 import cn.youngkbt.hdsecurity.listener.HdSecurityEventCenter;
 import cn.youngkbt.hdsecurity.utils.HdStringUtil;
 
-import static cn.youngkbt.hdsecurity.hd.RepositoryKeyHelper.getDisableAccountKey;
-
 /**
  * Hd Security 封禁账号模块
  *
@@ -30,57 +28,6 @@ public class HdBanAccountHelper {
 
     public String getAccountType() {
         return accountType;
-    }
-
-    /**
-     * 获取封禁账号的封禁级别，如果尚未被封禁，返回 null
-     *
-     * @param loginId 账号 ID
-     * @return 封禁级别，如果尚未被封禁，返回 null
-     */
-    public Integer getDisableLevel(Object loginId) {
-        return getDisableLevel(loginId, DefaultConstant.DEFAULT_BAN_REALM);
-    }
-
-    /**
-     * 获取封禁账号指定领域的封禁级别，如果尚未被封禁，返回 null
-     *
-     * @param loginId 账号 ID
-     * @param realm   领域
-     * @return 封禁级别，如果尚未被封禁，返回 null
-     */
-    public Integer getDisableLevel(Object loginId, String realm) {
-        Object level = HdSecurityManager.getRepository().query(getDisableAccountKey(accountType, loginId, realm));
-        // 判断是否被封禁了，如果尚未被封禁，返回 null
-        if (HdStringUtil.hasEmpty(level)) {
-            return null;
-        }
-
-        // 转为 int 类型
-        return Integer.parseInt(String.valueOf(level));
-    }
-
-    /**
-     * 获取封禁账号的封禁时间（单位：秒）
-     * <p>如果返回 -1 代表永久封禁，返回 -2 代表未被封禁</p>
-     *
-     * @param loginId 账号 ID
-     * @return 封禁时间，如果返回 -1 代表永久封禁，返回 -2 代表未被封禁
-     */
-    public long getDisabledTime(Object loginId) {
-        return getDisabledTime(loginId, DefaultConstant.DEFAULT_BAN_REALM);
-    }
-
-    /**
-     * 获取封禁账号指定领域的封禁时间（单位：秒）
-     * <p>如果返回 -1 代表永久封禁，返回 -2 代表未被封禁</p>
-     *
-     * @param loginId 账号 ID
-     * @param realm   领域
-     * @return 封禁时间，如果返回 -1 代表永久封禁，返回 -2 代表未被封禁
-     */
-    public long getDisabledTime(Object loginId, String realm) {
-        return HdSecurityManager.getRepository().getExpireTime(getDisableAccountKey(accountType, loginId, realm));
     }
 
     /**
@@ -129,10 +76,61 @@ public class HdBanAccountHelper {
         HdSecurityEventCenter.publishBeforeBanAccount(accountType, loginId, disableTime, realm, level);
 
         // 打上封禁标记
-        HdSecurityManager.getRepository().add(getDisableAccountKey(accountType, loginId, realm), level, disableTime);
+        HdSecurityManager.getRepository().add(RepositoryKeyHelper.getDisableAccountKey(accountType, loginId, realm), level, disableTime);
 
         // 发布封禁账号后置事件
         HdSecurityEventCenter.publishAfterBanAccount(accountType, loginId, disableTime, realm, level);
+    }
+
+    /**
+     * 获取封禁账号的封禁级别，如果尚未被封禁，返回 null
+     *
+     * @param loginId 账号 ID
+     * @return 封禁级别，如果尚未被封禁，返回 null
+     */
+    public Integer getDisableLevel(Object loginId) {
+        return getDisableLevel(loginId, DefaultConstant.DEFAULT_BAN_REALM);
+    }
+
+    /**
+     * 获取封禁账号指定领域的封禁级别，如果尚未被封禁，返回 null
+     *
+     * @param loginId 账号 ID
+     * @param realm   领域
+     * @return 封禁级别，如果尚未被封禁，返回 null
+     */
+    public Integer getDisableLevel(Object loginId, String realm) {
+        Object level = HdSecurityManager.getRepository().query(RepositoryKeyHelper.getDisableAccountKey(accountType, loginId, realm));
+        // 判断是否被封禁了，如果尚未被封禁，返回 null
+        if (HdStringUtil.hasEmpty(level)) {
+            return null;
+        }
+
+        // 转为 int 类型
+        return Integer.parseInt(String.valueOf(level));
+    }
+
+    /**
+     * 获取封禁账号的封禁时间（单位：秒）
+     * <p>如果返回 -1 代表永久封禁，返回 -2 代表未被封禁</p>
+     *
+     * @param loginId 账号 ID
+     * @return 封禁时间，如果返回 -1 代表永久封禁，返回 -2 代表未被封禁
+     */
+    public long getDisabledTime(Object loginId) {
+        return getDisabledTime(loginId, DefaultConstant.DEFAULT_BAN_REALM);
+    }
+
+    /**
+     * 获取封禁账号指定领域的封禁时间（单位：秒）
+     * <p>如果返回 -1 代表永久封禁，返回 -2 代表未被封禁</p>
+     *
+     * @param loginId 账号 ID
+     * @param realm   领域
+     * @return 封禁时间，如果返回 -1 代表永久封禁，返回 -2 代表未被封禁
+     */
+    public long getDisabledTime(Object loginId, String realm) {
+        return HdSecurityManager.getRepository().getExpireTime(RepositoryKeyHelper.getDisableAccountKey(accountType, loginId, realm));
     }
 
     /**
@@ -164,7 +162,7 @@ public class HdBanAccountHelper {
             HdSecurityEventCenter.publishBeforeUnBanAccount(accountType, loginId, realm);
 
             // 解除账号封禁
-            HdSecurityManager.getRepository().remove(getDisableAccountKey(accountType, loginId, realm));
+            HdSecurityManager.getRepository().remove(RepositoryKeyHelper.getDisableAccountKey(accountType, loginId, realm));
 
             // 发布解封账号后置事件
             HdSecurityEventCenter.publishAfterUnBanAccount(accountType, loginId, realm);
@@ -241,7 +239,7 @@ public class HdBanAccountHelper {
     }
 
     /**
-     * 检查账号是否在指定领域被封禁
+     * 检查账号是否被封禁，并且是否在指定的封禁级别内
      *
      * @param loginId 账号 ID
      * @param level   封禁级别

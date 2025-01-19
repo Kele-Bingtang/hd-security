@@ -16,14 +16,29 @@ public class HdLoginModelOperator {
     private HdLoginModelOperator() {
     }
 
+    /**
+     * 创建 HdLoginModel
+     * @return HdLoginModel
+     */
     public static HdLoginModel create() {
         return new HdLoginModel();
     }
 
+    /**
+     * 创建 HdLoginModel，使用 HdSecurityConfig 全局配置的默认值
+     *
+     * @return HdLoginModel
+     */
     public static HdLoginModel build() {
         return build(HdSecurityManager.getConfig());
     }
 
+    /**
+     * 创建 HdLoginModel，使用指定配置
+     *
+     * @param hdSecurityConfig 配置
+     * @return HdLoginModel
+     */
     public static HdLoginModel build(HdSecurityConfig hdSecurityConfig) {
         return create()
                 .setWriteHeader(hdSecurityConfig.getWriteHeader())
@@ -31,6 +46,12 @@ public class HdLoginModelOperator {
                 .setTokenActiveExpireTime(Boolean.TRUE.equals(hdSecurityConfig.getDynamicActiveExpireTime()) ? hdSecurityConfig.getTokenActiveExpireTime() : null);
     }
 
+    /**
+     * 对传入的 hdLoginModel 进行初始化，如果 hdLoginModel 中没有配置属性，则使用全局配置
+     *
+     * @param hdLoginModel 登录模型
+     * @return HdLoginModel
+     */
     public static HdLoginModel mutate(HdLoginModel hdLoginModel) {
         HdSecurityConfig config = HdSecurityManager.getConfig(hdLoginModel.getAccountType());
         if (null == hdLoginModel.getWriteHeader()) {
@@ -59,5 +80,4 @@ public class HdLoginModelOperator {
     public static Boolean getWriteHeader(HdLoginModel hdLoginModel) {
         return Optional.ofNullable(hdLoginModel.getWriteHeader()).orElse(HdSecurityManager.getConfig(hdLoginModel.getAccountType()).getWriteHeader());
     }
-
 }

@@ -18,6 +18,7 @@ public class HdSecurityHelperCreateStrategy {
     private HdSessionHelperCreateFunction createSessionHelper = HdSessionHelper::new;
     private HdTokenHelperCreateFunction createTokenHelper = HdTokenHelper::new;
     private HdBanAccountHelperCreateFunction createBanAccountHelper = HdBanAccountHelper::new;
+    private HdSecondAuthHelperCreateFunction createSecondAuthHelper = HdSecondAuthHelper::new;
     private HdAuthorizeHelperCreateFunction createAuthorizeHelper = HdAuthorizeHelper::new;
     private HdAnnotationHelperCreateSupplier createAnnotationHelper = HdAnnotationHelper::new;
     private HdBasicAuthHelperCreateSupplier createBasicAuthHelper = HdBasicAuthHelper::new;
@@ -57,6 +58,15 @@ public class HdSecurityHelperCreateStrategy {
 
     public HdSecurityHelperCreateStrategy setCreateBanAccountHelper(HdBanAccountHelperCreateFunction createBanAccountHelper) {
         this.createBanAccountHelper = createBanAccountHelper;
+        return this;
+    }
+
+    public HdSecondAuthHelperCreateFunction getCreateSecondAuthHelper() {
+        return createSecondAuthHelper;
+    }
+
+    public HdSecurityHelperCreateStrategy setCreateSecondAuthHelper(HdSecondAuthHelperCreateFunction createSecondAuthHelper) {
+        this.createSecondAuthHelper = createSecondAuthHelper;
         return this;
     }
 

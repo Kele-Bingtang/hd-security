@@ -93,7 +93,7 @@ public class HdSessionHelper {
             tokenHelper.addTokenActiveTime(token, loginModel.getTokenActiveExpireTime(), tokenExpireTime);
         }
 
-        // 如果该 token 对应的 Token-Session 已经存在，则续期
+        // 如果该 token 对应的 Token Session 已经存在，则续期
         HdSession tokenSession = getTokenSessionByToken(token);
         if (null != tokenSession) {
             tokenSession.updateExpireTimeWhenCondition(loginModel.getTokenExpireTime(), true);
@@ -153,6 +153,7 @@ public class HdSessionHelper {
      * @return 账号会话
      */
     public HdAccountSession getAccountSessionByLoginIdOrCreate(Object loginId, Long expireTime) {
+        // 获取账号会话
         HdAccountSession accountSession = getAccountSessionByLoginId(loginId);
 
         if (null == accountSession) {
