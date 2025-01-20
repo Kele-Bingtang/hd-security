@@ -82,4 +82,8 @@ public class HdSecurityManager {
     public static void setEventListener(List<HdSecurityEventListener> eventListener) {
         HdSecurityEventCenter.setListenerList(eventListener);
     }
+
+    public static void addEventListener(HdSecurityEventListener eventListener) {
+        HdSecurityEventCenter.addListener(eventListener);
+    }
 }

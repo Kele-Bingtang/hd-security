@@ -38,5 +38,4 @@ public class HdSecurityLogProvider {
         // 发布组件注册事件
         HdSecurityEventCenter.publishAfterComponentRegister(GlobalEventEnums.REGISTER_LOG.getFunctionName(), hdSecurityLog);
     }
-
 }

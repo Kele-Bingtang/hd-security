@@ -10,7 +10,7 @@ package cn.youngkbt.hdsecurity.log;
 public interface HdSecurityLog {
 
     /**
-     * 初始化
+     * 初始化，在加载到 Hd Security 时执行
      */
     default void init() {
     }

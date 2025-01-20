@@ -133,5 +133,4 @@ public class StrFormatter {
         }
         return template2;
     }
-
 }
