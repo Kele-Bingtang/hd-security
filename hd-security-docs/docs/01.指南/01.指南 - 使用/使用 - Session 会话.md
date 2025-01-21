@@ -14,7 +14,7 @@ HdHelper.sessionHelper().getAccountSession().set("user", user);
 SysUser user = (SysUser) HdHelper.sessionHelper().getAccountSession().get("user");
 ```
 
-在 Sa-Token 中，Session 分为两种，分别是：
+在 Hd Security 中，Session 分为两种，分别是：
 
 - `Account Session`: 指的是框架为每个 账号id 分配的 Session
 - `Token Session`: 指的是框架为每个 token 分配的 Session

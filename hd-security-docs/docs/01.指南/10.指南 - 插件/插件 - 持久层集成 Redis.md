@@ -74,7 +74,7 @@ Hd Security 默认使用项目连接的 Redis 存储自身的权限数据，如�
 # Hd Security 配置
 hd-security: 
     # Token 名称
-    security-prefix-key: satoken
+    security-prefix-key: hd-security
     # Token 有效期
     token-expire-time: 2592000
     # Token 风格
@@ -113,7 +113,7 @@ spring:
 ```properties [properties 风格]
 ############## Hd Security 配置 ############## 
 # Token 名称
-hd-security.security-prefix-key=satoken
+hd-security.security-prefix-key=hd-security
 # Token 有效期
 hd-security.token-expire-time=2592000
 # Token 风格
@@ -147,3 +147,29 @@ spring.redis.timeout=10s
 :::
 
 集群配置说明: Hd Security 同样可以配置集群（cluster 模式和 sentinel 模式），且基础配置参数和 Spring Redis 集群配置别无二致。
+
+## Redisson 插件
+
+Hd Security 除了提供 Redis 的插件，还提供了 Redis 框架 Redisson 的插件。
+
+::: code-group
+
+```xml [Maven 方式]
+<!-- Hd Security 整合 redisson -->
+<dependency>
+    <groupId>cn.youngkbt</groupId>
+    <artifactId>hd-security-repository-redisson</artifactId>
+    <version>最新版</version>
+</dependency>
+```
+
+
+
+```groovy [Gradle 方式]
+// Hd Security 整合 SpringAOP 实现注解鉴权
+implementation 'cn.youngkbt:hd-security-repository-redisson:最新版'
+```
+
+:::
+
+引入 `hd-security-repository-redisson` 后就不需要引入 `hd-security-repository-redis` 依赖了。

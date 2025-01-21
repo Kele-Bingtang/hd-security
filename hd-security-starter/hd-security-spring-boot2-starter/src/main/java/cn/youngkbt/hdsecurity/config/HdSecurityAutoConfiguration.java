@@ -60,6 +60,7 @@ public class HdSecurityAutoConfiguration {
 
     @Autowired(required = false)
     public void setHdSecurityConfig(HdSecurityConfig config) {
+        // 获取 hdSecurityConfig() 返回的 HdSecurityConfig
         if (null == config) {
             return;
         }

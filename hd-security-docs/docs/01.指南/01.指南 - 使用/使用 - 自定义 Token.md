@@ -36,7 +36,7 @@ Hd Security 默认的 token 生成策略是 uuid 风格，其模样类似于：`
 
 如果你觉着以上风格都不是你喜欢的类型，那么你还可以 **自定义 token 生成策略**，来定制化 token 生成风格。
 
-怎么做呢？只需要重写 `SaStrategy` 策略类的 `createToken` 算法即可：
+怎么做呢？只需要重写 `HdSecurityTokenGenerateStrategy` 策略类的 `createToken` 算法即可：
 
 ### 参考步骤如下
 
@@ -49,7 +49,7 @@ public class HdSecurityConfiguration {
      * 重写 Hd Security 框架内部算法策略 
      */
     @PostConstruct
-    public void rewriteSaStrategy() {
+    public void rewriteCreateTokenStrategy() {
         // 重写 Token 生成策略
         HdSecurityTokenGenerateStrategy.instance.createToken = (loginId, accountType) -> {
             return HdTokenHelper.createRandomToken(60); // 随机 60 位长度字符串
