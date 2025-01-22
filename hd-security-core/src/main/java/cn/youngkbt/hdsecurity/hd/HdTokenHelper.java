@@ -219,7 +219,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 获取 Token 允许的活跃时间（秒）
+     * 获取当前 Token 允许的活跃时间（秒）
      *
      * @return 允许的活跃时间（秒）
      */
@@ -228,7 +228,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 获取 Token 允许的活跃时间（秒）
+     * 获取指定 Token 允许的活跃时间（秒）
      *
      * @param token Token
      * @return 允许的活跃时间（秒）
@@ -283,9 +283,9 @@ public class HdTokenHelper {
     // ---------- Token 最后活跃时间相关操作方法 ----------
 
     /**
-     * 获取 Token 的最后活跃时间
+     * 获取当前 Token 的最后活跃时间（13 位时间戳）
      *
-     * @return 最后活跃时间
+     * @return 最后活跃时间（13 位时间戳）
      */
     public Long getTokenLastActiveTime() {
         return getTokenLastActiveTime(getWebToken());
@@ -319,7 +319,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 续签当前 Token 为当前时间戳，如果 Token 被冻结，则也会续期成功
+     * 续签指定 Token 为当前时间戳，如果 Token 被冻结，则也会续期成功
      *
      * @param token Token
      */
@@ -330,7 +330,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 获取 Token 剩余的活跃时间，剩余活跃时间 = (当前时间戳 - 最后一次活跃时间戳) / 1000 - 允许的活跃时间（秒）
+     * 获取当前 Token 剩余的活跃时间，剩余活跃时间 = (当前时间戳 - 最后一次活跃时间戳) / 1000 - 允许的活跃时间（秒）
      *
      * @return 单位: 秒，返回 -1 代表永不冻结，null 代表 Token 已被冻结了或找不到 Token 剩余的活跃时间
      */
@@ -339,7 +339,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 获取 Token 剩余的活跃时间，剩余活跃时间 = (当前时间戳 - 最后一次活跃时间戳) / 1000 - 允许的活跃时间（秒）
+     * 获取指定 Token 剩余的活跃时间，剩余活跃时间 = (当前时间戳 - 最后一次活跃时间戳) / 1000 - 允许的活跃时间（秒）
      *
      * @param token Token
      * @return 单位: 秒，返回 -1 代表永不冻结，null 代表 Token 已被冻结了或找不到 Token 剩余的活跃时间
@@ -375,7 +375,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 检查 token 是否已被冻结，如果是则抛出异常
+     * 检查当前 token 是否已被冻结，如果是则抛出异常
      */
     public void checkTokenActiveTime() {
         checkTokenActiveTime(getWebToken());
@@ -400,7 +400,7 @@ public class HdTokenHelper {
         }
     }
 
-    // ---------- Token 从持久层获取相关操作方法 ----------
+    // ---------- 从持久层获取 Token 相关操作方法 ----------
 
     /**
      * 从持久层获取 Token，如果 Token 为空，则登录
@@ -413,7 +413,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 从持久层获取 Token，如果 Token 为空，则登录
+     * 从持久层获取 Token，如果 Token 为空，则在指定设备上登录
      *
      * @param loginId 账号 ID
      * @param device  设备
@@ -488,7 +488,7 @@ public class HdTokenHelper {
     // --------- 通过 Token 获取设备相关操作方法 ---------
 
     /**
-     * 获取 Token 对应的设备
+     * 获取当前 Token 对应的设备
      *
      * @return 设备
      */
@@ -497,7 +497,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 获取 Token 对应的设备
+     * 获取指定 Token 对应的设备
      *
      * @param token Token
      * @return 设备
@@ -535,7 +535,7 @@ public class HdTokenHelper {
     // --------- Token 和 LoginId 的映射关系相关操作方法 ---------
 
     /**
-     * 根据 Token 获取 LoginId
+     * 根据当前 Token 获取对应的账号
      *
      * @return LoginId
      */
@@ -544,7 +544,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 根据 Token 获取 LoginId
+     * 根据指定 Token 获取对应的账号
      *
      * @param token Token
      * @return LoginId
@@ -557,7 +557,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 添加 Token 和 LoginId 的映射关系
+     * 添加 Token 和 LoginId 的映射关系，并指定过期时间（单位：秒）
      *
      * @param token           Token
      * @param loginId         登录 ID
@@ -589,7 +589,7 @@ public class HdTokenHelper {
     // ---------- Token 和 LoginId 的映射关系的 ExpireTime 获取操作方法 ---------
 
     /**
-     * 通过 Token 获取 Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
+     * 通过当前 Token 获取 Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
      *
      * @return Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
      */
@@ -598,7 +598,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 通过 Token 获取 Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
+     * 通过指定 Token 获取 Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
      *
      * @param token Token
      * @return Token 和 LoginId 映射关系的过期时间（单位: 秒，返回 -1 代表永久有效，-2 代表没有这个值）
@@ -621,7 +621,7 @@ public class HdTokenHelper {
     // --------- Token 在 Web 读取和写入相关操作方法 ---------
 
     /**
-     * 写入 Token 到 Web
+     * 写入指定 Token 到 Web
      *
      * @param token Token
      */
@@ -631,7 +631,7 @@ public class HdTokenHelper {
 
 
     /**
-     * 写入 Token 到 Web
+     * 写入指定 Token 到 Web，并指定 Token 过期时间（单位：秒）
      *
      * @param token           Token
      * @param tokenExpireTime Token 过期时间，如果开启了 Cookie，也是 Cookie 过期时间
@@ -641,7 +641,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 写入 Token 到 Web
+     * 写入 Token 到 Web，并指定登录参数
      *
      * @param token      Token
      * @param loginModel 登录参数
@@ -663,7 +663,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 写入 Token 到 Storage
+     * 写入 Token 到请求域 Storage
      *
      * @param token Token
      */
@@ -677,7 +677,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 写入 Token 到 Header
+     * 写入 Token 到请求头 Header
      *
      * @param token Token
      */
@@ -690,10 +690,10 @@ public class HdTokenHelper {
     }
 
     /**
-     * 写入 Token 到 Cookie
+     * 写入 Token 到 Cookie，并指定 Cookie 过期时间（单位：秒）
      *
      * @param token            Token
-     * @param cookieExpireTime Cookie 过期时间
+     * @param cookieExpireTime Cookie 过期时间（单位：秒）
      */
     public void writeTokenToCookie(String token, int cookieExpireTime) {
         HdSecurityConfig config = HdSecurityManager.getConfig(accountType);
@@ -732,7 +732,7 @@ public class HdTokenHelper {
     }
 
     /**
-     * 从 Web 获取 Token
+     * 从 Web 获取实际的 Token（截取 Token 的前缀）
      *
      * @param tokeNonNull     是否必须存在
      * @param prefixMustMatch 是否必须以指定的前缀开头
@@ -796,9 +796,9 @@ public class HdTokenHelper {
     // --------- Token 续期相关操作方法 ----------
 
     /**
-     * 对 webToken 进行续期
+     * 对当前 webToken 进行续期，并指定过期时间（单位: 秒，-1 代表要续为永久有效）
      *
-     * @param expireTime 要续期的时间 (单位: 秒，-1 代表要续为永久有效)
+     * @param expireTime 要续期的时间（单位: 秒，-1 代表要续为永久有效）
      */
     public void renewTokenExpireTime(long expireTime) {
         String webToken = getWebToken();
@@ -806,10 +806,10 @@ public class HdTokenHelper {
     }
 
     /**
-     * 对 webToken 进行续期
+     * 对指定 webToken 进行续期，并指定过期时间（单位: 秒，-1 代表要续为永久有效）
      *
      * @param token      Token
-     * @param expireTime 要续期的时间 (单位: 秒，-1 代表要续为永久有效)
+     * @param expireTime 要续期的时间（单位: 秒，-1 代表要续为永久有效）
      */
     public void renewTokenExpireTime(String token, long expireTime) {
         // 如果 Token 为空，则直接返回

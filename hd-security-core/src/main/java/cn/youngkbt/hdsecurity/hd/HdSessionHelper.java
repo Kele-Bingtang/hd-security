@@ -200,7 +200,7 @@ public class HdSessionHelper {
     // ---------- Account Session ExpireTime 获取操作方法 ---------
 
     /**
-     * 获取账号会话过期时间
+     * 获取当前账号会话过期时间
      *
      * @return 账号会话过期时间
      */
@@ -209,7 +209,7 @@ public class HdSessionHelper {
     }
 
     /**
-     * 获取账号会话过期时间
+     * 获取指定账号会话过期时间
      *
      * @param loginId 登录 ID
      * @return 账号会话过期时间
@@ -219,7 +219,7 @@ public class HdSessionHelper {
     }
 
     /**
-     * 获取账号会话过期时间
+     * 获取指定 Token 的账号会话过期时间
      *
      * @param token Token
      * @return 账号会话过期时间
@@ -337,7 +337,7 @@ public class HdSessionHelper {
     }
 
     /**
-     * 根据 Token 获取 Token 会话
+     * 根据 Token 删除 Token 会话
      *
      * @param token Token
      */
@@ -451,7 +451,7 @@ public class HdSessionHelper {
     }
 
     /**
-     * 获取账号会话中的 Token 列表
+     * 获取指定账号会话中的 Token 列表
      *
      * @param loginId 登录 ID
      * @return Token 列表
@@ -461,7 +461,7 @@ public class HdSessionHelper {
     }
 
     /**
-     * 获取账号会话中指定设备的 Token 列表
+     * 获取指定账号会话中指定设备的 Token 列表
      *
      * @param loginId 登录 ID
      * @param device  设备
