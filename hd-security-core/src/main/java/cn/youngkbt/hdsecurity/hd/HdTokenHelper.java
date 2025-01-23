@@ -215,7 +215,7 @@ public class HdTokenHelper {
      */
     public long getTokenActiveTimeOrGlobalConfig(String token) {
         Long tokenActiveTime = getTokenActiveTime(token);
-        return null == tokenActiveTime ? HdSecurityConfigProvider.getHdSecurityConfig().getTokenActiveExpireTime() : tokenActiveTime;
+        return null == tokenActiveTime ? HdSecurityManager.getConfig(accountType).getTokenActiveExpireTime() : tokenActiveTime;
     }
 
     /**
