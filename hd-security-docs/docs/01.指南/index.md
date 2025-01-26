@@ -1,14 +1,14 @@
 # 简介
 
-Hd Security 是一个轻量级 Java 权限认证框架，它学习自 [sa-token](https://sa-token.cc/)，换而言之，是作者在阅读 sa-token 的源码时，通过敲代码的方式一步一步学习的，因此 Hd Security 有的功能 sa-token 都有。
+Hd Security 是一个轻量级 Java 权限认证框架，它学习自 [sa-token](https://sa-token.cc/)，换而言之，是我在阅读 sa-token 的源码时，通过敲代码的方式一步一步学习的，因此 Hd Security 有的功能 sa-token 都有。
 
-sa-token 的社区更加活跃，所以作者建议您使用 sa-token 框架，而本框架更适合学习原理，阅读本框架，你将学习到很多的框架设计理念和权限设计理念。
+sa-token 的社区更加活跃，所以我建议您使用 sa-token 框架，而本框架更适合学习原理，阅读本框架，你将学习到很多的框架设计理念和权限设计理念。
 
 Hd Security 主要解决登录认证、权限认证、分布式 Session 会话、微服务网关鉴权等一系列权限相关问题。
 
 Hd Security 使用文档基本也是按照 sa-token 的使用文档进行编写，只是 API 相对不一样。因为在学习的过程中，加入了一些自己的见解，设计上略微不同。
 
-因此建议读者去阅读 [设计](/design/index) 部分，作者建设文档的目的主要是书写 Hd Security 框架的设计思路，而不是 API 使用，这也是 hd-security 文档没有体现的内容。
+因此建议读者去阅读 [设计](/design/login-overview) 部分，我建设文档的目的主要是书写 Hd Security 框架的设计思路，而不是 API 使用，这也是 hd-security 文档没有体现的内容。
 
 ## Hd Security 功能特性
 
