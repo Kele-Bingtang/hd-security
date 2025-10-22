@@ -1,10 +1,11 @@
 import { defineConfig } from "vitepress";
-import sidebar from "./sidebar";
+import { teekConfig } from "./teekConfig";
 
 const description = ["Hd Security 使用文档", "认证框架"].toString();
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  extends: teekConfig,
   base: "/",
   title: "Hd Security",
   description: description,
@@ -12,22 +13,8 @@ export default defineConfig({
   lastUpdated: true,
   lang: "zh-CN",
   head: [
-    ["meta", { name: "author", content: "Tianke" }],
-    [
-      "meta",
-      {
-        name: "viewport",
-        content:
-          "width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no",
-      },
-    ],
-    [
-      "meta",
-      {
-        name: "description",
-        description,
-      },
-    ],
+    ["meta", { name: "author", content: "Teeker" }],
+    ["meta", { name: "description", description }],
     ["meta", { name: "keywords", description }],
   ],
   markdown: {
@@ -67,12 +54,10 @@ export default defineConfig({
     },
     nav: [
       { text: "首页", link: "/" },
-      { text: "指南", link: "/guide/" },
-      { text: "设计", link: "/design/" },
-      { text: "知识", link: "/knowledge/" },
+      { text: "指南", link: "/guide/intro" },
+      { text: "设计", link: "/design/login-overview" },
+      { text: "API", link: "/api/login" },
     ],
-
-    sidebar,
 
     socialLinks: [
       { icon: "github", link: "https://github.com/Kele-Bingtang/hd-security" },

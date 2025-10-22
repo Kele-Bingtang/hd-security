@@ -1,8 +1,20 @@
-import DefaultTheme from "vitepress/theme";
-import MyLayout from "./components/layout.vue";
-import "./styles/index.scss";
+import Teek from "vitepress-theme-teek";
+import "vitepress-theme-teek/index.css";
+import "vitepress-theme-teek/theme-chalk/tk-code-block-mobile.css";
+import "vitepress-theme-teek/theme-chalk/tk-sidebar.css";
+import "vitepress-theme-teek/theme-chalk/tk-nav.css";
+import "vitepress-theme-teek/theme-chalk/tk-aside.css";
+import "vitepress-theme-teek/theme-chalk/tk-doc-h1-gradient.css";
+import "vitepress-theme-teek/theme-chalk/tk-table.css";
+import "vitepress-theme-teek/theme-chalk/tk-mark.css";
+import "vitepress-theme-teek/theme-chalk/tk-blockquote.css";
+import "vitepress-theme-teek/theme-chalk/tk-index-rainbow.css";
+import "vitepress-theme-teek/theme-chalk/tk-banner-desc-gradient.css";
+import "vitepress-theme-teek/theme-chalk/tk-fade-up-animation.css"; // 首次加载的动画效果
+import "./styles/code-bg.css";
 
 export default {
-  extends: DefaultTheme,
-  Layout: MyLayout,
+    extends: Teek,
+    Layout: Teek.Layout,
+    enhanceApp({ app }) {},
 };

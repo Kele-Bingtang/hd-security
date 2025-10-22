@@ -1,11 +1,13 @@
 {
-  "devDependencies": {
-    "sass": "^1.83.1",
-    "vitepress": "^1.6.3"
-  },
+  "name": "hd-security",
+  "version": "1.0.0",
   "scripts": {
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
+  },
+  "dependencies": {
+    "vitepress": "^1.6.3",
+    "vitepress-theme-teek": "^1.5.1"
   }
 }

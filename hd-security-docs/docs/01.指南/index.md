@@ -1,4 +1,8 @@
-# 简介
+---
+title: 指南 - 简介
+date: 2025-01-07 19:09:00
+permalink: /guide/intro
+---
 
 Hd Security 是一个轻量级 Java 权限认证框架，它学习自 [sa-token](https://sa-token.cc/)，换而言之，是我在阅读 sa-token 的源码时，通过敲代码的方式一步一步学习的，因此 Hd Security 有的功能 sa-token 都有。
 
