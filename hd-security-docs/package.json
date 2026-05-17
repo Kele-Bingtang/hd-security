@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "vitepress": "^1.6.3",
-    "vitepress-theme-teek": "^1.5.1"
+    "vitepress-theme-teek": "^1.6.0"
   }
 }
